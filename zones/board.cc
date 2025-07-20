@@ -1,9 +1,9 @@
 #include "board.h"
 #include "../cards/card.h"
+#include "../cards/minion.h"
+#include "../cards/ritual.h"
 #include <memory>
 
-class Minion;
-class Ritual;
 Board::Board() {};
 
 void Board::add(unique_ptr<Card> card) {
