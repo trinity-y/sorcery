@@ -1,12 +1,14 @@
 #include "board.h"
+#include "../cards/card.h"
+#include <memory>
 
 class Minion;
 class Ritual;
 Board::Board() {};
 
 void Board::add(unique_ptr<Card> card) {
-  if (card.type == "MINION") addMinion(dynamic_cast<unique_ptr<Minion>>card);
-  else if (card.type == "RITUAL") addRitual(dynamic_cast<unique_ptr<Ritual>>card);
+  if (card->type == "MINION") addMinion(dynamic_cast<unique_ptr<Minion>>(card));
+  else if (card->type == "RITUAL") addRitual(dynamic_cast<unique_ptr<Ritual>>(card));
 }
 
 void Board::addMinion(unique_ptr<Minion> minion) {

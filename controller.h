@@ -1,24 +1,24 @@
-#IFNDEF CONTROLLER_H
-#DEFINE CONTROLLER_H
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
 #include <memory>
 #include <iostream>
-
+#include <sstream>
 class GameState;
-
+class View;
 class Controller {
   bool testingMode;
   unique_ptr<istream> deck1;
   unique_ptr<istream> deck2;
   unique_ptr<istream> initFile;
   unique_ptr<GameState> gameState;
+  unique_ptr<View> view;
   istringstream iss;
   void executeCommand();
   void turn();
-  
+  void mainLoop(string cmd);
   public:
-    Controller(bool testingMode);
-    int play();
-    bool turn(); // will return true when game is over??
-}
+    Controller(bool testingMode, string deck1FileName="default.deck", string deck2FileName="default.deck", string initFileName="");
+    void play();
+};
 
-#ENDIF
+#endif

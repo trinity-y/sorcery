@@ -1,5 +1,5 @@
-#IFNDEF HAND_H
-#DEFINE HAND_H
+#ifndef HAND_H
+#define HAND_H
 #include <vector>
 using namespace std;
 
@@ -15,4 +15,4 @@ class Hand {
 }
 
 
-#ENDIF
+#endif

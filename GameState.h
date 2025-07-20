@@ -1,22 +1,23 @@
 #include "player.h"
 #include "card.h"
 
+#include <string>
+#include <vector>
 // for the GameState to send notifications to Controller, for example that the game has been won or that the view needs to be updated (similar to a3q1) - trin
 class GameStateNotification {
   public:
     virtual void notify() = 0; // idk the signature or anything yet
-}
+};
 
 class GameState {
 private:
   int activePlayer;
   Player *arrOfPlayers[2];
-  swapPlayers();
+  void swapPlayers();
 
 public:
-  GameState(); // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
+  GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames); // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
   // also if you want the deck vectors to have a different format lmk, i was thinking they maybe shouldnt be card objects to make it so that the controller only knows about GameState and not the rest of the model, but idk
-  // i made a CardFactory class that will create the card objects from strings, rn in the UML i put it as in GameState but idk
   ~GameState();
   void notify(string cmd); // this is how the controller passes commands - trin
   // notify function to let GameState know turn has changed

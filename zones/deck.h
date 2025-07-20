@@ -1,6 +1,8 @@
-#IFNDEF DECK_H
-#DEFINE DECK_H
+#ifndef DECK_H
+#define DECK_H
 #include <vector>
+#include <memory>
+#include <random>
 
 using namespace std;
 
@@ -13,6 +15,6 @@ class Deck {
     Deck(unique_ptr<Card> deck);
     Card pop();
     void shuffle();
-}
+};
 
-#ENDIF
+#endif

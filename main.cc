@@ -1,3 +1,7 @@
 #include <iostream>
+#include <string.h>
+using namespace std;
 
-int main() { std::cout << "Hello World!\n"; }
+int main(int argc, char* argv[]) { 
+    cout << argv[1];
+}

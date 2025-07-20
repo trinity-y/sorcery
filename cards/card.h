@@ -1,8 +1,8 @@
-#IFNDEF CARD_H
-#DEFINE CARD_H
+#ifndef CARD_H
+#define CARD_H
 #include <memory>
 using namespace std;
-class Player
+class Player;
 class Card {
   unique_ptr<Player> owner;
   public:
@@ -13,6 +13,6 @@ class Card {
     int cost;
     string getLeftBox() = 0;
     string getRightBox() = 0;
-}
+};
 
-#ENDIF
+#endif

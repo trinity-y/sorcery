@@ -1,5 +1,5 @@
-#IFNDEF GRAVEYARD_H
-#DEFINE GRAVEYARD_H
+#ifndef GRAVEYARD_H
+#define GRAVEYARD_H
 #include <queue>
 #include <memory>
 using namespace std;
@@ -14,4 +14,4 @@ class Graveyard {
     Minion pop();
 }
 
-#ENDIF
+#endif
