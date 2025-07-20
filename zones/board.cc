@@ -15,12 +15,12 @@ void Board::addMinion(unique_ptr<Minion> minion) {
   if (!hasRitual) {
     board.push_back(minion);
   } else {
-    board.insert(board.length-2, minion); // put in second last position
+    board.emplace(board.size-1, minion); // put in second last position
   }
 }
 
 void Board::addRitual(unique_ptr<Ritual> ritual) {
   if (!hasRitual) {
-    board.push_back(&ritual);
+    board.push_back(ritual);
   }
 }
