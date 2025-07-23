@@ -1,6 +1,8 @@
 #ifndef CARD_H
 #define CARD_H
 #include <memory>
+#include <string>
+
 using namespace std;
 class Player;
 class Card {
@@ -11,8 +13,8 @@ class Card {
     string name;
     string description;
     int cost;
-    string getLeftBox() = 0;
-    string getRightBox() = 0;
+    virtual string getLeftBox() = 0;
+    virtual string getRightBox() = 0;
 };
 
 #endif

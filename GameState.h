@@ -1,5 +1,7 @@
+#ifndef GAMESTATE_H
+#define GAMESTATE_H
 #include "player.h"
-#include "card.h"
+#include "./cards/card.h"
 
 #include <string>
 #include <vector>
@@ -16,9 +18,9 @@ private:
   void swapPlayers();
 
 public:
-  GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames); // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
+  GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames) {}; // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
   // also if you want the deck vectors to have a different format lmk, i was thinking they maybe shouldnt be card objects to make it so that the controller only knows about GameState and not the rest of the model, but idk
-  ~GameState();
+  ~GameState() {};
   void notify(string cmd); // this is how the controller passes commands - trin
   // notify function to let GameState know turn has changed
   // The end command ends the current player’s turn. A player may end their turn
@@ -52,4 +54,5 @@ public:
   void use(int i, int p, int t);
   // is the game won yet
   bool isWon();
-}
+};
+#endif

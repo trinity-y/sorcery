@@ -3,8 +3,10 @@
 #include <memory>
 #include <iostream>
 #include <sstream>
-class GameState;
-class View;
+#include "GameState.h"
+#include "View.h"
+using namespace std;
+
 class Controller {
   bool testingMode;
   unique_ptr<istream> deck1;

@@ -5,6 +5,7 @@
 using namespace std;
 class View {
     public:
-        void notify(string cmd);
+        View() {};
+        virtual void notify(string cmd) = 0;
 };
 #endif
