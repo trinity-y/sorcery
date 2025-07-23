@@ -15,21 +15,25 @@ Controller::Controller(bool testingMode, string deck1FileName, string deck2FileN
   deck1{ new ifstream(deck1FileName.c_str())},
   deck2{ new ifstream(deck2FileName.c_str())},
   initFile{initFileName == "" ? nullptr : new ifstream(initFileName.c_str())}
-  {};
+  {
+    cout << "controller is constructed" << endl;
+  };
 
 void Controller::play() {
   string player1Name;
   string player2Name;
-  cin >> player1Name;
-  cin >> player2Name;
+  getline(cin, player1Name);
+  getline(cin, player2Name);
 
   // load decks
   vector<string> deck1CardNames;
   vector<string> deck2CardNames;
   string input;
+  cout << "starting to get input from the deck file 1" << endl;
   while (getline(*deck1, input)) {
     deck1CardNames.push_back(input);
   }
+  cout << "starting to get input from the deck file 2" << endl;
   while (getline(*deck2, input)) {
     deck2CardNames.push_back(input);
   }
@@ -39,9 +43,11 @@ void Controller::play() {
   string cmd;
 
   while (true) {
-    while (getline(*initFile, cmd)) {
+    cout << "starting to take input from initFile" << endl;
+    while (initFile && getline(*initFile, cmd)) {
       mainLoop(cmd);
     }
+    cout << "starting to take input from command line" << endl;
     while (getline(cin, cmd)) {
       mainLoop(cmd);
     }
