@@ -1,0 +1,19 @@
+#ifndef ABILITY_H
+#define ABILITY_H
+#include <string>
+#include <memory>
+
+#include "../trigger.h"
+#include "../gameeffect.h"
+using namespace std;
+class Ability : public Trigger {
+    protected:
+        string description;
+        unique_ptr<GameEffect> gameEffect;
+    public:
+        Ability(string description, TriggerState trigger); // need to work on GameEffect implementation -- when is created?
+        // whoever makes the card would know what game effect goes in it, but also since this OWNS the card it makes the most sense to make it here
+        // but it also doesn't make sense to make it herer, since we will need to use gameffect elsewhere
+        // do we need another 'factory' thing?
+};
+#endif
