@@ -1,6 +1,8 @@
 #include "minion.h"
-// will need to be updated when card constructor is more thought out
-Minion::Minion(int attack, int defense): Card{"Minion"}, attack{attack}, defense{defense}, actions{0} {};
+#include <string>
+using namespace std;
+// todo: maybe make types an enum
+Minion::Minion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility): Card{"MINION", name, description, cost}, attack{attack}, defense{defense}, actions{0} {};
 
 int Minion::getAttack() {
     return attack;
@@ -12,4 +14,12 @@ int Minion::getDefense() {
 
 int Minion::decrementActions() {
     return --actions;
+}
+
+string Minion::getLeftBox() {
+    return to_string(attack);
+}
+
+string Minion::getRightBox() {
+    return to_string(defense);
 }

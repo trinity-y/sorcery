@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "../trigger.h"
-#include "../gameeffect.h"
+#include "../gameeffects/gameeffect.h"
 #include "ability.h"
 
 using namespace std;

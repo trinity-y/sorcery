@@ -8,7 +8,13 @@ using namespace std;
 #include "./zones/graveyard.h"
 
 class Player {
-
+    public:
+        unique_ptr<Board> board;
+        unique_ptr<Deck> deck;
+        unique_ptr<Hand> hand;
+        unique_ptr<Graveyard> graveyard;
+        Player() {}; // temp
+        ~Player() {}; // temp
 };
 
 #endif

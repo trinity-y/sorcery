@@ -2,13 +2,14 @@
 #define CARD_H
 #include <memory>
 #include <string>
-
+// #include "../player.h"
 using namespace std;
-class Player;
 class Card {
-  unique_ptr<Player> owner;
+  // unique_ptr<Player> owner;
+  // might be shared?
   public:
-    Card(string type);
+    Card(string type, string name, string description, int cost);
+    ~Card();
     string type;
     string name;
     string description;

@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include <random>
-
+#include <string>
 using namespace std;
 
 class Card;
@@ -12,9 +12,11 @@ class Deck {
   vector<unique_ptr<Card>> deck;
   default_random_engine rng;
   public:
-    Deck(unique_ptr<Card> deck);
-    Card pop();
+    Deck(vector<string> deckCardNames);
+    unique_ptr<Card> pop();
     void shuffle();
+    void printDeck(); // for debugging
+
 };
 
 #endif

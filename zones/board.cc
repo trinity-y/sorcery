@@ -3,24 +3,25 @@
 #include "../cards/minion.h"
 #include "../cards/ritual.h"
 #include <memory>
+using namespace std;
 
 Board::Board() {};
-
+// invariant: ritual card stays at the end of the vector
 void Board::add(unique_ptr<Card> card) {
-  if (card->type == "MINION") addMinion(dynamic_cast<unique_ptr<Minion>>(card));
-  else if (card->type == "RITUAL") addRitual(dynamic_cast<unique_ptr<Ritual>>(card));
+  if (card->type == "MINION") addMinion(move(card));
+  else if (card->type == "RITUAL") addRitual(move(card));
 }
 
-void Board::addMinion(unique_ptr<Minion> minion) {
+void Board::addMinion(unique_ptr<Card> minion) { // todo: dynamic cast doesnt work so im accepting minion. might wanna fix this
   if (!hasRitual) {
-    board.push_back(minion);
+    board.push_back(move(minion));
   } else {
-    board.emplace(board.size-1, minion); // put in second last position
+    board.emplace(board.end()-1, move(minion)); // put in second last position
   }
 }
 
-void Board::addRitual(unique_ptr<Ritual> ritual) {
+void Board::addRitual(unique_ptr<Card> ritual) {
   if (!hasRitual) {
-    board.push_back(ritual);
+    board.push_back(move(ritual));
   }
 }

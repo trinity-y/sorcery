@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "../trigger.h"
-#include "../gameeffect.h"
+#include "../gameeffects/gameeffect.h"
 using namespace std;
 class Ability : public Trigger {
     protected:
