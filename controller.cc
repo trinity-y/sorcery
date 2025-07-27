@@ -59,11 +59,16 @@ void Controller::play() {
   }
 }
 
-void Controller::mainLoop(string cmd) {
+void Controller::mainLoop(string cmd) { // I think cmd needs to be an istringstream for when we need to pass in discard i or other cmds right?
   // commands that do not require processing by the game state
   cout << "main loop recieved command " << cmd << endl;
   if (cmd == "help") {
     view->notify(cmd);
+  } 
+  else if (cmd == "draw"){
+    if (testingMode){
+      gameState->notify(cmd);
+    }
   }
   gameState->notify(cmd);
 }

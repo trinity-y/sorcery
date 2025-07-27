@@ -12,6 +12,7 @@ class Hand {
     Hand();
     void add(unique_ptr<Card> card);
     Card remove(int i);
+    int getHandLen();
 };
 
 #endif

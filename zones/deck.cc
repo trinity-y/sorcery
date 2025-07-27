@@ -34,3 +34,7 @@ void Deck::printDeck() {
     cout << "Card Type:" << deck[i]->type << endl;
   }
 }
+
+int Deck::getLen(){
+  return deck.size();
+}

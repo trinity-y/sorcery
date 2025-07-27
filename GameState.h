@@ -5,22 +5,33 @@
 
 #include <string>
 #include <vector>
+#include <memory>
+using namespace std;
 // for the GameState to send notifications to Controller, for example that the game has been won or that the view needs to be updated (similar to a3q1) - trin
-class GameStateNotification {
-  public:
-    virtual void notify() = 0; // idk the signature or anything yet
+class GameStateNotification
+{
+public:
+  virtual void notifyCard(int playerIndex, int leftBox, int rightBox) = 0;
+  // virtual void notifyMinion(int playerIndex, int attack, int defense) = 0;
+  virtual void notifyBoard(int playerIndex, bool ritualActive) = 0;
+  virtual void notifyBoard(int playerIndex, int numMinions) = 0;
 };
 
-class GameState {
+class GameState
+{
 private:
   int activePlayer;
-  Player *arrOfPlayers[2];
+  int inactivePlayer;
+  unique_ptr<Player> arrOfPlayers[2];
   void swapPlayers();
+  GameStateNotification *notification;
+  bool activeGame = false;
+  bool turnStarted = false;
 
 public:
-  GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames) {}; // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
+  GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames); // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
   // also if you want the deck vectors to have a different format lmk, i was thinking they maybe shouldnt be card objects to make it so that the controller only knows about GameState and not the rest of the model, but idk
-  ~GameState() {};
+  ~GameState();
   void notify(string cmd); // this is how the controller passes commands - trin
   // notify function to let GameState know turn has changed
   // The end command ends the current player’s turn. A player may end their turn
@@ -54,5 +65,7 @@ public:
   void use(int i, int p, int t);
   // is the game won yet
   bool isWon();
+  // startup game stuff
+  void startGame();
 };
 #endif
