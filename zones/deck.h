@@ -16,7 +16,7 @@ class Deck {
     unique_ptr<Card> pop();
     void shuffle();
     void printDeck(); // for debugging
-
+    int getLen(); 
 };
 
 #endif

@@ -8,12 +8,14 @@ using namespace std;
 #include "./zones/graveyard.h"
 
 class Player {
+    unique_ptr<Board> board;
+    unique_ptr<Deck> deck;
+    unique_ptr<Hand> hand;
+    unique_ptr<Graveyard> graveyard;
+    int magic=3;
+    int life=20;
+    string name;
     public:
-        unique_ptr<Board> board;
-        unique_ptr<Deck> deck;
-        unique_ptr<Hand> hand;
-        unique_ptr<Graveyard> graveyard;
-
         Player(string name, vector<string> deckNames);
         ~Player() {}; // temp    
         void shuffleDeck();

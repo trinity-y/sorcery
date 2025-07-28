@@ -5,23 +5,37 @@
 
 #include <string>
 #include <vector>
+#include <memory>
+using namespace std;
 // for the GameState to send notifications to Controller, for example that the game has been won or that the view needs to be updated (similar to a3q1) - trin
-class GameStateNotification {
-  public:
-    virtual void notify() = 0; // idk the signature or anything yet
+class GameStateNotification
+{
+public:
+  virtual void notifyCard(int playerIndex, int leftBox, int rightBox) = 0;
+  // virtual void notifyMinion(int playerIndex, int attack, int defense) = 0;
+  virtual void notifyBoard(int playerIndex, bool ritualActive) = 0;
+  virtual void notifyBoard(int playerIndex, int numMinions) = 0;
 };
 
-class GameState {
+class GameState
+{
 private:
   int activePlayer;
-  Player *arrOfPlayers[2];
+  int inactivePlayer;
+  unique_ptr<Player> arrOfPlayers[2];
   void swapPlayers();
+  GameStateNotification *notification;
+  bool activeGame = false;
 
 public:
-  GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames) {}; // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
+  GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames); // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
   // also if you want the deck vectors to have a different format lmk, i was thinking they maybe shouldnt be card objects to make it so that the controller only knows about GameState and not the rest of the model, but idk
-  ~GameState() {};
-  void notify(string cmd); // this is how the controller passes commands - trin
+  ~GameState();
+  // this is how the controller passes commands
+  void notify(string cmd);
+  void notify(string cmd, int i);
+  void notify(string cmd, int i, int p);
+  void notify(string cmd, int i, int p, string t);
   // notify function to let GameState know turn has changed
   // The end command ends the current player’s turn. A player may end their turn
   // at any time.
@@ -39,8 +53,6 @@ public:
   // orders the active player’s minion i to attack the inactive player’s minion
   // j
   void attack(int i, int j);
-  //
-  void inspect();
   // plays the ith card in the active player’s hand with no target
   void play(int i);
   // plays the ith card in the active player’s hand on card t owned by player p.
@@ -54,5 +66,7 @@ public:
   void use(int i, int p, int t);
   // is the game won yet
   bool isWon();
+  // startup game stuff
+  void startPlayerTurn();
 };
 #endif

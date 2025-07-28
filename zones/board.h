@@ -9,16 +9,26 @@
 using namespace std;
 
 class Card;
-class Board {
-  vector<unique_ptr<Card>> board; // invariant: ritual card stays at the end of the vector (if it exists)
-  bool hasRitual; 
-  bool numMinions;
-  void addRitual(unique_ptr<Card> ritual);
-  void addMinion(unique_ptr<Card> minion);
-  public:
-    Board();
-    void add(unique_ptr<Card> card);
-    unique_ptr<Card> remove(int index);
+class Board
+{
+  vector<unique_ptr<Minion>> boardMinions;
+  unique_ptr<Ritual> boardRitual;
+  bool hasRitual;
+  int numMinions;
+  void addRitual(unique_ptr<Ritual> ritual);
+  void addMinion(unique_ptr<Minion> minion);
+
+public:
+  Board();
+  void add(unique_ptr<Card> card);
+  unique_ptr<Minion> removeMinion(int index);
+  unique_ptr<Ritual> removeRitual();
+  const Minion& getMinion(int i) const;
+  Minion& getMinion(int i);
+  const Ritual& getRitual() const;
+  const int getNumMinions() const;
+  void notify(TriggerState trigger);
+  int getAvailableSpace() const;
 };
 
 #endif
