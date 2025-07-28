@@ -24,6 +24,7 @@ public:
   unique_ptr<Minion> removeMinion(int index);
     unique_ptr<Ritual> removeRitual();
     const Minion& getMinion(int i) const;
+    Minion& getMinion(int i);
     const Ritual& getRitual() const;
     const int getNumMinions() const;
     void notify(TriggerState trigger);

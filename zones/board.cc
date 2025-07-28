@@ -10,7 +10,7 @@ Board::Board(): boardMinions{vector<unique_ptr<Minion>>{}}, boardRitual{nullptr}
 // invariant: ritual card stays at the end of the vector
 void Board::add(unique_ptr<Card> card) {
   if (card->type == "MINION" && numMinions < 5) 
-    addMinion(make_unique<Minion>(static_cast<Minion*>(card.release())));;
+    addMinion(make_unique<Minion>(static_cast<Minion*>(card.release())));
   else if (card->type == "RITUAL" && !hasRitual)
     addRitual(make_unique<Ritual>(static_cast<Ritual*>(card.release())));
 }
@@ -53,5 +53,5 @@ void Board::notify(TriggerState trigger) {
 int Board::getAvailableSpace() const
 {
   const int MAX_MINIONS = 5;
-  return MAX_MINIONS - getMinionCount();
+  return MAX_MINIONS - getNumMinions();
 }
