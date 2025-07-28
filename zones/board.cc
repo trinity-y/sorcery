@@ -3,25 +3,47 @@
 #include "../cards/minion.h"
 #include "../cards/ritual.h"
 #include <memory>
+#include <stdexcept>
 using namespace std;
 
-Board::Board() {};
+Board::Board(): boardMinions{vector<unique_ptr<Minion>>{}}, boardRitual{nullptr} {};
 // invariant: ritual card stays at the end of the vector
 void Board::add(unique_ptr<Card> card) {
-  if (card->type == "MINION") addMinion(move(card));
-  else if (card->type == "RITUAL") addRitual(move(card));
+  if (card->type == "MINION" && numMinions < 5) addMinion(make_unique<Minion>(static_cast<Minion*>(card.release()))); // downcasts unique_ptr
+  else if (card->type == "RITUAL" && !hasRitual) addRitual(make_unique<Ritual>(static_cast<Ritual*>(card.release())));
 }
 
-void Board::addMinion(unique_ptr<Card> minion) { // todo: dynamic cast doesnt work so im accepting minion. might wanna fix this
-  if (!hasRitual) {
-    board.push_back(move(minion));
+void Board::addMinion(unique_ptr<Minion> minion) {
+  boardMinions.push_back(move(minion));
+  ++numMinions;
+}
+
+void Board::addRitual(unique_ptr<Ritual> ritual) {
+  boardRitual = move(ritual);
+  hasRitual = true;
+}
+
+Minion& Board::getMinion(int i) {
+  return *(boardMinions[i]);
+}
+
+const Ritual& Board::getRitual() const {
+  if (hasRitual) {
+    return *boardRitual;
   } else {
-    board.emplace(board.end()-1, move(minion)); // put in second last position
+    throw runtime_error("no ritual card to get");
   }
 }
 
-void Board::addRitual(unique_ptr<Card> ritual) {
-  if (!hasRitual) {
-    board.push_back(move(ritual));
+const int Board::getNumMinions() const {
+  return numMinions;
+}
+
+void Board::notify(TriggerState trigger) {
+  for (int i=0; i<numMinions; ++i) {
+    boardMinions[i]->notify(trigger);
+  }
+  if (hasRitual) {
+    boardRitual->notify(trigger);
   }
 }

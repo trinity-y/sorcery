@@ -2,7 +2,13 @@
 #include <string>
 using namespace std;
 // todo: maybe make types an enum
-Minion::Minion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility): Card{"MINION", name, description, cost}, attack{attack}, defense{defense}, actions{0} {};
+Minion::Minion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility): 
+    Card{"MINION", name, description, cost},
+    attack{attack},
+    defense{defense},
+    actions{0},
+    activatedAbility{move(activatedAbility)},
+    triggeredAbility{move(triggeredAbility)} {};
 
 int Minion::getAttack() {
     return attack;
@@ -10,6 +16,14 @@ int Minion::getAttack() {
 
 int Minion::getDefense() {
     return defense;
+}
+
+int Minion::setAttack(int newAttack) {
+    attack = newAttack;
+}
+
+int Minion::setDefense(int newDefense) {
+    defense = newDefense;
 }
 
 int Minion::decrementActions() {
@@ -22,4 +36,18 @@ string Minion::getLeftBox() {
 
 string Minion::getRightBox() {
     return to_string(defense);
+}
+
+void Minion::resetActions() {
+    actions = 1;
+}
+
+void Minion::notify(TriggerState trigger) {
+    if (activatedAbility && actions > 0) {
+        activatedAbility->notify(trigger);
+        --actions;
+    }
+    if (triggeredAbility) {
+        triggeredAbility->notify(trigger);
+    }
 }

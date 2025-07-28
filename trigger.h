@@ -3,15 +3,16 @@
 #include <string>
 
 using namespace std;
+
+enum TriggerState {
+    START_OF_TURN,
+    END_OF_TURN,
+    MINION_ENTERS,
+    MINION_LEAVES,
+    ACTIVATED_ABILITY
+};
 class Trigger {
     public:
-        enum TriggerState {
-            START_OF_TURN,
-            END_OF_TURN,
-            MINION_ENTERS,
-            MINION_LEAVES,
-            ACTIVATED_ABILITY
-        };
         TriggerState trigger;
         Trigger(TriggerState trigger);
         // should pass in some kind of enum that shows what the game state is (e.g beginning of turn, etc)

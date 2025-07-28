@@ -11,6 +11,5 @@ using namespace std;
 
 class TriggeredAbility : public Ability {
         TriggeredAbility(string description, TriggerState trigger);
-        void executeTrigger() override;
 };
 #endif

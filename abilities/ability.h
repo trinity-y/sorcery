@@ -12,8 +12,10 @@ class Ability : public Trigger {
         unique_ptr<GameEffect> gameEffect;
     public:
         Ability(string description, TriggerState trigger); // need to work on GameEffect implementation -- when is created?
+        void executeTrigger() override;
         // whoever makes the card would know what game effect goes in it, but also since this OWNS the card it makes the most sense to make it here
         // but it also doesn't make sense to make it herer, since we will need to use gameffect elsewhere
         // do we need another 'factory' thing?
+        // after talking w robyn -- create game effect in card generator
 };
 #endif

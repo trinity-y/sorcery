@@ -19,19 +19,21 @@ class Player {
         Player(string name, vector<string> deckNames);
         ~Player() {}; // temp    
         void shuffleDeck();
-        void addMagic(); // Need to increment magic by 1 in GameState
+        void addMagic(int additionalMagic); // Need to increment magic by 1 in GameState
+        void subtractMagic(int subtractMagic);
         bool deckIsEmpty(); // Checking if the players deck is empty
         int getHandLen();
-        int getLife();
+        int getLife() const;
         void drawCard();
         void discardCard(int i); // Discards ith card from hand
-        void activateCards(int triggeredAbilityEnum);
+        void notifyCards(TriggerState triggeredAbilityEnum);
         void restoreMinions();
-        int getMinionAttack(int i);
+        const int getMinionAttack(int i) const;
         void setMinionAttack(int i, int newAttack);
-        int getMinionDefence(int i);
+        const int getMinionDefence(int i) const;
         void setMinionDefence(int i, int newDefence);
         void reduceLife(int reduceBy);
+        void playCard(int i);
 };
 
 #endif

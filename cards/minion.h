@@ -22,9 +22,12 @@ class Minion : public Card {
         int decrementActions();
         int getAttack();
         int getDefense();
+        int setAttack(int i);
+        int setDefense(int i);
         string getLeftBox() override;
         string getRightBox() override;
-
+        void resetActions();
+        void notify(TriggerState trigger);
 };
 
 #endif
