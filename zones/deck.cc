@@ -10,9 +10,9 @@ using namespace std;
 
 class Card;
 
-Deck::Deck(vector<string> cardNames): rng{chrono::system_clock::now().time_since_epoch().count()} {
+Deck::Deck(vector<string> cardNames): rng{default_random_engine{(unsigned int)chrono::system_clock::now().time_since_epoch().count()}} {
   CardGenerator cardGenerator = CardGenerator();
-  for (int i=0; i<cardNames.size(); ++i){
+  for (size_t i=0; i<cardNames.size(); ++i){
      deck.push_back(cardGenerator.getCardFromString(cardNames[i]));
   }
 };
@@ -33,4 +33,8 @@ void Deck::printDeck() {
     cout << "Card Name:" << deck[i]->name << endl;
     cout << "Card Type:" << deck[i]->type << endl;
   }
+}
+
+int Deck::getLen(){
+  return deck.size();
 }

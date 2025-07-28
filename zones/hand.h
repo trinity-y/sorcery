@@ -11,7 +11,10 @@ class Hand {
   public:
     Hand();
     void add(unique_ptr<Card> card);
-    Card remove(int i);
+    unique_ptr<Card> remove(int i);
+    int getHandLen() const;
+    Card& getCard(int i);
+    const Card& getCard (int i) const;
 };
 
 #endif

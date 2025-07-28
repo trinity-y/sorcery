@@ -45,26 +45,75 @@ void Controller::play() {
   // deck1->shuffle();
   // deck1->printDeck();
   view = make_unique<TextDisplay>();
-  string cmd;
+  string line;
 
   while (true) {
     cout << "starting to take input from initFile" << endl;
-    while (initFile && getline(*initFile, cmd)) {
-      mainLoop(cmd);
+    while (initFile && getline(*initFile, line)) {
+      mainLoop(line);
     }
     cout << "starting to take input from command line" << endl;
-    while (getline(cin, cmd)) {
-      mainLoop(cmd);
+    while (getline(cin, line)) {
+      mainLoop(line);
     }
   }
 }
 
-void Controller::mainLoop(string cmd) {
+void Controller::mainLoop(string line) { // I think cmd needs to be an istringstream for when we need to pass in discard i or other cmds right?
   // commands that do not require processing by the game state
-  cout << "main loop recieved command " << cmd << endl;
+  stringstream commandStream{line};
+  string cmd;
+  commandStream >> cmd;
   if (cmd == "help") {
     view->notify(cmd);
+  } else if (cmd == "end") {
+    gameState->notify(cmd);
+  } else if (cmd == "quit") {
+    // idk how to terminate
+  } else if (cmd == "draw"){
+    if (testingMode){
+      gameState->notify(cmd);
+    }
+  } else if (cmd == "discard") {
+    int i;
+    commandStream >> i;
+    if (testingMode) {
+      gameState->notify(cmd, i);
+    }
+  } else if (cmd == "attack") {
+    int i, j;
+    commandStream >> i;
+    if (commandStream >> j) {
+      gameState->notify(cmd, i, j);
+    } else {
+      gameState->notify(cmd, i);
+    }
+  } else if (cmd == "play") {
+    int i, p;
+    string t;
+    commandStream >> i;
+    if (commandStream >> p >> t) {
+      gameState->notify(cmd, i, p, t);
+    } else {
+      gameState->notify(cmd, i);
+    }
+  } else if (cmd == "use") {
+    int i, p; 
+    string t;
+    commandStream >> i;
+    if (commandStream >> p >> t) {
+      gameState->notify(cmd, i, p, t);
+    } else {
+      gameState->notify(cmd, i);
+    }
+  } else if (cmd == "inspect") {
+    int i;
+    commandStream >> i;
+    view->notify(cmd, i); // just inspecting so i think i just notify view
+  } else if (cmd == "hand") {
+    view->notify(cmd);
+  } else if (cmd == "board") {
+    view->notify(cmd);
   }
-  gameState->notify(cmd);
 }
 

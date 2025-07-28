@@ -1,8 +1,212 @@
 #include "GameState.h"
-#include <string>
-#include <iostream>
-using namespace std;
+#include "player.h"
+#include "./zones/board.h"
+#include "./zones/deck.h"
+#include "./zones/hand.h"
+#include "./zones/graveyard.h"
 
-void GameState::notify(string cmd) {
-    cout << "game state notified with command " << cmd << endl;
-};
+// Private helper function
+void GameState::swapPlayers()
+{
+  swap(activePlayer, inactivePlayer);
+}
+
+// Constructor
+GameState::GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames)
+{
+  arrOfPlayers[0] = make_unique<Player>(player1Name, deck1CardNames);
+  arrOfPlayers[1] = make_unique<Player>(player2Name, deck2CardNames);
+  // It then shuffles both player’s decks.
+  arrOfPlayers[0]->shuffleDeck();
+  arrOfPlayers[1]->shuffleDeck();
+  // the game begins with player 1.
+  activePlayer = 0;
+  inactivePlayer = 1;
+  // Start player 1's turn
+  startPlayerTurn();
+}
+
+// Destructor
+GameState::~GameState()
+{
+}
+
+// Ends current player's turn
+void GameState::end()
+{
+  arrOfPlayers[activePlayer]->notifyCards(END_OF_TURN);
+  swapPlayers();
+  // Start next players turn
+  startPlayerTurn();
+}
+
+// Draws a card for the active player
+Card &GameState::draw()
+{
+  arrOfPlayers[activePlayer]->drawCard();
+}
+
+// Discards the ith card from active player's hand
+void GameState::discard(int i)
+{
+  arrOfPlayers[activePlayer]->discardCard(i);
+}
+
+// Orders minion i to attack opposing player
+void GameState::attack(int i)
+{
+  if (i >= 1 && i <= 5)
+  {
+    int minionAttack = arrOfPlayers[activePlayer]->getMinionAttack(i - 1);
+    arrOfPlayers[inactivePlayer]->reduceLife(minionAttack);
+  }
+}
+
+// Orders minion i to attack opposing minion j
+void GameState::attack(int i, int j)
+{
+  // i is minion A, j is minion B
+  int initialMinionAAttack = arrOfPlayers[activePlayer]->getMinionAttack(i);
+  int initialMinionADefence = arrOfPlayers[inactivePlayer]->getMinionDefence(j);
+  int initialMinionBAttack = arrOfPlayers[activePlayer]->getMinionAttack(i);
+  int initialMinionBDefence = arrOfPlayers[inactivePlayer]->getMinionDefence(j);
+  // reduces minion B’s defence by minion A’s attack
+  int newMinionBDefence = initialMinionBDefence - initialMinionAAttack;
+  // reduces minion A’s defence by minion B’s attack
+  int newMinionADefence = initialMinionADefence - initialMinionBAttack;
+  arrOfPlayers[activePlayer]->setMinionDefence(i, newMinionADefence);
+  arrOfPlayers[inactivePlayer]->setMinionDefence(i, newMinionBDefence);
+}
+
+// Plays the ith card with no target
+void GameState::play(int i)
+{
+  // Range checking for sanity
+  if (i >= 1 && i <= 5)
+  {
+    arrOfPlayers[activePlayer]->playCard(i - 1);
+  }
+}
+
+// Plays the ith card on card t owned by player p
+void GameState::play(int i, int p, int t)
+{
+  // implementation here
+}
+
+// Uses activated ability of minion i with no target
+void GameState::use(int i)
+{
+  // implementation here
+}
+
+// Uses activated ability of minion i with target p, t
+void GameState::use(int i, int p, int t)
+{
+  // implementation here
+}
+
+// Checks if the game has been won
+bool GameState::isWon()
+{
+  // The game’s objective is to reduce the opposing player’s life to 0, at which point the game ends.
+  if (arrOfPlayers[0]->getLife() == 0 || arrOfPlayers[1]->getLife() == 0)
+  {
+    return true;
+  }
+  return false;
+}
+// Controller passes commands
+void GameState::notify(string cmd, int i, int p, string t)
+{
+  if (cmd == "play")
+  {
+    if (t == "r")
+    {
+      if ((p - 1) == activePlayer)
+      {
+        // player calls card on their own ritual
+        // arrOfPlayers[activePlayer]->playCardOnRitual(i);
+      }
+      else
+      {
+        // player calls card on another players ritual
+        // if (arrOfPlayers[inactivePlayer]->hasRitual())
+        // {
+        // }
+      }
+    }
+    else
+    {
+      play(i, p - 1, stoi(t));
+    }
+  }
+  else if (cmd == "use")
+  {
+    use(i, p, p);
+  }
+}
+void GameState::notify(string cmd, int i, int j)
+{
+  if (cmd == "attack")
+  {
+    attack(i, j);
+  }
+}
+void GameState::notify(string cmd, int i)
+{
+  if (cmd == "discard")
+  {
+    discard(i);
+  }
+  else if (cmd == "attack")
+  {
+    attack(i);
+  }
+  else if (cmd == "play")
+  {
+    play(i);
+  }
+  else if (cmd == "use")
+  {
+    use(i);
+  }
+  // Game state does not handle inspect, hand or board
+}
+void GameState::notify(string cmd)
+{
+  // The player is allowed to take actions until they pass.
+  if (cmd == "end")
+  {
+    end();
+  }
+  else if (cmd == "draw")
+  {
+    // assuming testing mode is true
+    arrOfPlayers[activePlayer]->drawCard();
+  }
+}
+// 1.2 Basic Gameplay
+// The game’s objective is to reduce the opposing player’s life to 0, at which point the game ends. The game begins by first
+// asking both players for their names. It then shuffles both player’s decks. Once the decks are shuffled, the game begins with
+// player 1. Both players start with 20 life, 5 cards in their hand, and 3 magic.
+// For the rest of the game, players alternate turns. A player’s turn consists of the following:
+// • The player gains 1 magic.
+// • The player draws a card if their deck is nonempty.
+// • Any “At the start of the turn” effects occur.
+// • The player is allowed to take actions until they pass.
+// • Any “At the end of the turn” effects occur
+// main game loop logic
+
+void GameState::startPlayerTurn()
+{
+  // APNAP Order????
+  arrOfPlayers[activePlayer]->addMagic(1);
+  // The player draws a card if their deck is nonempty.
+  arrOfPlayers[activePlayer]->drawCard();
+  // At the start of every turn, every minion owned by the player whose turn it is is restored to 1 action.
+  arrOfPlayers[activePlayer]->restoreMinions();
+  // all triggered abilities titled “at the start of your turn” (or similar) on cards on that player’s board activate.
+  // enum Trigger::TriggerState::START_OF_TURN = 0
+  arrOfPlayers[activePlayer]->notifyCards(START_OF_TURN);
+}
