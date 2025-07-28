@@ -56,6 +56,7 @@ void Player::restoreMinions() {
     }
 }
 
+// ASSUMES 0-INDEXED
 const int Player::getMinionAttack(int i) const {
     return board->getMinion(i).getAttack();
 }
@@ -91,4 +92,8 @@ void Player::playCard(int i) {
 // get the number of minions in the board
 int Player::getNumMinions() const {
     return board->getNumMinions();
+}
+
+void Player::addCardToBoard(unique_ptr<Card> card) {
+    board->add(move(card));
 }

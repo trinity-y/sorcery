@@ -2,23 +2,13 @@
 #include "../player.h"
 #include "../cards/cardgenerator.h"
 #include "../zones/board.h"
+using namespace std;
+MultiSummonEffect::MultiSummonEffect(const string elementalType, int maxSummons, int minionsPerSummon)
+    : elementalType{elementalType}, maxSummons{maxSummons}, minionsPerSummon{minionsPerSummon} {}
 
-MultiSummonEffect::MultiSummonEffect(Player *player, const std::string &elementalType, int maxSummons, int minionsPerSummon)
-    : player{player}, elementalType{elementalType}, maxSummons{maxSummons}, minionsPerSummon{minionsPerSummon} {}
-
-void MultiSummonEffect::useEffect()
+void MultiSummonEffect::useEffect(Player& p)
 {
-    if (!player || !player->board)
-    {
-        return;
-    }
-
-    int availableSpace = getAvailableBoardSpace();
-    if (availableSpace <= 0)
-    {
-        // No space on board, ability fails
-        return;
-    }
+    int availableSpace = 5 - p.getNumMinions();
 
     // Calculate how many elementals we can actually summon
     int summonsToMake = std::min(maxSummons, availableSpace / minionsPerSummon);
@@ -35,18 +25,7 @@ void MultiSummonEffect::useEffect()
         auto elemental = generator.getCardFromString(elementalType + " Elemental");
         if (elemental)
         {
-            // In a full implementation, add this to the player's board
-            // player->board->add(std::move(elemental));
+            p.addCardToBoard(move(elemental)); // add generated card to board
         }
     }
-}
-
-int MultiSummonEffect::getAvailableBoardSpace() const
-{
-    if (!player || !player->board)
-    {
-        return 0;
-    }
-
-    return player->board->getAvailableSpace();
 }

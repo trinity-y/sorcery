@@ -35,6 +35,7 @@ class Player {
         void reduceLife(int reduceBy);
         void playCard(int i);
         int getNumMinions() const;
+        void addCardToBoard(unique_ptr<Card> card);
 };
 
 #endif
