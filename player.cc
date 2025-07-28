@@ -1,5 +1,6 @@
 #include "player.h"
 #include "./cards/minion.h"
+#include "./cards/spell.h"
 #include "trigger.h"
 Player::Player(string name, vector<string> deckNames) : name{name}{
     // Initialize each players deck using deck names
@@ -78,5 +79,11 @@ void Player::reduceLife(int reduceBy) {
 }
 
 void Player::playCard(int i) {
-    board->add(hand->remove(i));
+    Card& card = hand->getCard(i);
+    if (card.type == "MINION" || card.type == "RITUAL") {
+        board->add(hand->remove(i));
+    } else if (card.type == "SPELL") {
+        static_cast<Spell&>(card).notify();
+        hand->remove(i);
+    }
 }
