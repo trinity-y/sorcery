@@ -9,7 +9,9 @@
 
 using namespace std;
 
-class ActivatedAbility : public Ability {
+class ActivatedAbility : public Ability
+{
+public:
         ActivatedAbility(string description);
         void executeTrigger() override;
 };
