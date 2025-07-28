@@ -10,11 +10,13 @@ Minion::Minion(int attack, int defense, string name, string description, int cos
     activatedAbility{move(activatedAbility)},
     triggeredAbility{move(triggeredAbility)} {};
 
-int Minion::getAttack() {
+int Minion::getAttack()
+{
     return attack;
 }
 
-int Minion::getDefense() {
+int Minion::getDefense()
+{
     return defense;
 }
 
@@ -26,15 +28,26 @@ int Minion::setDefense(int newDefense) {
     defense = newDefense;
 }
 
-int Minion::decrementActions() {
+int Minion::setAttack(int newAttack) {
+    attack = newAttack;
+}
+
+int Minion::setDefense(int newDefense) {
+    defense = newDefense;
+}
+
+int Minion::decrementActions()
+{
     return --actions;
 }
 
-string Minion::getLeftBox() {
+string Minion::getLeftBox()
+{
     return to_string(attack);
 }
 
-string Minion::getRightBox() {
+string Minion::getRightBox()
+{
     return to_string(defense);
 }
 
@@ -50,4 +63,33 @@ void Minion::notify(TriggerState trigger) {
     if (triggeredAbility) {
         triggeredAbility->notify(trigger);
     }
+}
+
+void Minion::buffAttack(int amount)
+{
+    attack += amount;
+}
+
+void Minion::buffDefense(int amount)
+{
+    defense += amount;
+}
+
+void Minion::takeDamage(int damage)
+{
+    defense -= damage;
+    // In a more complete implementation, you might want to:
+    // - Check if defense goes to 0 or below (minion dies)
+    // - Trigger any "when damaged" effects
+    // - Handle damage prevention effects
+}
+
+TriggeredAbility *Minion::getTriggeredAbility()
+{
+    return triggeredAbility.get();
+}
+
+ActivatedAbility *Minion::getActivatedAbility()
+{
+    return activatedAbility.get();
 }

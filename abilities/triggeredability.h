@@ -9,7 +9,9 @@
 
 using namespace std;
 
-class TriggeredAbility : public Ability {
+class TriggeredAbility : public Ability
+{
+public:
         TriggeredAbility(string description, TriggerState trigger);
 };
 #endif
