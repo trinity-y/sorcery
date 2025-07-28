@@ -6,6 +6,12 @@ using namespace std;
 class GameEffect {
     public:
         GameEffect();
-        virtual void useEffect() = 0;
+        virtual ~GameEffect() = 0;
+        virtual void useEffect(Player&p, string t) {};
+        virtual void useEffect(Player&p, int t) {};
+        virtual void useEffect(Player&p) {};
+        virtual void useEffect() {};
+
+
 };
 #endif
