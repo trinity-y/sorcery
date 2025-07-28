@@ -26,13 +26,16 @@ private:
   void swapPlayers();
   GameStateNotification *notification;
   bool activeGame = false;
-  bool turnStarted = false;
 
 public:
   GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames); // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
   // also if you want the deck vectors to have a different format lmk, i was thinking they maybe shouldnt be card objects to make it so that the controller only knows about GameState and not the rest of the model, but idk
   ~GameState();
-  void notify(string cmd); // this is how the controller passes commands - trin
+  // this is how the controller passes commands
+  void notify(string cmd);
+  void notify(string cmd, int i);
+  void notify(string cmd, int i, int p);
+  void notify(string cmd, int i, int p, string t);
   // notify function to let GameState know turn has changed
   // The end command ends the current player’s turn. A player may end their turn
   // at any time.
@@ -50,8 +53,6 @@ public:
   // orders the active player’s minion i to attack the inactive player’s minion
   // j
   void attack(int i, int j);
-  //
-  void inspect();
   // plays the ith card in the active player’s hand with no target
   void play(int i);
   // plays the ith card in the active player’s hand on card t owned by player p.
@@ -66,6 +67,6 @@ public:
   // is the game won yet
   bool isWon();
   // startup game stuff
-  void startGame();
+  void startPlayerTurn();
 };
 #endif

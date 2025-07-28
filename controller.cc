@@ -75,13 +75,13 @@ void Controller::mainLoop(string line) { // I think cmd needs to be an istringst
       gameState->notify(cmd);
     }
   } else if (cmd == "discard") {
-    string i;
+    int i;
     commandStream >> i;
     if (testingMode) {
       gameState->notify(cmd, i);
     }
   } else if (cmd == "attack") {
-    string i, j;
+    int i, j;
     commandStream >> i;
     if (commandStream >> j) {
       gameState->notify(cmd, i, j);
@@ -89,7 +89,8 @@ void Controller::mainLoop(string line) { // I think cmd needs to be an istringst
       gameState->notify(cmd, i);
     }
   } else if (cmd == "play") {
-    string i, p, t;
+    int i, p;
+    string t;
     commandStream >> i;
     if (commandStream >> p >> t) {
       gameState->notify(cmd, i, p, t);
@@ -97,7 +98,8 @@ void Controller::mainLoop(string line) { // I think cmd needs to be an istringst
       gameState->notify(cmd, i);
     }
   } else if (cmd == "use") {
-    string i, p, t;
+    int i, p; 
+    string t;
     commandStream >> i;
     if (commandStream >> p >> t) {
       gameState->notify(cmd, i, p, t);
@@ -105,7 +107,7 @@ void Controller::mainLoop(string line) { // I think cmd needs to be an istringst
       gameState->notify(cmd, i);
     }
   } else if (cmd == "inspect") {
-    string i;
+    int i;
     commandStream >> i;
     view->notify(cmd, i); // just inspecting so i think i just notify view
   } else if (cmd == "hand") {
