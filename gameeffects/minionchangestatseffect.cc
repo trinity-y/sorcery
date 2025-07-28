@@ -1,8 +1,8 @@
 #include "minionchangestatseffect.h"
 #include "../cards/minion.h"
 
-MinionChangeStatsEffect::MinionChangeStatsEffect(Minion *target, int attackChange, int defenseChange)
-    : target{target}, attackChange{attackChange}, defenseChange{defenseChange} {}
+MinionChangeStatsEffect::MinionChangeStatsEffect(unique_ptr<Minion> target, int attackChange, int defenseChange)
+    : target{move(target)}, attackChange{attackChange}, defenseChange{defenseChange} {}
 
 void MinionChangeStatsEffect::useEffect()
 {

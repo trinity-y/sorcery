@@ -8,6 +8,7 @@
 #include "../gameeffects/targeteddamageeffect.h"
 #include "../gameeffects/summonelementaleffect.h"
 #include "../gameeffects/multisummoneffect.h"
+#include "../gameeffects/selfbuffeffect.h"
 #include "../trigger.h"
 CardGenerator::CardGenerator() {}
 unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
@@ -32,13 +33,13 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         // Create the minion first
         auto boneGolem = make_unique<Minion>(1, 3, "Bone Golem", "Gain +1/+1 whenever a minion leaves play.", 2, nullptr, move(triggeredAbility));
 
-        // Now create the stat change effect that targets this specific minion
-        auto statsEffect = make_unique<MinionChangeStatsEffect>(boneGolem.get(), 1, 1); // +1/+1 buff
+        // Create a self-buff effect that doesn't store any pointers
+        auto selfBuffEffect = make_unique<SelfBuffEffect>(1, 1); // +1/+1 buff
 
         // Set the game effect for the triggered ability
         if (boneGolem->getTriggeredAbility())
         {
-            boneGolem->getTriggeredAbility()->setGameEffect(move(statsEffect));
+            boneGolem->getTriggeredAbility()->setGameEffect(move(selfBuffEffect));
         }
 
         return move(boneGolem);

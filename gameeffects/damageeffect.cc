@@ -1,8 +1,8 @@
 #include "damageeffect.h"
 #include "../cards/minion.h"
 
-DamageEffect::DamageEffect(Minion *target, int damage)
-    : target{target}, damage{damage} {}
+DamageEffect::DamageEffect(unique_ptr<Minion> target, int damage)
+    : target{move(target)}, damage{damage} {}
 
 void DamageEffect::useEffect()
 {

@@ -2,8 +2,8 @@
 #include "../player.h"
 #include "../cards/minion.h"
 
-AllMinionsStatsEffect::AllMinionsStatsEffect(Player *player, int attackChange, int defenseChange)
-    : player{player}, attackChange{attackChange}, defenseChange{defenseChange} {}
+AllMinionsStatsEffect::AllMinionsStatsEffect(unique_ptr<Player> player, int attackChange, int defenseChange)
+    : player{move(player)}, attackChange{attackChange}, defenseChange{defenseChange} {}
 
 void AllMinionsStatsEffect::useEffect()
 {

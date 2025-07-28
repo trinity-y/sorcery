@@ -1,17 +1,20 @@
 #ifndef MINIONCHANGESTATSEFFECT_H
 #define MINIONCHANGESTATSEFFECT_H
 #include "gameeffect.h"
+#include <memory>
 
 class Minion; // forward declaration
 
+using namespace std;
+
 class MinionChangeStatsEffect : public GameEffect
 {
-    Minion *target;
+    unique_ptr<Minion> target;
     int attackChange;
     int defenseChange;
 
 public:
-    MinionChangeStatsEffect(Minion *target, int attackChange, int defenseChange);
+    MinionChangeStatsEffect(unique_ptr<Minion> target, int attackChange, int defenseChange);
     void useEffect() override;
 };
 
