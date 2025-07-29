@@ -1,14 +1,14 @@
-#ifndef HASTE_H
-#define HASTE_H
+#ifndef MAGICFATIGUE_H
+#define MAGICFATIGUE_H
 #include "enchantment.h"
 #include <string>
 using namespace std;
 
-class Haste : public Enchantment {
-    int actionBoost;
+class MagicFatigue : public Enchantment {
+    int abilityCostIncrease;
     public:
-        Haste(int actionBoost, unique_ptr<Minion> nextMinion);
-        int getDefaultActions() override;
+        MagicFatigue(int abiltiyCostIncrease, unique_ptr<Minion> nextMinion);
+        int getActivatedAbilityCost() override;
 };
 
 #endif

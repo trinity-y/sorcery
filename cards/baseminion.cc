@@ -20,14 +20,6 @@ int Minion::getDefense()
     return defense;
 }
 
-void Minion::setAttack(int newAttack) {
-    attack = newAttack;
-}
-
-void Minion::setDefense(int newDefense) {
-    defense = newDefense;
-}
-
 int Minion::decrementActions()
 {
     return --actions;
@@ -41,10 +33,6 @@ string Minion::getLeftBox()
 string Minion::getRightBox()
 {
     return to_string(defense);
-}
-
-void Minion::resetActions() {
-    actions = 1;
 }
 
 void Minion::notify(TriggerState trigger) {

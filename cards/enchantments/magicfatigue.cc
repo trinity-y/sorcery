@@ -1,8 +1,8 @@
-#include "haste.h"
+#include "magicfatigue.h"
 using namespace std;
 
-Haste::Haste(int actionBoost, unique_ptr<Minion> nextMinion): Enchantment("Haste", "Enchanted minion gains +1 action each turn", 1, move(nextMinion)), actionBoost{actionBoost} {};
+MagicFatigue::MagicFatigue(int abilityCostIncrease, unique_ptr<Minion> nextMinion): Enchantment("Magic Fatigue", "Enchanted minion's activated ability costs " + to_string(abilityCostIncrease) + " more" , 0, move(nextMinion)), abilityCostIncrease{abilityCostIncrease} {};
 
-int Haste::getDefaultActions() {
-    return nextMinion->getDefaultActions() + actionBoost;
+int MagicFatigue::getActivatedAbilityCost() {
+    return nextMinion->getActivatedAbilityCost() + abilityCostIncrease;
 }

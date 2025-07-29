@@ -26,7 +26,7 @@ public:
     string getRightBox() override;
     virtual int getDefaultActions();
     void setActions(int newActions);
-    void notify(TriggerState trigger);
+    virtual void notify(TriggerState trigger);
     virtual int getActivatedAbilityCost();
 };
 

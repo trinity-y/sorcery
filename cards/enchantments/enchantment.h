@@ -13,6 +13,7 @@ class Enchantment : public Minion {
         virtual int getDefense() override;
         virtual int getDefaultActions() override;
         virtual int getActivatedAbilityCost() override;
+        virtual void notify(TriggerState trigger) override;
 };
 
 #endif

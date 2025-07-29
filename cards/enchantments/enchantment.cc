@@ -24,3 +24,6 @@ int Enchantment::getDefaultActions() {
 int Enchantment::getActivatedAbilityCost() {
     return nextMinion->getActivatedAbilityCost();
 }
+void Enchantment::notify(TriggerState trigger) {
+    nextMinion->notify(trigger);
+}

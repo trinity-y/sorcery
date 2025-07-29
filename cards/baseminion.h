@@ -32,8 +32,7 @@ public:
     ActivatedAbility *getActivatedAbility();
     string getLeftBox() override;
     string getRightBox() override;
-    void resetActions();
-    void notify(TriggerState trigger);
+    virtual void notify(TriggerState trigger);
 };
 
 #endif
