@@ -54,9 +54,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto fireElemental = make_unique<Minion>(2, 2, "Fire Elemental", "Whenever an opponent's minion enters play, deal 1 damage to it.", 2, nullptr, move(triggeredAbility));
 
         // Note: The damage effect setup is more complex since we need to know which opponent's minion entered
-        // FOR NOW, we'll create a placeholder effect. In a real implementation, you'd need a more sophisticated
-        // targeting system that gets set up when the trigger actually fires.
-        // This is a simplified version:
+        // placeholder for now
         auto damageEffect = make_unique<DamageMinionEffect>(nullptr, 1); // target will be set when trigger fires
 
         // Set the game effect for the triggered ability
@@ -77,8 +75,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto potionSeller = make_unique<Minion>(1, 3, "Potion Seller", "At the end of your turn, all your minions gain +0/+1.", 2, nullptr, move(triggeredAbility));
 
         // Create the effect that buffs all minions with +0/+1
-        // Note: In full implementation, need to pass the owner player
-        // For now, we'll use nullptr as a placeholder
+        // need to pass the owner player - use nullptr as a placeholder
         auto allMinionsEffect = make_unique<AllMinionsStatsEffect>(nullptr, 0, 1); // +0/+1 to all minions
 
         // Set the game effect for the triggered ability

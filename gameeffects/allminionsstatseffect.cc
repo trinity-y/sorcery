@@ -7,18 +7,17 @@ AllMinionsStatsEffect::AllMinionsStatsEffect(unique_ptr<Player> player, int atta
 
 void AllMinionsStatsEffect::useEffect()
 {
-    if (player && player->board)
+    if (player)
     {
-        // In full implementation, iterate through all minions on the player's board
-        // and apply the stat changes to each one
-        // For now, this is a placeholder that shows the structure:
+        Board &board = player->getBoard();
+        int numMinions = board.getNumMinions();
 
-        // Pseudocode for what this would do:
-        // for (auto& card : player->board->getAllMinions()) {
-        //     if (auto minion = dynamic_cast<Minion*>(card.get())) {
-        //         minion->buffAttack(attackChange);
-        //         minion->buffDefense(defenseChange);
-        //     }
-        // }
+        // Iterate through all minions on the player's board
+        for (int i = 0; i < numMinions; ++i)
+        {
+            Minion &minion = board.getMinion(i);
+            minion.buffAttack(attackChange);
+            minion.buffDefense(defenseChange);
+        }
     }
 }
