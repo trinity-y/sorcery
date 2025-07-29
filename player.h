@@ -31,8 +31,8 @@ public:
     void notifyCards(TriggerState triggeredAbilityEnum);
     void restoreMinions();
     const int getMinionAttack(int i) const;
-    void setMinionAttack(int i, int newAttack);
     const int getMinionDefence(int i) const;
+    void changeMinionAttack(int i, int amount);
     void changeMinionDefence(int i, int amount);
     void reduceLife(int reduceBy);
     void playCard(int i);

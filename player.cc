@@ -61,7 +61,8 @@ void Player::restoreMinions()
 {
     for (int i = 0; i < board->getNumMinions(); ++i)
     {
-        board->getMinion(i).resetActions();
+        Minion& minion = board->getMinion(i);
+        minion.setActions(minion.getDefaultActions());
     }
 }
 
@@ -77,9 +78,8 @@ const int Player::getMinionDefence(int i) const
     return board->getMinion(i).getDefense();
 }
 
-void Player::setMinionAttack(int i, int newAttack)
-{
-    board->getMinion(i).setAttack(newAttack);
+void Player::changeMinionAttack(int i, int amount) {
+    board->getMinion(i).changeAttack(amount);
 }
 
 // try to attack the minion i from board with attackPower

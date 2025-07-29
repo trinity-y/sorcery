@@ -3,11 +3,11 @@
 using namespace std;
 // todo: maybe make types an enum
 Minion::Minion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility) : Card{"MINION", name, description, cost},
-                                                                                                                                                                                   attack{attack},
-                                                                                                                                                                                   defense{defense},
-                                                                                                                                                                                   actions{0},
-                                                                                                                                                                                   activatedAbility{move(activatedAbility)},
-                                                                                                                                                                                   triggeredAbility{move(triggeredAbility)} {};
+    attack{attack},
+    defense{defense},
+    actions{0},
+    activatedAbility{move(activatedAbility)},
+    triggeredAbility{move(triggeredAbility)} {};
 
 int Minion::getAttack()
 {
@@ -17,21 +17,6 @@ int Minion::getAttack()
 int Minion::getDefense()
 {
     return defense;
-}
-
-int Minion::getAttack() const
-{
-    return attack;
-}
-
-int Minion::getDefense() const
-{
-    return defense;
-}
-
-void Minion::setAttack(int newAttack)
-{
-    attack = newAttack;
 }
 
 int Minion::decrementActions()
@@ -49,9 +34,13 @@ string Minion::getRightBox()
     return to_string(defense);
 }
 
-void Minion::resetActions()
+int Minion::getDefaultActions()
 {
-    actions = 1;
+    return 1;
+}
+
+void Minion::setActions(int newActions) {
+    actions = newActions;
 }
 
 void Minion::notify(TriggerState trigger)
@@ -67,10 +56,6 @@ void Minion::notify(TriggerState trigger)
     }
 }
 
-void Minion::buffAttack(int amount)
-{
-    attack += amount;
-}
 // In a more complete implementation, you might want to:
 // - Check if defense goes to 0 or below (minion dies)
 // - Trigger any "when damaged" effects
@@ -80,12 +65,21 @@ void Minion::changeDefense(int amount)
     defense += amount;
 }
 
-TriggeredAbility *Minion::getTriggeredAbility()
+void Minion::changeAttack(int amount)
 {
-    return triggeredAbility.get();
+    attack += amount;
 }
 
-ActivatedAbility *Minion::getActivatedAbility()
+TriggeredAbility& Minion::getTriggeredAbility()
 {
-    return activatedAbility.get();
+    return *triggeredAbility;
+}
+
+ActivatedAbility& Minion::getActivatedAbility()
+{
+    return *activatedAbility;
+}
+
+int Minion::getActivatedAbilityCost() {
+    return activatedAbilityCost;
 }

@@ -36,10 +36,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto selfBuffEffect = make_unique<SelfBuffEffect>(1, 1); // +1/+1 buff
 
         // Set the game effect for the triggered ability
-        if (boneGolem->getTriggeredAbility())
-        {
-            boneGolem->getTriggeredAbility()->setGameEffect(move(selfBuffEffect));
-        }
+        boneGolem->getTriggeredAbility().setGameEffect(move(selfBuffEffect));
 
         return move(boneGolem);
     }
@@ -58,10 +55,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto damageEffect = make_unique<DamageMinionEffect>(nullptr, 1); // target will be set when trigger fires
 
         // Set the game effect for the triggered ability
-        if (fireElemental->getTriggeredAbility())
-        {
-            fireElemental->getTriggeredAbility()->setGameEffect(move(damageEffect));
-        }
+        fireElemental->getTriggeredAbility().setGameEffect(move(damageEffect));
         return move(fireElemental);
     }
     else if (cardName == "Potion Seller")
@@ -79,10 +73,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto allMinionsEffect = make_unique<AllMinionsStatsEffect>(nullptr, 0, 1); // +0/+1 to all minions
 
         // Set the game effect for the triggered ability
-        if (potionSeller->getTriggeredAbility())
-        {
-            potionSeller->getTriggeredAbility()->setGameEffect(move(allMinionsEffect));
-        }
+        potionSeller->getTriggeredAbility().setGameEffect(move(allMinionsEffect));
 
         return move(potionSeller);
     }
@@ -101,10 +92,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto targetedDamageEffect = make_unique<TargetedDamageEffect>(1); // 1 damage
 
         // Set the game effect for the activated ability
-        if (novicePyromancer->getActivatedAbility())
-        {
-            novicePyromancer->getActivatedAbility()->setGameEffect(move(targetedDamageEffect));
-        }
+        novicePyromancer->getActivatedAbility().setGameEffect(move(targetedDamageEffect));
 
         return move(novicePyromancer);
     }
@@ -122,10 +110,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto summonEffect = make_unique<MultiSummonEffect>("Air", 1); // max 1 summon
 
         // Set the game effect for the activated ability
-        if (apprenticeSummoner->getActivatedAbility())
-        {
-            apprenticeSummoner->getActivatedAbility()->setGameEffect(move(summonEffect));
-        }
+        apprenticeSummoner->getActivatedAbility().setGameEffect(move(summonEffect));
 
         return move(apprenticeSummoner);
     }
@@ -143,10 +128,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto summonEffect = make_unique<MultiSummonEffect>("Air", 3); // max 3 summons
 
         // Set the game effect for the activated ability
-        if (masterSummoner->getActivatedAbility())
-        {
-            masterSummoner->getActivatedAbility()->setGameEffect(move(summonEffect));
-        }
+        masterSummoner->getActivatedAbility().setGameEffect(move(summonEffect));
 
         return move(masterSummoner);
     }

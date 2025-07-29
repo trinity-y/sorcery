@@ -14,7 +14,7 @@ void AllMinionsStatsEffect::useEffect(Player &p)
     for (int i = 0; i < numMinions; ++i)
     {
         Minion &minion = board.getMinion(i);
-        minion.buffAttack(attackChange);
+        minion.changeAttack(attackChange);
         minion.changeDefense(defenseChange);
     }
 }

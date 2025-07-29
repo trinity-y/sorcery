@@ -13,6 +13,6 @@ void SelfBuffEffect::useEffect(Player &p, int minionIndex)
     int currentDefense = p.getMinionDefence(minionIndex);
 
     // Apply buffs
-    p.setMinionAttack(minionIndex, currentAttack + attackChange);
-    p.setMinionDefence(minionIndex, currentDefense + defenseChange);
+    p.changeMinionAttack(minionIndex, attackChange);
+    p.changeMinionDefence(minionIndex, defenseChange);
 }
