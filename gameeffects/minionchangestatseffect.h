@@ -14,7 +14,7 @@ class MinionChangeStatsEffect : public GameEffect
 
 public:
     MinionChangeStatsEffect(int attackChange, int defenseChange);
-    void useEffect(Player &p, int minionIndex) override;
+    void useEffect(Player &p, int t) override;
 };
 
 #endif
