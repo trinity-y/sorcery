@@ -68,5 +68,10 @@ public:
   bool isWon();
   // startup game stuff
   void startPlayerTurn();
+
+  // View interface methods
+  Player &currentPlayer();
+  Player &player(int index);
+  int activePlayerIndex() const;
 };
 #endif

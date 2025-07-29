@@ -23,6 +23,8 @@ public:
     int decrementActions();
     int getAttack();
     int getDefense();
+    int getAttack() const;
+    int getDefense() const;
     void buffAttack(int amount);
     void buffDefense(int amount);
     void takeDamage(int damage);

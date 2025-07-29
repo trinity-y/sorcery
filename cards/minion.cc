@@ -2,13 +2,12 @@
 #include <string>
 using namespace std;
 // todo: maybe make types an enum
-Minion::Minion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility): 
-    Card{"MINION", name, description, cost},
-    attack{attack},
-    defense{defense},
-    actions{0},
-    activatedAbility{move(activatedAbility)},
-    triggeredAbility{move(triggeredAbility)} {};
+Minion::Minion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility) : Card{"MINION", name, description, cost},
+                                                                                                                                                                                   attack{attack},
+                                                                                                                                                                                   defense{defense},
+                                                                                                                                                                                   actions{0},
+                                                                                                                                                                                   activatedAbility{move(activatedAbility)},
+                                                                                                                                                                                   triggeredAbility{move(triggeredAbility)} {};
 
 int Minion::getAttack()
 {
@@ -20,11 +19,23 @@ int Minion::getDefense()
     return defense;
 }
 
-void Minion::setAttack(int newAttack) {
+int Minion::getAttack() const
+{
+    return attack;
+}
+
+int Minion::getDefense() const
+{
+    return defense;
+}
+
+void Minion::setAttack(int newAttack)
+{
     attack = newAttack;
 }
 
-void Minion::setDefense(int newDefense) {
+void Minion::setDefense(int newDefense)
+{
     defense = newDefense;
 }
 
@@ -43,16 +54,20 @@ string Minion::getRightBox()
     return to_string(defense);
 }
 
-void Minion::resetActions() {
+void Minion::resetActions()
+{
     actions = 1;
 }
 
-void Minion::notify(TriggerState trigger) {
-    if (activatedAbility && actions > 0) {
+void Minion::notify(TriggerState trigger)
+{
+    if (activatedAbility && actions > 0)
+    {
         activatedAbility->notify(trigger);
         --actions;
     }
-    if (triggeredAbility) {
+    if (triggeredAbility)
+    {
         triggeredAbility->notify(trigger);
     }
 }
