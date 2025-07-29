@@ -7,12 +7,11 @@ class Minion; // forward declaration
 
 class DamageEffect : public GameEffect
 {
-    unique_ptr<Minion> target;
     int damage;
 
 public:
-    DamageEffect(unique_ptr<Minion> target, int damage);
-    void useEffect() override;
+    DamageEffect(int damage);
+    void useEffect(Player &p, int t) override;
 };
 
 #endif

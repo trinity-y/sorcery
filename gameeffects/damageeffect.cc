@@ -1,13 +1,16 @@
 #include "damageeffect.h"
 #include "../cards/minion.h"
+#include "../player.h"
 
-DamageEffect::DamageEffect(unique_ptr<Minion> target, int damage)
-    : target{move(target)}, damage{damage} {}
+DamageEffect::DamageEffect(int damage)
+    : damage{damage} {}
 
-void DamageEffect::useEffect()
+void DamageEffect::useEffect(Player &p, int t)
 {
-    if (target)
+    Board &board = p.getBoard();
+    if (t >= 0 && t < board.getNumMinions())
     {
-        target->takeDamage(damage);
+        Minion &minion = board.getMinion(t);
+        minion.takeDamage(damage);
     }
 }

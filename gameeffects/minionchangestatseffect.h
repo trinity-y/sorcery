@@ -9,13 +9,12 @@ using namespace std;
 
 class MinionChangeStatsEffect : public GameEffect
 {
-    unique_ptr<Minion> target;
     int attackChange;
     int defenseChange;
 
 public:
-    MinionChangeStatsEffect(unique_ptr<Minion> target, int attackChange, int defenseChange);
-    void useEffect() override;
+    MinionChangeStatsEffect(int attackChange, int defenseChange);
+    void useEffect(Player &p, int minionIndex) override;
 };
 
 #endif

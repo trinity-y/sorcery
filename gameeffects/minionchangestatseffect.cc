@@ -1,14 +1,17 @@
 #include "minionchangestatseffect.h"
 #include "../cards/minion.h"
+#include "../player.h"
 
-MinionChangeStatsEffect::MinionChangeStatsEffect(unique_ptr<Minion> target, int attackChange, int defenseChange)
-    : target{move(target)}, attackChange{attackChange}, defenseChange{defenseChange} {}
+MinionChangeStatsEffect::MinionChangeStatsEffect(int attackChange, int defenseChange)
+    : attackChange{attackChange}, defenseChange{defenseChange} {}
 
-void MinionChangeStatsEffect::useEffect()
+void MinionChangeStatsEffect::useEffect(Player &p, int t)
 {
-    if (target)
+    Board &board = p.getBoard();
+    if (t >= 0 && t < board.getNumMinions())
     {
-        target->buffAttack(attackChange);
-        target->buffDefense(defenseChange);
+        Minion &minion = board.getMinion(t);
+        minion.buffAttack(attackChange);
+        minion.buffDefense(defenseChange);
     }
 }
