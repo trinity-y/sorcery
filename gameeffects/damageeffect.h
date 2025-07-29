@@ -1,17 +1,17 @@
 #ifndef DAMAGEEFFECT_H
 #define DAMAGEEFFECT_H
 #include "gameeffect.h"
+#include <memory>
 
 class Minion; // forward declaration
 
 class DamageEffect : public GameEffect
 {
-    Minion *target;
     int damage;
 
 public:
-    DamageEffect(Minion *target, int damage);
-    void useEffect() override;
+    DamageEffect(int damage);
+    void useEffect(Player &p, int t) override;
 };
 
 #endif

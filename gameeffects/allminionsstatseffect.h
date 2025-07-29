@@ -9,13 +9,12 @@ class Player; // forward declaration
 
 class AllMinionsStatsEffect : public GameEffect
 {
-    Player *player;
     int attackChange;
     int defenseChange;
 
 public:
-    AllMinionsStatsEffect(Player *player, int attackChange, int defenseChange);
-    void useEffect() override;
+    AllMinionsStatsEffect(int attackChange, int defenseChange);
+    void useEffect(Player &p) override;
 };
 
 #endif
