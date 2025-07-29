@@ -55,12 +55,3 @@ void Minion::changeDefense(int amount)
     defense += amount;
 
 }
-
-void Minion::takeDamage(int damage)
-{
-    defense -= damage;
-    // In a more complete implementation, you might want to:
-    // - Check if defense goes to 0 or below (minion dies)
-    // - Trigger any "when damaged" effects
-    // - Handle damage prevention effects
-}

@@ -99,6 +99,7 @@ void Player::playCard(int i)
     if (card.type == "MINION" || card.type == "RITUAL")
     {
         board->add(hand->remove(i));
+        // todo: magic cost?
     }
     else if (card.type == "SPELL")
     {
