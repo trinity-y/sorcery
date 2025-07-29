@@ -10,6 +10,6 @@ void DestroyMinionEffect::useEffect()
     {
         // Set defense to 0 or negative to "destroy" the minion
         // In a full implementation, this would trigger removal from board
-        target->buffDefense(-target->getDefense() - 1);
+        target->changeDefense(-target->getDefense() - 1);
     }
 }

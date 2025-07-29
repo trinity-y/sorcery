@@ -11,6 +11,6 @@ void DamageEffect::useEffect(Player &p, int t)
     if (t >= 0 && t < board.getNumMinions())
     {
         Minion &minion = board.getMinion(t);
-        minion.takeDamage(damage);
+        minion.changeDefense(-damage);
     }
 }

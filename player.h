@@ -33,7 +33,7 @@ public:
     const int getMinionAttack(int i) const;
     void setMinionAttack(int i, int newAttack);
     const int getMinionDefence(int i) const;
-    void setMinionDefence(int i, int newDefence);
+    void changeMinionDefence(int i, int amount);
     void reduceLife(int reduceBy);
     void playCard(int i);
     int getNumMinions() const;
@@ -45,6 +45,10 @@ public:
     Graveyard &getGraveyard() { return *graveyard; }
     string getName() const { return name; }
     int getMagic() const { return magic; }
+
+    // Additional in progress methods from GameState
+    Card &getCardFromHand(int i);
+    void addEnchantment(Card &c, int r);
 };
 
 #endif

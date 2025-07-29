@@ -1,6 +1,9 @@
 #include "GameState.h"
 #include "player.h"
 #include "./zones/board.h"
+#include "./cards/card.h"
+#include "./cards/spell.h"
+#include "./cards/ritual.h"
 #include "./zones/deck.h"
 #include "./zones/hand.h"
 #include "./zones/graveyard.h"
@@ -65,17 +68,13 @@ void GameState::attack(int i)
 // Orders minion i to attack opposing minion j
 void GameState::attack(int i, int j)
 {
-  // i is minion A, j is minion B
+  // i is minion A (active player), j is minion B (inactive player)
   int initialMinionAAttack = arrOfPlayers[activePlayer]->getMinionAttack(i);
-  int initialMinionADefence = arrOfPlayers[inactivePlayer]->getMinionDefence(j);
   int initialMinionBAttack = arrOfPlayers[activePlayer]->getMinionAttack(i);
-  int initialMinionBDefence = arrOfPlayers[inactivePlayer]->getMinionDefence(j);
   // reduces minion B’s defence by minion A’s attack
-  int newMinionBDefence = initialMinionBDefence - initialMinionAAttack;
   // reduces minion A’s defence by minion B’s attack
-  int newMinionADefence = initialMinionADefence - initialMinionBAttack;
-  arrOfPlayers[activePlayer]->setMinionDefence(i, newMinionADefence);
-  arrOfPlayers[inactivePlayer]->setMinionDefence(i, newMinionBDefence);
+  arrOfPlayers[activePlayer]->changeMinionDefence(i, -initialMinionBAttack);
+  arrOfPlayers[inactivePlayer]->changeMinionDefence(i, -initialMinionAAttack);
 }
 
 // Plays the ith card with no target
@@ -89,9 +88,38 @@ void GameState::play(int i)
 }
 
 // Plays the ith card on card t owned by player p
-void GameState::play(int i, int p, int t)
+void GameState::play(int i, int p, string t)
 {
-  // implementation here
+  Card& c = arrOfPlayers[activePlayer]->getCardFromHand(i-1);
+  if (t == "r")
+    {
+      if ((p - 1) == activePlayer)
+      {
+        // Assuming they can only play a spell or another ritual on a ritual
+        if (c.type == "SPELL"){
+          // We are sure that c is a Spell
+          Spell& s = static_cast<Spell&>(c);
+          s.gameEffect->useEffect(*arrOfPlayers[activePlayer], t);
+        } else if (c.type == "ENCHANTMENT"){
+          arrOfPlayers[activePlayer]->playCard(i);
+        }
+      }
+      else
+      {
+        // Assuming they can only play a spell or another ritual on a ritual
+        if (c.type == "SPELL"){
+          // We are sure that c is a Spell
+          Spell& s = static_cast<Spell&>(c);
+          s.gameEffect->useEffect(*arrOfPlayers[activePlayer], t);
+        } else if (c.type == "ENCHANTMENT"){
+          // arrOfPlayers[activePlayer]->playCard(i);
+        }
+      }
+    }
+    else
+    {
+
+    }
 }
 
 // Uses activated ability of minion i with no target
@@ -121,25 +149,7 @@ void GameState::notify(string cmd, int i, int p, string t)
 {
   if (cmd == "play")
   {
-    if (t == "r")
-    {
-      if ((p - 1) == activePlayer)
-      {
-        // player calls card on their own ritual
-        // arrOfPlayers[activePlayer]->playCardOnRitual(i);
-      }
-      else
-      {
-        // player calls card on another players ritual
-        // if (arrOfPlayers[inactivePlayer]->hasRitual())
-        // {
-        // }
-      }
-    }
-    else
-    {
-      play(i, p - 1, stoi(t));
-    }
+    play(i,p,t);
   }
   else if (cmd == "use")
   {

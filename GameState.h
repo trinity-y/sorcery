@@ -57,7 +57,7 @@ public:
   void play(int i);
   // plays the ith card in the active player’s hand on card t owned by player p.
   // This can be used to play enchantments and spells with targets.
-  void play(int i, int p, int t);
+  void play(int i, int p, string t);
   // commands the ith minion to use it's activated ability in the active
   // player’s hand with no target
   void use(int i);

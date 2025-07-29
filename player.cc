@@ -83,9 +83,9 @@ void Player::setMinionAttack(int i, int newAttack)
 }
 
 // try to attack the minion i from board with attackPower
-void Player::setMinionDefence(int i, int newDefense)
+void Player::changeMinionDefence(int i, int amount)
 {
-    board->getMinion(i).setDefense(newDefense);
+    board->getMinion(i).changeDefense(amount);
 }
 
 void Player::reduceLife(int reduceBy)
@@ -116,4 +116,12 @@ int Player::getNumMinions() const
 void Player::addCardToBoard(unique_ptr<Card> card)
 {
     board->add(move(card));
+}
+// get the number of minions in the board
+int Player::getNumMinions() const {
+    return board->getNumMinions();
+}
+
+Card& Player::getCardFromHand(int i){
+    return hand->getCard(i);
 }

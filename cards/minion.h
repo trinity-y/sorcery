@@ -26,10 +26,8 @@ public:
     int getAttack() const;
     int getDefense() const;
     void buffAttack(int amount);
-    void buffDefense(int amount);
-    void takeDamage(int damage);
     void setAttack(int newAttack);
-    void setDefense(int newDefense);
+    void changeDefense(int amount);
     TriggeredAbility *getTriggeredAbility();
     ActivatedAbility *getActivatedAbility();
     string getLeftBox() override;

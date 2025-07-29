@@ -34,11 +34,6 @@ void Minion::setAttack(int newAttack)
     attack = newAttack;
 }
 
-void Minion::setDefense(int newDefense)
-{
-    defense = newDefense;
-}
-
 int Minion::decrementActions()
 {
     return --actions;
@@ -76,19 +71,13 @@ void Minion::buffAttack(int amount)
 {
     attack += amount;
 }
-
-void Minion::buffDefense(int amount)
+// In a more complete implementation, you might want to:
+// - Check if defense goes to 0 or below (minion dies)
+// - Trigger any "when damaged" effects
+// - Handle damage prevention effects
+void Minion::changeDefense(int amount)
 {
     defense += amount;
-}
-
-void Minion::takeDamage(int damage)
-{
-    defense -= damage;
-    // In a more complete implementation, you might want to:
-    // - Check if defense goes to 0 or below (minion dies)
-    // - Trigger any "when damaged" effects
-    // - Handle damage prevention effects
 }
 
 TriggeredAbility *Minion::getTriggeredAbility()

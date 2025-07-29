@@ -8,6 +8,6 @@ void DamageMinionEffect::useEffect()
 {
     if (target)
     {
-        target->takeDamage(damage);
+        target->changeDefense(-damage);
     }
 }
