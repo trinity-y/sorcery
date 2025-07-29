@@ -12,6 +12,6 @@ using namespace std;
 class TriggeredAbility : public Ability
 {
 public:
-        TriggeredAbility(string description, TriggerState trigger);
+        TriggeredAbility(string description, TriggerState trigger, unique_ptr<GameEffect> effect);
 };
 #endif

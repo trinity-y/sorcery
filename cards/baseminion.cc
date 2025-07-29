@@ -1,57 +1,74 @@
-#include "minion.h"
+#include "baseminion.h"
 #include <string>
 using namespace std;
-// todo: maybe make types an enum
-Minion::Minion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility): 
-    Card{"MINION", name, description, cost},
+BaseMinion::BaseMinion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility) : Minion{name, description, cost},
     attack{attack},
     defense{defense},
     actions{0},
     activatedAbility{move(activatedAbility)},
     triggeredAbility{move(triggeredAbility)} {};
 
-int Minion::getAttack()
+int BaseMinion::getAttack()
 {
     return attack;
 }
 
-int Minion::getDefense()
+int BaseMinion::getDefense()
 {
     return defense;
 }
 
-int Minion::decrementActions()
+int BaseMinion::decrementActions()
 {
     return --actions;
 }
 
-string Minion::getLeftBox()
+string BaseMinion::getLeftBox()
 {
     return to_string(attack);
 }
 
-string Minion::getRightBox()
+string BaseMinion::getRightBox()
 {
     return to_string(defense);
 }
 
-void Minion::notify(TriggerState trigger) {
-    if (activatedAbility && actions > 0) {
+int BaseMinion::getDefaultActions()
+{
+    return 1;
+}
+
+void BaseMinion::setActions(int newActions) {
+    actions = newActions;
+}
+
+void BaseMinion::notify(TriggerState trigger)
+{
+    if (activatedAbility && actions > 0)
+    {
         activatedAbility->notify(trigger);
         --actions;
     }
-    if (triggeredAbility) {
+    if (triggeredAbility)
+    {
         triggeredAbility->notify(trigger);
     }
 }
 
-void Minion::changeAttack(int amount)
+// In a more complete implementation, you might want to:
+// - Check if defense goes to 0 or below (BaseMinion dies)
+// - Trigger any "when damaged" effects
+// - Handle damage prevention effects
+void BaseMinion::changeDefense(int amount)
+{
+defense += amount;
+}
+
+void BaseMinion::changeAttack(int amount)
 {
     attack += amount;
 }
 
-void Minion::changeDefense(int amount)
-{
-    defense += amount;
-
+int BaseMinion::getActivatedAbilityCost() {
+    return activatedAbilityCost;
 }

@@ -1,13 +1,13 @@
 #include "damageminioneffect.h"
 #include "../cards/minion.h"
+#include "../player.h"
+DamageMinionEffect::DamageMinionEffect(int damage)
+    : damage{damage} {}
 
-DamageMinionEffect::DamageMinionEffect(Minion *target, int damage)
-    : target{target}, damage{damage} {}
-
-void DamageMinionEffect::useEffect()
+void DamageMinionEffect::useEffect(Player &p, int t)
 {
-    if (target)
+    if (t < p.getNumMinions() && t >= 0)
     {
-        target->changeDefense(-damage);
+        p.changeMinionDefence(t, -damage);
     }
 }

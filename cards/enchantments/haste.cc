@@ -6,3 +6,4 @@ Haste::Haste(int actionBoost, unique_ptr<Minion> nextMinion): Enchantment("Haste
 int Haste::getDefaultActions() {
     return nextMinion->getDefaultActions() + actionBoost;
 }
+

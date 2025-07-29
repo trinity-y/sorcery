@@ -1,11 +1,6 @@
 #include "ability.h"
 
-Ability::Ability(string description, TriggerState trigger) : Trigger{trigger}, description{description} {};
-
-void Ability::setGameEffect(unique_ptr<GameEffect> effect)
-{
-    gameEffect = move(effect);
-}
+Ability::Ability(string description, TriggerState trigger, unique_ptr<GameEffect> effect) : Trigger{trigger}, description{description}, gameEffect{move(effect)} {};
 
 void Ability::executeTrigger()
 {

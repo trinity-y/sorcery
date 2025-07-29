@@ -2,15 +2,20 @@
 using namespace std;
 
 Enchantment::Enchantment(string name, string description, int cost, unique_ptr<Minion> minion):
-    Minion{0, 0, name, description, cost, nullptr, nullptr} {
-        type = "ENCHANTMENT"
+    Minion{name, description, cost}, nextMinion{move(minion)} {
+        type = "ENCHANTMENT";
     }
 
 // make activated abilities/triggers go inside baseminion, but general minion still has notify.
-// but then we have to refactor cardgenerator -- can we just pass in nullptr to activated ability/triggered ability (as ive done above)? technically bad practice but still
+// todo: refactor card generator
 // override notify if you want to modify an ability 
 
 // override getAttack/getDefense if you want to modify attack/def stats
+Enchantment::~Enchantment() {};
+
+int Enchantment::decrementActions() {
+    return nextMinion->decrementActions();
+}
 
 int Enchantment::getAttack() {
     return nextMinion->getAttack();
@@ -18,6 +23,23 @@ int Enchantment::getAttack() {
 int Enchantment::getDefense() {
     return nextMinion->getDefense();
 }
+
+void Enchantment::changeAttack(int amount) {
+    nextMinion->changeAttack(amount);
+}
+
+void Enchantment::changeDefense(int amount) {
+    nextMinion->changeDefense(amount);
+}
+
+string Enchantment::getLeftBox() {
+    return ""; // default no box
+}
+
+string Enchantment::getRightBox() {
+    return ""; // default no box
+}
+
 int Enchantment::getDefaultActions() {
     return nextMinion->getDefaultActions();
 }

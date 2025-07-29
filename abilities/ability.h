@@ -13,7 +13,7 @@ protected:
     unique_ptr<GameEffect> gameEffect;
 
 public:
-    Ability(string description, TriggerState trigger); // need to work on GameEffect implementation -- when is created?
+    Ability(string description, TriggerState trigger, unique_ptr<GameEffect> effect); // need to work on GameEffect implementation -- when is created?
     void executeTrigger() override;
     void setGameEffect(unique_ptr<GameEffect> effect);
     // whoever makes the card would know what game effect goes in it, but also since this OWNS the card it makes the most sense to make it here

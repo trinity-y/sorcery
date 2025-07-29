@@ -12,7 +12,6 @@ using namespace std;
 class ActivatedAbility : public Ability
 {
 public:
-        ActivatedAbility(string description);
-        void executeTrigger() override;
+        ActivatedAbility(string description, unique_ptr<GameEffect> effect);
 };
 #endif
