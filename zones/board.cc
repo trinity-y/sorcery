@@ -11,7 +11,7 @@ Board::Board(): boardMinions{vector<unique_ptr<Minion>>{}}, boardRitual{nullptr}
 void Board::add(unique_ptr<Card> card) {
   if (card->type == "MINION" && numMinions < 5) 
     addMinion(make_unique<Minion>(static_cast<Minion*>(card.release())));
-  else if (card->type == "RITUAL" && !hasRitual)
+  else if (card->type == "RITUAL")
     addRitual(make_unique<Ritual>(static_cast<Ritual*>(card.release())));
 }
 

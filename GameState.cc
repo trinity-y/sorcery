@@ -210,3 +210,8 @@ void GameState::startPlayerTurn()
   // enum Trigger::TriggerState::START_OF_TURN = 0
   arrOfPlayers[activePlayer]->notifyCards(START_OF_TURN);
 }
+
+// View interface methods
+Player &GameState::currentPlayer() { return *arrOfPlayers[activePlayer]; }
+Player &GameState::player(int index) { return *arrOfPlayers[index]; }
+int GameState::activePlayerIndex() const { return activePlayer; }

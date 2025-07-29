@@ -19,22 +19,22 @@ int Minion::getDefense()
     return defense;
 }
 
-int Minion::setAttack(int newAttack)
+int Minion::getAttack() const
+{
+    return attack;
+}
+
+int Minion::getDefense() const
+{
+    return defense;
+}
+
+void Minion::setAttack(int newAttack)
 {
     attack = newAttack;
 }
 
-int Minion::setDefense(int newDefense)
-{
-    defense = newDefense;
-}
-
-int Minion::setAttack(int newAttack)
-{
-    attack = newAttack;
-}
-
-int Minion::setDefense(int newDefense)
+void Minion::setDefense(int newDefense)
 {
     defense = newDefense;
 }

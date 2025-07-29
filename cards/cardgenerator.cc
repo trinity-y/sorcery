@@ -6,7 +6,6 @@
 #include "../gameeffects/damageminioneffect.h"
 #include "../gameeffects/allminionsstatseffect.h"
 #include "../gameeffects/targeteddamageeffect.h"
-#include "../gameeffects/summonelementaleffect.h"
 #include "../gameeffects/multisummoneffect.h"
 #include "../gameeffects/selfbuffeffect.h"
 #include "../trigger.h"
@@ -123,7 +122,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto apprenticeSummoner = make_unique<Minion>(1, 1, "Apprentice Summoner", "Summon a 1/1 Air Elemental.", 1, move(activatedAbility), nullptr);
 
         // Create the summon effect - can summon 1 elemental if there's board space
-        auto summonEffect = make_unique<MultiSummonEffect>(nullptr, "Air", 1); // max 1 summon
+        auto summonEffect = make_unique<MultiSummonEffect>("Air", 1); // max 1 summon
 
         // Set the game effect for the activated ability
         if (apprenticeSummoner->getActivatedAbility())
@@ -144,7 +143,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto masterSummoner = make_unique<Minion>(2, 3, "Master Summoner", "Summon up to three 1/1 air elementals.", 3, move(activatedAbility), nullptr);
 
         // Create the multi-summon effect - can summon up to 3 elementals based on available board space
-        auto summonEffect = make_unique<MultiSummonEffect>(nullptr, "Air", 3); // max 3 summons
+        auto summonEffect = make_unique<MultiSummonEffect>("Air", 3); // max 3 summons
 
         // Set the game effect for the activated ability
         if (masterSummoner->getActivatedAbility())

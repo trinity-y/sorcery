@@ -1,18 +1,14 @@
 #include "targeteddamageeffect.h"
 #include "../cards/minion.h"
+#include "../player.h"
 
 TargetedDamageEffect::TargetedDamageEffect(int damage)
-    : damage{damage}, target{nullptr} {}
-
-void TargetedDamageEffect::setTarget(Minion *newTarget)
+    : damage{damage} {}
+void TargetedDamageEffect::useEffect(Player& p, int t)
 {
-    target = newTarget;
-}
-
-void TargetedDamageEffect::useEffect()
-{
-    if (target)
+    if (t < p.getNumMinions() && t >= 0)
     {
-        target->takeDamage(damage);
+        int targetDefence = p.getMinionDefence(t);
+        p.setMinionDefence(t, t - damage);
     }
 }
