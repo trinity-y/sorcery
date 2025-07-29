@@ -5,8 +5,8 @@
 #include <memory>
 
 class Spell : public Card {
-    unique_ptr<GameEffect> gameEffect;
     public:
+        unique_ptr<GameEffect> gameEffect;
         Spell(string name, string description, int cost, unique_ptr<GameEffect> gameEffect);
         void notify();
 };
