@@ -11,8 +11,6 @@ class SelfBuffEffect : public GameEffect
 
 public:
     SelfBuffEffect(int attackChange, int defenseChange);
-    void useEffect() override;
-    void useEffect(Player &p) override;
     void useEffect(Player &p, int minionIndex) override; // Gets specific minion by index
 };
 
