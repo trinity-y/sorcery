@@ -6,12 +6,11 @@ class Player; // forward declaration
 
 class GainMagicEffect : public GameEffect
 {
-    Player *player;
     int magicAmount;
 
 public:
-    GainMagicEffect(Player *player, int magicAmount);
-    void useEffect() override;
+    GainMagicEffect(int magicAmount);
+    void useEffect(Player& activePlayer, Player& inactivePlayer) override;
 };
 
 #endif

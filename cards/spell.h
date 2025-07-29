@@ -9,6 +9,10 @@ class Spell : public Card {
         unique_ptr<GameEffect> gameEffect;
         Spell(string name, string description, int cost, unique_ptr<GameEffect> gameEffect);
         void notify();
+        void notify(Player& p);
+        void notify(Player& p1, Player& p2);
+        void notify(Player& p, int t);
+        void notify(Player& p, string t);
 };
 
 #endif

@@ -10,7 +10,7 @@ class UnsummonEffect : public GameEffect
 
 public:
     UnsummonEffect(Minion *target);
-    void useEffect() override;
+    void useEffect(Player& p1, Player& p2) override;
 };
 
 #endif

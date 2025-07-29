@@ -28,6 +28,10 @@ public:
     string getRightBox() override;
     void setActions(int newActions) override;
     void notify(TriggerState trigger) override;
+    // void notify(TriggerState trigger, Player& p) override;
+    void notify(TriggerState trigger, Player& p, int t) override;
+    void notify(TriggerState trigger, Player& p, string t) override;
+
     int getActivatedAbilityCost() override;
     int getDefaultActions() override;
 };

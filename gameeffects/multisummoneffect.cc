@@ -6,9 +6,9 @@ using namespace std;
 MultiSummonEffect::MultiSummonEffect(const string elementalType, int maxSummons, int minionsPerSummon)
     : elementalType{elementalType}, maxSummons{maxSummons}, minionsPerSummon{minionsPerSummon} {}
 
-void MultiSummonEffect::useEffect(Player& p)
+void MultiSummonEffect::useEffect(Player& activePlayer, Player& inactivePlayer)
 {
-    int availableSpace = 5 - p.getNumMinions();
+    int availableSpace = 5 - activePlayer.getNumMinions();
 
     // Calculate how many elementals we can actually summon
     int summonsToMake = std::min(maxSummons, availableSpace / minionsPerSummon);
@@ -25,7 +25,7 @@ void MultiSummonEffect::useEffect(Player& p)
         auto elemental = generator.getCardFromString(elementalType + " Elemental");
         if (elemental)
         {
-            p.addCardToBoard(move(elemental)); // add generated card to board
+            activePlayer.addCardToBoard(move(elemental)); // add generated card to board
         }
     }
 }

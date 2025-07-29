@@ -21,7 +21,8 @@ class Board
 public:
   Board();
   void add(unique_ptr<Card> card);
-  unique_ptr<Minion> removeMinion(int index);
+  unique_ptr<Minion> removeMinion(int index); // moving to graveyard
+  void destroyMinion(int index); // completely deleting the object
   unique_ptr<Ritual> removeRitual();
   const Minion& getMinion(int i) const;
   Minion& getMinion(int i);
@@ -29,6 +30,7 @@ public:
   const int getNumMinions() const;
   void notify(TriggerState trigger);
   int getAvailableSpace() const;
+  void addEnchantment(Card& enchantingCard) const;
 };
 
 #endif

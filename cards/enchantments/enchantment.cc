@@ -49,3 +49,15 @@ int Enchantment::getActivatedAbilityCost() {
 void Enchantment::notify(TriggerState trigger) {
     nextMinion->notify(trigger);
 }
+
+void Enchantment::notify(TriggerState trigger, Player& p) {
+    nextMinion->notify(trigger, p);
+}
+
+void Enchantment::notify(TriggerState trigger, Player& p, int t) {
+    nextMinion->notify(trigger, p, t);
+}
+
+void Enchantment::notify(TriggerState trigger, Player& p, string t) {
+    nextMinion->notify(trigger, p, t);
+}

@@ -52,6 +52,7 @@ void Player::discardCard(int i)
     hand->remove(i);
 }
 
+// notifies all cards on board
 void Player::notifyCards(TriggerState triggeredAbilityEnum)
 {
     board->notify(triggeredAbilityEnum);
@@ -66,13 +67,12 @@ void Player::restoreMinions()
     }
 }
 
-// ASSUMES 0-INDEXED
+// ASSUMES 0-INDEXED + acts on minions on the BOARD
 const int Player::getMinionAttack(int i) const
 {
     return board->getMinion(i).getAttack();
 }
 
-// try to attack the minion i from board with attackPower
 const int Player::getMinionDefence(int i) const
 {
     return board->getMinion(i).getDefense();
@@ -88,6 +88,42 @@ void Player::changeMinionDefence(int i, int amount)
     board->getMinion(i).changeDefense(amount);
 }
 
+// notifies an individual minion on the board
+// ! rly ugly code but desperate times... the bool is rly strange + tons of repeated code :( 
+void Player::activateMinionAbility(int i, bool passPlayer) { 
+    Minion& minionToActivate = board->getMinion(i);
+    int activationCost = minionToActivate.getActivatedAbilityCost();
+    if (activationCost <= magic) {
+        if (passPlayer) {
+            board->getMinion(i).notify(TriggerState::ACTIVATED_ABILITY, *this);
+        } else {
+            board->getMinion(i).notify(TriggerState::ACTIVATED_ABILITY);
+        }
+        magic -= activationCost;
+    }
+    // todo: error msg thats like 'you dont have enough magic'
+}
+
+void Player::activateMinionAbility(int i, Player& p, int t) { 
+    Minion& minionToActivate = board->getMinion(i);
+    int activationCost = minionToActivate.getActivatedAbilityCost();
+    if (activationCost <= magic) {
+        board->getMinion(i).notify(TriggerState::ACTIVATED_ABILITY, p, t);
+        magic -= activationCost;
+    }
+    // todo: error msg thats like 'you dont have enough magic'
+}
+
+void Player::activateMinionAbility(int i, Player& p, string t) { 
+    Minion& minionToActivate = board->getMinion(i);
+    int activationCost = minionToActivate.getActivatedAbilityCost();
+    if (activationCost <= magic) {
+        board->getMinion(i).notify(TriggerState::ACTIVATED_ABILITY, p, t);
+        magic -= activationCost;
+    }
+    // todo: error msg thats like 'you dont have enough magic'
+}
+
 void Player::reduceLife(int reduceBy)
 {
     life -= reduceBy;
@@ -99,7 +135,6 @@ void Player::playCard(int i)
     if (card.type == "MINION" || card.type == "RITUAL")
     {
         board->add(hand->remove(i));
-        // todo: magic cost?
     }
     else if (card.type == "SPELL")
     {
@@ -125,4 +160,9 @@ int Player::getNumMinions() const {
 
 Card& Player::getCardFromHand(int i){
     return hand->getCard(i);
+}
+
+void Player::addEnchantmentFromHand(int handIndex, int minionIndex){
+    Card& card = getCardFromHand(handIndex);
+    
 }

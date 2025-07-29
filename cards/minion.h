@@ -25,6 +25,9 @@ public:
     virtual int getDefaultActions() = 0;
     virtual void setActions(int newActions) = 0;
     virtual void notify(TriggerState trigger) = 0;
+    // virtual void notify(TriggerState trigger, Player& p) = 0;
+    virtual void notify(TriggerState trigger, Player& p, int i) = 0;
+    virtual void notify(TriggerState trigger, Player& p, string t) = 0;
     virtual int getActivatedAbilityCost() = 0;
 };
 

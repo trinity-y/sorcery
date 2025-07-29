@@ -42,6 +42,8 @@ void BaseMinion::setActions(int newActions) {
     actions = newActions;
 }
 
+
+// ! a lot of repeated code here :(
 void BaseMinion::notify(TriggerState trigger)
 {
     if (activatedAbility && actions > 0)
@@ -54,6 +56,45 @@ void BaseMinion::notify(TriggerState trigger)
         triggeredAbility->notify(trigger);
     }
 }
+
+void BaseMinion::notify(TriggerState trigger, Player& p, int t)
+{
+    if (activatedAbility && actions > 0)
+    {
+        activatedAbility->notify(trigger, p, t);
+        --actions;
+    }
+    if (triggeredAbility)
+    {
+        triggeredAbility->notify(trigger, p, t);
+    }
+}
+
+void BaseMinion::notify(TriggerState trigger, Player& p, string t)
+{
+    if (activatedAbility && actions > 0)
+    {
+        activatedAbility->notify(trigger, p, t);
+        --actions;
+    }
+    if (triggeredAbility)
+    {
+        triggeredAbility->notify(trigger, p, t);
+    }
+}
+
+// void BaseMinion::notify(TriggerState trigger, Player& p)
+// {
+//     if (activatedAbility && actions > 0)
+//     {
+//         activatedAbility->notify(trigger, p);
+//         --actions;
+//     }
+//     if (triggeredAbility)
+//     {
+//         triggeredAbility->notify(trigger, p);
+//     }
+// }
 
 // In a more complete implementation, you might want to:
 // - Check if defense goes to 0 or below (BaseMinion dies)

@@ -93,13 +93,13 @@ void TextDisplay::displayHand()
         {
             row.push_back(display_enchantment_attack_defence(
                 c.name, c.cost, c.description,
-                "?", "?")); // We'll need to figure out enchantment stats
+                "?", "?")); // to do:  need to figure out enchantment stats
         }
         else if (c.type == "Ritual")
         {
             row.push_back(display_ritual(
                 c.name, c.cost,
-                0, c.description, // activation cost 0, no charges for now
+                0, c.description, // to do: activation cost 0, no charges for now
                 0));
         }
     }
@@ -112,63 +112,64 @@ void TextDisplay::displayBoard()
     auto &A = model->player(0);
     auto &B = model->player(1);
 
-    // top row: A's ritual + A's minions + grave
-    vector<card_template_t> top;
-    // For now, add empty card for ritual slot
-    top.push_back(CARD_TEMPLATE_EMPTY);
+    // Row 1: [Ritual][Empty][Player 1][Empty][Grayeyard]
+    vector<card_template_t> row1;
+    row1.push_back(CARD_TEMPLATE_EMPTY); // Player 1's ritual slot (empty for now)
+    row1.push_back(CARD_TEMPLATE_EMPTY); // Empty
+    row1.push_back(display_player_card(
+        1, A.getName(), A.getLife(), A.getMagic())); // Player 1 in center-top  
+    row1.push_back(CARD_TEMPLATE_EMPTY); // Empty
+    row1.push_back(CARD_TEMPLATE_EMPTY); // Player 1's graveyard (empty for now)
 
-    // Add A's minions
+    // Row 2: Player 1's minions (5 slots)
+    vector<card_template_t> row2;
     auto &boardA = A.getBoard();
-    for (int i = 0; i < boardA.getNumMinions(); ++i)
-    {
-        auto &m = boardA.getMinion(i);
-        // For now, display as minion with no ability
-        top.push_back(display_minion_no_ability(
-            m.name, m.cost, m.getAttack(), m.getDefense()));
+    for (int i = 0; i < 5, ++i){
+        if (i < boardA.getNumMinions())
+        {
+            auto &m = boardA.getMinion(i);
+            row2.push_back(display_minion_no_ability(
+                m.name, m.cost, m.getAttack(), m.getDefense()));
+        }
+        else
+        {
+            row2.push_back(CARD_TEMPLATE_EMPTY); // Fill empty slots
+        }
+
     }
 
-    // Fill remaining slots with empty cards
-    while (top.size() < 6)
-        top.push_back(CARD_TEMPLATE_EMPTY);
-
-    // Add A's graveyard (empty for now)
-    top.push_back(CARD_TEMPLATE_EMPTY);
-
-    printRow(top);
-
-    // centre graphic
-    printRow({CENTRE_GRAPHIC});
-
-    // bottom row: B's grave + minions + ritual
-    vector<card_template_t> bot;
-    // B's graveyard (empty for now)
-    bot.push_back(CARD_TEMPLATE_EMPTY);
-
-    // Add B's minions
+    // Row 3: Player 2's minions (5 slots)
+    vector<card_template_t> row3;
     auto &boardB = B.getBoard();
-    for (int i = 0; i < boardB.getNumMinions(); ++i)
+    for (int i = 0; i < 5; ++i)
     {
-        auto &m = boardB.getMinion(i);
-        bot.push_back(display_minion_no_ability(
-            m.name, m.cost, m.getAttack(), m.getDefense()));
+        if (i < boardB.getNumMinions())
+        {
+            auto &m = boardB.getMinion(i);
+            row3.push_back(display_minion_no_ability(
+                m.name, m.cost, m.getAttack(), m.getDefense()));
+        }
+        else
+        {
+            row3.push_back(CARD_TEMPLATE_EMPTY); // Fill empty slots
+        }
     }
 
-    // Fill remaining slots
-    while (bot.size() < 6)
-        bot.push_back(CARD_TEMPLATE_EMPTY);
+    // Row 4: [Ritual][Empty][Player 2][Empty][Graveyard]
+    vector<card_template_t> row4;
+    row4.push_back(CARD_TEMPLATE_EMPTY); // Player 2's ritual slot (empty for now)
+    row4.push_back(CARD_TEMPLATE_EMPTY); // Empty   
+    row4.push_back(display_player_card(
+        2, B.getName(), B.getLife(), B.getMagic())); // Player 2 in center-bottom
+    row4.push_back(CARD_TEMPLATE_EMPTY); // Empty
+    row4.push_back(CARD_TEMPLATE_EMPTY); // Player 2's graveyard (empty for now)
 
-    // B's ritual slot (empty for now)
-    bot.push_back(CARD_TEMPLATE_EMPTY);
-
-    printRow(bot);
-
-    // finally, the player boxes
-    cout << "\nPlayers:\n";
-    printCard(display_player_card(
-        1, A.getName(), A.getLife(), A.getMagic()));
-    printCard(display_player_card(
-        2, B.getName(), B.getLife(), B.getMagic()));
-    cout << "\n";
+    // Print the rows
+    printRow(row1);
+    printRow(row2);
+    printRow({CENTRE_GRAPHIC});     // centre graphic
+    printRow(row3);
+    printRow(row4);
 }
 
 void TextDisplay::displayCard(int handIndex)
@@ -178,14 +179,55 @@ void TextDisplay::displayCard(int handIndex)
     if (c.type == "Minion")
     {
         auto &minion = static_cast<const Minion &>(c);
-        tpl = display_minion_no_ability(
-            c.name, c.cost, minion.getAttack(), minion.getDefense());
+
+        // Check if minion has activated abilty to display properly
+        if (minion.getActivatedAbilityCost() > 0)
+        {
+            // Minion with activated ability - need to get ablity cost and description
+            tpl = display_minion_with_ability(
+                c.name, c.cost, minion.getAttack(), minion.getDefense(),
+                minion.getActivatedAbilityCost(), minion.getActivatedAbilityDescription());
+        }
+        else
+        {
+            // Check if minion has triggered ability
+            // asummer if no activated ability, but description, then its a triggered ability
+            if (!c.description.empty())
+            {
+                tpl = display_minion_with_triggered_ability(
+                    c.name, c.cost, minion.getAttack(), minion.getDefense(),
+                    c.description);
+            }
+            else
+            {
+                // Minion without any abilities
+                tpl = display_minion_no_ability(
+                    c.name, c.cost, minion.getAttack(), minion.getDefense());
+            }
+        }
+        
     }
     else if (c.type == "Spell")
     {
         tpl = display_spell(c.name, c.cost, c.description);
     }
-    // Add other types as needed
+    else if(c.type == "Enchantment")
+    {
+        tpl = display_enchantment_attack_defence(
+            c.name, c.cost, c.description,
+            "?", "?"); // to do: need to figure out enchantment stats
+    }
+    else if (c.type == "Ritual")
+    {
+        tpl = display_ritual(
+            c.name, c.cost,
+            0, c.description, // to do: activation cost 0, no charges for now
+            0);
+    }
+    else
+    {
+        // todo: error handling for unknown card type
+    }
     printCard(tpl);
     cout << "\n";
 }

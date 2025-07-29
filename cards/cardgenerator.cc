@@ -30,7 +30,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         // Create a triggered ability that triggers when minions leave play
         auto triggeredAbility = make_unique<TriggeredAbility>(
             "Gain +1/+1 whenever a minion leaves play.",
-            Trigger::TriggerState::MINION_LEAVES,
+            TriggerState::MINION_LEAVES,
             move(selfBuffEffect));
 
         // Create the minion
@@ -45,7 +45,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         // Create a triggered ability that triggers when a minion enters play
         auto triggeredAbility = make_unique<TriggeredAbility>(
             "Whenever an opponent's minion enters play, deal 1 damage to it.",
-            Trigger::TriggerState::MINION_ENTERS,
+            TriggerState::MINION_ENTERS,
             move(damageEffect));
 
         // Create the minion first
@@ -61,7 +61,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         // Create a triggered ability that triggers at the end of turn
         auto triggeredAbility = make_unique<TriggeredAbility>(
             "At the end of your turn, all your minions gain +0/+1.",
-            Trigger::TriggerState::END_OF_TURN,
+            TriggerState::END_OF_TURN,
             move(allMinionsEffect));
 
         // Create the minion first
@@ -76,10 +76,9 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto targetedDamageEffect = make_unique<TargetedDamageEffect>(1); // 1 damage
 
         // Create an activated ability (player-initiated)
-        // Note: Magic cost of 1 for the ability is not yet implemented in the current system
         auto activatedAbility = make_unique<ActivatedAbility>(
             "Deal 1 damage to target minion.",
-            move(targetedDamageEffect));
+            move(targetedDamageEffect)); // Magic cost of 1
 
         // Create the minion first (0 attack, 1 defense, card cost 1)
         auto novicePyromancer = make_unique<Minion>(0, 1, "Novice Pyromancer", "Deal 1 damage to target minion.", 1, move(activatedAbility), nullptr);
@@ -92,10 +91,9 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto summonEffect = make_unique<MultiSummonEffect>("Air", 1); // max 1 summon
 
         // Create an activated ability that summons a 1/1 Air Elemental
-        // Note: Magic cost of 1 for the ability is not yet implemented in the current system
         auto activatedAbility = make_unique<ActivatedAbility>(
             "Summon a 1/1 Air Elemental.",
-            move(summonEffect));
+            move(summonEffect)); // Magic cost of 1
 
         // Create the minion first (1 attack, 1 defense, card cost 1)
         auto apprenticeSummoner = make_unique<Minion>(1, 1, "Apprentice Summoner", "Summon a 1/1 Air Elemental.", 1, move(activatedAbility), nullptr);
@@ -108,10 +106,9 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto summonEffect = make_unique<MultiSummonEffect>("Air", 3); // max 3 summons
 
         // Create an activated ability that summons up to three 1/1 Air Elementals
-        // Note: Magic cost of 2 for the ability is not yet implemented in the current system
         auto activatedAbility = make_unique<ActivatedAbility>(
             "Summon up to three 1/1 air elementals.",
-            move(summonEffect));
+            move(summonEffect)); // Magic cost of 2
 
         // Create the minion first (2 attack, 3 defense, card cost 3)
         auto masterSummoner = make_unique<Minion>(2, 3, "Master Summoner", "Summon up to three 1/1 air elementals.", 3, move(activatedAbility), nullptr);

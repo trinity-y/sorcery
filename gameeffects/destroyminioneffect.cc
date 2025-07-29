@@ -1,15 +1,14 @@
 #include "destroyminioneffect.h"
 #include "../cards/minion.h"
+#include "../player.h"
+DestroyMinionEffect::DestroyMinionEffect() {}
 
-DestroyMinionEffect::DestroyMinionEffect(Minion *target)
-    : target{target} {}
-
-void DestroyMinionEffect::useEffect()
+void DestroyMinionEffect::useEffect(Player& p, int t)
 {
-    if (target)
+    if (t < p.getNumMinions() && t >= 0)
     {
         // Set defense to 0 or negative to "destroy" the minion
         // In a full implementation, this would trigger removal from board
-        target->changeDefense(-target->getDefense() - 1);
+        p.changeMinionDefence(t, p.getMinionDefence(t));
     }
 }

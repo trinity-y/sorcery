@@ -19,6 +19,9 @@ class Enchantment : public Minion {
         virtual int getDefaultActions() override;
         virtual int getActivatedAbilityCost() override;
         virtual void notify(TriggerState trigger) override;
+        virtual void notify(TriggerState trigger, Player& p) override;
+        virtual void notify(TriggerState trigger, Player& p, int t) override;
+        virtual void notify(TriggerState trigger, Player& p, string t) override;
         virtual int getActivatedAbilityCost() override;
 };
 

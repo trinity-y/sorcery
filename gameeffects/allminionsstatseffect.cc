@@ -5,16 +5,14 @@
 AllMinionsStatsEffect::AllMinionsStatsEffect(int attackChange, int defenseChange)
     : attackChange{attackChange}, defenseChange{defenseChange} {}
 
-void AllMinionsStatsEffect::useEffect(Player &p)
+void AllMinionsStatsEffect::useEffect(Player &activePlayer, Player& inactivePlayer)
 {
-    Board &board = p.getBoard();
-    int numMinions = board.getNumMinions();
+    int numMinions = activePlayer.getNumMinions();
 
     // Iterate through all minions on the player's board
     for (int i = 0; i < numMinions; ++i)
     {
-        Minion &minion = board.getMinion(i);
-        minion.changeAttack(attackChange);
-        minion.changeDefense(defenseChange);
+        activePlayer.changeMinionAttack(i, attackChange);
+        activePlayer.changeMinionDefence(i, defenseChange);
     }
 }

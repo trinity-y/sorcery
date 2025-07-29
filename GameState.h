@@ -2,7 +2,6 @@
 #define GAMESTATE_H
 #include "player.h"
 #include "./cards/card.h"
-
 #include <string>
 #include <vector>
 #include <memory>
@@ -69,9 +68,13 @@ public:
   // startup game stuff
   void startPlayerTurn();
 
+  // get active player for model
+  Player& getActivePlayer();
+  Player& getInactivePlayer();
+
   // View interface methods
-  Player &currentPlayer();
-  Player &player(int index);
+  const Player &currentPlayer () const ;
+  const Player &player (int index) const;
   int activePlayerIndex() const;
 };
 #endif

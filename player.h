@@ -18,37 +18,46 @@ class Player
     string name;
 
 public:
+    // Accessing + modifying player
     Player(string name, vector<string> deckNames);
     ~Player() {}; // temp
-    void shuffleDeck();
     void addMagic(int additionalMagic); // Need to increment magic by 1 in GameState
     void subtractMagic(int subtractMagic);
-    bool deckIsEmpty(); // Checking if the players deck is empty
-    int getHandLen();
     int getLife() const;
     void drawCard();
-    void discardCard(int i); // Discards ith card from hand
-    void notifyCards(TriggerState triggeredAbilityEnum);
-    void restoreMinions();
+    void playCard(int i); // play card i in hand (0-indexed)
+
+    // Accessing + modifying individual minions on the board
     const int getMinionAttack(int i) const;
     const int getMinionDefence(int i) const;
     void changeMinionAttack(int i, int amount);
     void changeMinionDefence(int i, int amount);
     void reduceLife(int reduceBy);
-    void playCard(int i);
-    int getNumMinions() const;
+    void activateMinionAbility(int i, bool passPlayer);
+    void activateMinionAbility(int i, Player& p, int t);
+    void activateMinionAbility(int i, Player& p, string t);
+
+    // Accessing + modifying player's zones
+    int getNumMinions() const; // number of minions in player's board
     void addCardToBoard(unique_ptr<Card> card);
+    void shuffleDeck();
+    int getHandLen();
+    void discardCard(int i); // Discards ith card from hand
+    bool deckIsEmpty(); // Checking if the players deck is empty
+    void restoreMinions(); // restore minions to their default number of actions
+    void notifyCards(TriggerState triggeredAbilityEnum); // notify all cards in board
 
     // View interface methods
-    Hand &getHand() { return *hand; }
-    Board &getBoard() { return *board; }
-    Graveyard &getGraveyard() { return *graveyard; }
-    string getName() const { return name; }
-    int getMagic() const { return magic; }
+    const Hand &getHand() const { return *hand; }
+    const Board &getBoard() const { return *board; }
+    const Graveyard &getGraveyard() const { return *graveyard; }
+    const string getName() const { return name; }
+    const int getMagic() const { return magic; }
 
     // Additional in progress methods from GameState
     Card &getCardFromHand(int i);
     void addEnchantment(Card &c, int r);
+    void addEnchantmentFromHand(int handIndex, int minionIndex); // can only be played on minions
 };
 
 #endif

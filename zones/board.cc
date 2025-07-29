@@ -55,3 +55,16 @@ int Board::getAvailableSpace() const
   const int MAX_MINIONS = 5;
   return MAX_MINIONS - getNumMinions();
 }
+
+unique_ptr<Minion> removeMinion(int index){
+  // moving to graveyard (player handles this, we just return it)
+  return move(boardMinions[index]);
+} 
+void destroyMinion(int index){
+  // completely deleting the object
+  boardMinions[index].release();
+  boardMinions[index] = nullptr;
+} 
+unique_ptr<Ritual> removeRitual(){
+  
+}

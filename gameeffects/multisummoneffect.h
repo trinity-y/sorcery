@@ -13,7 +13,8 @@ class MultiSummonEffect : public GameEffect
 
 public:
     MultiSummonEffect(const string elementalType, int maxSummons, int minionsPerSummon = 1);
-    void useEffect(Player& p) override;
+    // void useEffect(Player& p) override;
+    void useEffect(Player& activePlayer, Player& inactivePlayer) override;
 };
 
 #endif

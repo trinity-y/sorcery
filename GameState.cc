@@ -90,48 +90,84 @@ void GameState::play(int i)
 // Plays the ith card on card t owned by player p
 void GameState::play(int i, int p, string t)
 {
-  Card& c = arrOfPlayers[activePlayer]->getCardFromHand(i-1);
   if (t == "r")
+  {
+    // getting the card at i
+    Card& c = arrOfPlayers[activePlayer]->getCardFromHand(i-1); // 0th indexed i
+    if ((p - 1) == activePlayer)
     {
-      if ((p - 1) == activePlayer)
-      {
-        // Assuming they can only play a spell or another ritual on a ritual
-        if (c.type == "SPELL"){
-          // We are sure that c is a Spell
-          Spell& s = static_cast<Spell&>(c);
-          s.gameEffect->useEffect(*arrOfPlayers[activePlayer], t);
-        } else if (c.type == "ENCHANTMENT"){
-          arrOfPlayers[activePlayer]->playCard(i);
-        }
-      }
-      else
-      {
-        // Assuming they can only play a spell or another ritual on a ritual
-        if (c.type == "SPELL"){
-          // We are sure that c is a Spell
-          Spell& s = static_cast<Spell&>(c);
-          s.gameEffect->useEffect(*arrOfPlayers[activePlayer], t);
-        } else if (c.type == "ENCHANTMENT"){
-          // arrOfPlayers[activePlayer]->playCard(i);
-        }
+      // active player
+      // Assuming they can only play a spell on a ritual
+      if (c.type == "SPELL"){
+        // We are sure that c is a Spell
+        Spell& s = static_cast<Spell&>(c);
+        s.gameEffect->useEffect(*arrOfPlayers[activePlayer], t);
       }
     }
     else
     {
-
+      // inactive player
+        // Assuming they can only play a spell on a ritual
+        if (c.type == "SPELL"){
+          Spell& s = static_cast<Spell&>(c);
+          s.gameEffect->useEffect(*arrOfPlayers[inactivePlayer], t);
+        } 
+      }
+    }
+    // t is a number between 1 and 5
+    else
+    {
+      int targetInt = stoi(t);
+      if (targetInt >= 1 && targetInt <= 5){ // checking for sanity
+        targetInt -= 1; // for 0-indexing
+        if ((p - 1) == activePlayer)
+        {
+          // playing your card on your own minions
+          Card& c = arrOfPlayers[activePlayer]->getCardFromHand(i-1); 
+          // This can be used to play enchantments and spells with targets.
+          if (c.type == "SPELL"){
+            Spell& s = static_cast<Spell&>(c);
+            s.gameEffect->useEffect(*arrOfPlayers[activePlayer], targetInt); // playing a spell on t minion
+          } else if (c.type == "ENCHANTMENT"){
+            arrOfPlayers[activePlayer]->addEnchantmentFromHand(i, targetInt);
+          }
+        }
+        else
+        {
+          // inactive player
+          // Assuming they can only play a spell on a ritual
+          if (c.type == "SPELL"){
+            // We are sure that c is a Spell
+            Spell& s = static_cast<Spell&>(c);
+            s.gameEffect->useEffect(*arrOfPlayers[activePlayer], t);
+          } else if (c.type == "ENCHANTMENT"){
+            // addEnchantment(Card &c, int r)
+            arrOfPlayers[inactivePlayer]->addEnchantment(c, i);
+          }
+        }
+      }
     }
 }
 
 // Uses activated ability of minion i with no target
 void GameState::use(int i)
 {
-  // implementation here
+  // for gameEffects with no parameters
+  arrOfPlayers[activePlayer]->activateMinionAbility(i, false);
 }
 
 // Uses activated ability of minion i with target p, t
 void GameState::use(int i, int p, int t)
 {
-  // implementation here
+  // for gameEffects with no parameters
+  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[p-1]), t);
+}
+
+// Uses activated ability of minion i with target p, t
+void GameState::use(int i, int p, string t)
+{
+  // for gameEffects with no parameters
+  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[p-1]), t);
 }
 
 // Checks if the game has been won
@@ -196,6 +232,16 @@ void GameState::notify(string cmd)
     arrOfPlayers[activePlayer]->drawCard();
   }
 }
+
+  // get active player for model
+Player& GameState::getActivePlayer() {
+  return *arrOfPlayers[activePlayer];
+}
+
+Player& GameState::getInactivePlayer() {
+  return *arrOfPlayers[inactivePlayer];
+}
+
 // 1.2 Basic Gameplay
 // The game’s objective is to reduce the opposing player’s life to 0, at which point the game ends. The game begins by first
 // asking both players for their names. It then shuffles both player’s decks. Once the decks are shuffled, the game begins with
@@ -222,6 +268,6 @@ void GameState::startPlayerTurn()
 }
 
 // View interface methods
-Player &GameState::currentPlayer() { return *arrOfPlayers[activePlayer]; }
-Player &GameState::player(int index) { return *arrOfPlayers[index]; }
+const Player &GameState::currentPlayer() const { return *arrOfPlayers[activePlayer]; }
+const Player &GameState::player(int index) const { return *arrOfPlayers[index]; }
 int GameState::activePlayerIndex() const { return activePlayer; }
