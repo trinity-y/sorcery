@@ -1,7 +1,7 @@
 #include "giantstrength.h"
 using namespace std;
 
-GiantStrength::GiantStrength(unique_ptr<Minion> nextMinion, int attackBuff, int defenseBuff) : Enchanter("Giant Strength", "", 1, move(nextMinion)), attackBuff{attackBuff}, defenseBuff{defenseBuff} {};
+GiantStrength::GiantStrength(int attackBuff, int defenseBuff) : Enchanter("Giant Strength", "", 1), attackBuff{attackBuff}, defenseBuff{defenseBuff} {};
 
 int GiantStrength::getAttack() const
 {

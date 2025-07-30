@@ -9,7 +9,7 @@ class MagicFatigue : public Enchanter
     int abilityCostIncrease;
 
 public:
-    MagicFatigue(int abiltiyCostIncrease, unique_ptr<Minion> nextMinion);
+    MagicFatigue(int abiltiyCostIncrease);
     int getActivatedAbilityCost() const override;
 };
 

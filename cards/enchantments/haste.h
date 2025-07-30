@@ -9,7 +9,7 @@ class Haste : public Enchanter
     int actionBoost;
 
 public:
-    Haste(int actionBoost, unique_ptr<Minion> nextMinion);
+    Haste(int actionBoost);
     int getDefaultActions() const override;
 };
 

@@ -16,10 +16,17 @@
 #include "../gameeffects/selfbuffeffect.h"
 #include "../gameeffects/gainmagiceffect.h"
 #include "../gameeffects/destroyminioneffect.h"
+#include "./enchantments/giantstrength.h"
+#include "./enchantments/enrage.h"
+#include "./enchantments/haste.h"
+#include "./enchantments/magicfatigue.h"
+#include "./enchantments/silence.h"
+
 #include "../trigger.h"
 #include "spell.h"
 #include "enchantment.h"
 
+#include <iostream> // ! debug
 using namespace std;
 
 CardGenerator::CardGenerator() {}
@@ -158,17 +165,23 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
     else if (cardName == "Giant Strength")
     {
         // StrengthEnchanter should add +2 ATK, +2 DEF
-        return make_unique<Enchantment>(make_unique<StrengthEnchanter>(2, 2));
+        return make_unique<Enchantment>(make_unique<GiantStrength>(2, 2));
     }
     else if (cardName == "Magic Fatigue")
     {
         // FatigueEnchanter increases activated ability cost by 2
-        return make_unique<Enchantment>(make_unique<FatigueEnchanter>(2));
+        return make_unique<Enchantment>(make_unique<MagicFatigue>(2));
     }
     else if (cardName == "Silence")
     {
         // SilenceEnchanter disables all abilities
-        return make_unique<Enchantment>(make_unique<SilenceEnchanter>());
+        return make_unique<Enchantment>(make_unique<Silence>());
+    } else if (cardName == "Enrage") {
+        // multiples *2 ATK, *2 DEF
+        return make_unique<Enchantment>(make_unique<Enrage>(2, 2));
+    } else if (cardName == "Haste") {
+        // + 1 action per turn
+        return make_unique<Enchantment>(make_unique<Haste>(1));
     }
 
     // Rituals

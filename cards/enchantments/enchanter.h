@@ -8,7 +8,7 @@ class Enchanter : public Minion
 protected:
     unique_ptr<Minion> nextMinion; // next minion in the decorator chain
 public:
-    Enchanter(string name, string description, int cost, unique_ptr<Minion> nextMinion);
+    Enchanter(string name, string description, int cost);
     virtual ~Enchanter() = 0;
     virtual int decrementActions() override;
     virtual int getAttack() const override;

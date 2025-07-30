@@ -1,7 +1,7 @@
 #include "enrage.h"
 using namespace std;
 
-Enrage::Enrage(unique_ptr<Minion> nextMinion, int attackMultiplier, int defenseMultiplier) : Enchanter("Enrage", "", 2, move(nextMinion)), attackMultiplier{attackMultiplier}, defenseMultiplier{defenseMultiplier} {};
+Enrage::Enrage(int attackMultiplier, int defenseMultiplier) : Enchanter("Enrage", "", 2), attackMultiplier{attackMultiplier}, defenseMultiplier{defenseMultiplier} {};
 
 int Enrage::getAttack() const
 {

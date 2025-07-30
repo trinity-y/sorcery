@@ -1,7 +1,7 @@
 #include "enchanter.h"
 using namespace std;
 
-Enchanter::Enchanter(string name, string description, int cost, unique_ptr<Minion> nextMinion) : Minion{name, description, cost}, nextMinion{move(nextMinion)}
+Enchanter::Enchanter(string name, string description, int cost) : Minion{name, description, cost}
 {
     type = "ENCHANTMENT";
 }

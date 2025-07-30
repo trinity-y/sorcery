@@ -1,7 +1,7 @@
 #include "baseminion.h"
 #include <string>
 using namespace std;
-BaseMinion::BaseMinion(int attack, int defense, string name, string description, int activatedAbilityCost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility) : Minion{name, description, cost},
+BaseMinion::BaseMinion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility) : Minion{name, description, cost},
                                                                                                                                                                                                            attack{attack},
                                                                                                                                                                                                            defense{defense},
                                                                                                                                                                                                            actions{0},

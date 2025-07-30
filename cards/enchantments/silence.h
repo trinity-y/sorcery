@@ -7,7 +7,7 @@ using namespace std;
 class Silence : public Enchanter
 {
 public:
-    Silence(unique_ptr<Minion> nextMinion);
+    Silence();
     // void notify(TriggerState trigger) override;
     void notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer) override;
     void notify(TriggerState trigger, Player &p, string t) override;

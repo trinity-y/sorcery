@@ -10,7 +10,7 @@ class Enrage : public Enchanter
     int defenseMultiplier;
 
 public:
-    Enrage(unique_ptr<Minion> nextMinion, int attackMultiplier = 2, int defenseMultiplier = 2);
+    Enrage(int attackMultiplier = 2, int defenseMultiplier = 2);
     int getAttack() const override;
     int getDefense() const override;
     string getLeftBox() const override;
