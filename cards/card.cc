@@ -15,3 +15,8 @@ string Card::getDescription() const
 {
     return description;
 }
+
+int Card::getCost() const
+{
+    return cost;
+}

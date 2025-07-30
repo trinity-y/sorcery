@@ -75,6 +75,10 @@ void Board::notify(TriggerState trigger, Player &activePlayer, Player &inactiveP
     boardRitual->notify(trigger, activePlayer, inactivePlayer);
   }
 }
+void Board::notify(TriggerState trigger, Player &activePlayer, int t)
+{
+  boardMinions[t]->notify(trigger, activePlayer, t);
+}
 
 unique_ptr<Minion> Board::removeMinion(int index)
 {

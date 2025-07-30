@@ -16,6 +16,7 @@
 #include "../gameeffects/selfbuffeffect.h"
 #include "../gameeffects/gainmagiceffect.h"
 #include "../gameeffects/destroyminioneffect.h"
+#include "../gameeffects/ownerminionbuffeffect.h"
 #include "./enchantments/giantstrength.h"
 #include "./enchantments/enrage.h"
 #include "./enchantments/haste.h"
@@ -176,10 +177,14 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
     {
         // SilenceEnchanter disables all abilities
         return make_unique<Enchantment>(make_unique<Silence>());
-    } else if (cardName == "Enrage") {
+    }
+    else if (cardName == "Enrage")
+    {
         // multiples *2 ATK, *2 DEF
         return make_unique<Enchantment>(make_unique<Enrage>(2, 2));
-    } else if (cardName == "Haste") {
+    }
+    else if (cardName == "Haste")
+    {
         // + 1 action per turn
         return make_unique<Enchantment>(make_unique<Haste>(1));
     }
@@ -193,7 +198,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
     }
     else if (cardName == "Aura of Power")
     {
-        auto statBuff = make_unique<SelfBuffEffect>(1, 1);
+        auto statBuff = make_unique<OwnerMinionBuffEffect>(1, 1);
         auto trigger = make_unique<TriggeredAbility>("Whenever a minion enters play under your control, it gains +1/+1.", TriggerState::MINION_ENTERS, move(statBuff));
         return make_unique<Ritual>("Aura of Power", "Your minions get +1/+1 when they enter play.", 1, move(trigger), 4);
     }

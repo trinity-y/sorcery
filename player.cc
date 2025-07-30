@@ -153,6 +153,10 @@ void Player::notify(TriggerState trigger, Player &activePlayer, Player &inactive
 {
     board->notify(trigger, activePlayer, inactivePlayer);
 }
+void Player::notify(TriggerState trigger, Player &activePlayer, int t)
+{
+    board->notify(trigger, activePlayer, t);
+}
 void Player::playCard(int i, Player &activePlayer, Player &inactivePlayer) // temporary fix
 {
     Card &card = hand->getCard(i);
@@ -165,8 +169,8 @@ void Player::playCard(int i, Player &activePlayer, Player &inactivePlayer) // te
         {
             // ! board->notify (when minion enters play)
             // we need to notify both players boards. so ideally this logic is moved outside
-            notify(MINION_ENTERS, activePlayer, inactivePlayer);
-            inactivePlayer.notify(MINION_ENTERS, activePlayer, inactivePlayer);
+            notify(MINION_ENTERS, activePlayer, i);
+            inactivePlayer.notify(MINION_ENTERS, activePlayer, i);
         }
     }
     else if (card.type == "SPELL")

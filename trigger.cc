@@ -1,5 +1,5 @@
 #include "trigger.h"
-
+#include <iostream>
 Trigger::Trigger(TriggerState trigger) : trigger{trigger} {};
 
 // void Trigger::notify(TriggerState newState) {
@@ -18,9 +18,10 @@ void Trigger::notify(TriggerState newState, Player &p, string i)
 
 void Trigger::notify(TriggerState newState, Player &activePlayer, Player &inactivePlayer)
 {
+    cerr << "got here trigger" << newState << endl;
     if (newState == trigger)
     {
-        
+
         executeTrigger(activePlayer, inactivePlayer);
     }
 }

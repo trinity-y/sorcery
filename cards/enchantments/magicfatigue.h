@@ -10,7 +10,7 @@ class MagicFatigue : public Enchanter
 
 public:
     MagicFatigue(int abiltiyCostIncrease);
-    int getActivatedAbilityCost() const override;
+    int getCost() const override;
 };
 
 #endif

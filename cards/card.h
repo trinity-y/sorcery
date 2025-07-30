@@ -19,6 +19,7 @@ public:
   virtual string getName() const;
   virtual string getType() const;
   virtual string getDescription() const;
+  virtual int getCost() const;
 };
 
 #endif

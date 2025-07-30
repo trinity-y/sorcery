@@ -62,41 +62,52 @@ void GameState::discard(int i)
 // Orders minion i to attack opposing player
 void GameState::attack(int i)
 {
-  if (arrOfPlayers[activePlayer]->getMinionActions(i) >= 1)
+  int index = i - 1;
+  cerr << "attack 1" << endl;
+  if (arrOfPlayers[activePlayer]->getMinionActions(index) >= 1)
   {
-    arrOfPlayers[activePlayer]->decrementMinionActions(i);
+    if (i >= 1 && i <= arrOfPlayers[activePlayer]->getNumMinions())
+    {
+      int minionAttack = arrOfPlayers[activePlayer]->getMinionAttack(index);
+      arrOfPlayers[inactivePlayer]->reduceLife(minionAttack);
+      arrOfPlayers[activePlayer]->decrementMinionActions(index);
+    }
+    else
+    {
+      cout << "You tried to attack with a non-existent minion " << i << endl;
+      return;
+    }
   }
   else
   {
     // invalid attack if they don't have enough actions
+    cout << "You tried to attack, but you don't have enough actions." << endl;
     return;
-  }
-  if (i >= 1 && i <= arrOfPlayers[activePlayer]->getNumMinions())
-  {
-    int minionAttack = arrOfPlayers[activePlayer]->getMinionAttack(i - 1);
-    arrOfPlayers[inactivePlayer]->reduceLife(minionAttack);
   }
 }
 
 // Orders minion i to attack opposing minion j
 void GameState::attack(int i, int j)
 {
-  if (arrOfPlayers[activePlayer]->getMinionActions(i) >= 1)
+  int index = i - 1;
+  // todo: check other minion
+  if (index < 0 || index >= arrOfPlayers[activePlayer]->getNumMinions())
   {
-    arrOfPlayers[activePlayer]->decrementMinionActions(i);
-  }
-  else
-  {
-    // invalid attack if they don't have enough actions
+    cout << "You tried to attack with a non-existent minion " << i << endl;
     return;
   }
-  // i is minion A (active player), j is minion B (inactive player)
-  int initialMinionAAttack = arrOfPlayers[activePlayer]->getMinionAttack(i);
-  int initialMinionBAttack = arrOfPlayers[inactivePlayer]->getMinionAttack(i);
-  // reduces minion B’s defence by minion A’s attack
-  // reduces minion A’s defence by minion B’s attack
-  arrOfPlayers[activePlayer]->changeMinionDefence(i, -initialMinionBAttack);
-  arrOfPlayers[inactivePlayer]->changeMinionDefence(i, -initialMinionAAttack);
+  // invalid attack if they don't have enough actions
+  if (arrOfPlayers[activePlayer]->getMinionActions(index) >= 1)
+  {
+    arrOfPlayers[activePlayer]->decrementMinionActions(index);
+    // i is minion A (active player), j is minion B (inactive player)
+    int initialMinionAAttack = arrOfPlayers[activePlayer]->getMinionAttack(index);
+    int initialMinionBAttack = arrOfPlayers[inactivePlayer]->getMinionAttack(index);
+    // reduces minion B’s defence by minion A’s attack
+    // reduces minion A’s defence by minion B’s attack
+    arrOfPlayers[activePlayer]->changeMinionDefence(index, -initialMinionBAttack);
+    arrOfPlayers[inactivePlayer]->changeMinionDefence(index, -initialMinionAAttack);
+  }
 }
 
 // ! awkward because in one play method we do it in gamestate and another we do it inside player. also now i need  to pass in players into player and its just weird

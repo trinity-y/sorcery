@@ -33,6 +33,8 @@ public:
     virtual void notify(TriggerState trigger, Player &p, string t) = 0;
 
     virtual string getMinionName() const = 0;
+    virtual int getCost() const = 0;
+    virtual string getMinionDescription() const = 0;
 };
 
 #endif

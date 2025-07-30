@@ -100,4 +100,12 @@ string Enchanter::getMinionName() const
     return nextMinion->getMinionName();
 }
 
+int Enchanter::getCost() const
+{
+    return nextMinion->getCost();
+}
 
+string Enchanter::getMinionDescription() const
+{
+    return nextMinion->getMinionDescription();
+}

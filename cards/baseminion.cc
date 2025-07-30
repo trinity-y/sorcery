@@ -87,7 +87,9 @@ void BaseMinion::notify(TriggerState trigger, Player &p, int t)
         triggeredAbility->notify(trigger, p, t);
     }
 }
-
+// int targetMinionIndex = board->getNumMinions() - 1;
+//             notify(MINION_ENTERS, activePlayer, targetMinionIndex);
+//             inactivePlayer.notify(MINION_ENTERS, inactivePlayer, targetMinionIndex);
 // i feel like this one shouldnt be needed cause minios dont have ritual targets
 // we  can keep it anyways tohugh ig
 void BaseMinion::notify(TriggerState trigger, Player &p, string t)
@@ -116,17 +118,27 @@ void BaseMinion::notify(TriggerState trigger, Player &activePlayer, Player &inac
     }
 }
 
-int BaseMinion::getActivatedAbilityCost() const
+int BaseMinion::getActivatedAbilityCost() const // in actions -- this func is technically not needed
 {
     return activatedAbilityCost;
 }
 
-const int BaseMinion::getActions() const{
+const int BaseMinion::getActions() const
+{
     return actions;
 }
 
-string BaseMinion::getMinionName() const {
+string BaseMinion::getMinionName() const
+{
     return name;
 }
 
+int BaseMinion::getCost() const
+{
+    return cost;
+}
 
+string BaseMinion::getMinionDescription() const
+{
+    return description;
+}

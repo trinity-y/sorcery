@@ -26,13 +26,12 @@ public:
     virtual void notify(TriggerState trigger, Player &p, int t) override;
     virtual void notify(TriggerState trigger, Player &p, string t) override;
     void setNextMinion(unique_ptr<Minion> newNextMinion);
+    virtual int getCost() const override;
 
     // for disenchant effect
     virtual unique_ptr<Minion> disenchantMinion();
     virtual string getMinionName() const override;
+    virtual string getMinionDescription() const override;
 };
 
 #endif
-
-
-

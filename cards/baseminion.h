@@ -37,11 +37,8 @@ public:
     int getDefaultActions() const override;
 
     virtual string getMinionName() const override;
+    virtual int getCost() const override;
+    virtual string getMinionDescription() const override;
 };
 
 #endif
-
-
-
-
-

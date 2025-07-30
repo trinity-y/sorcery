@@ -135,7 +135,7 @@ void TextDisplay::displayHand()
             {
                 // Minion with activated ability - need to get ability cost and description
                 row.push_back(display_minion_activated_ability(
-                    c.name, c.cost, minion.getAttack(), minion.getDefense(),
+                    c.name, c.getCost(), minion.getAttack(), minion.getDefense(),
                     minion.getActivatedAbilityCost(), c.description));
             }
             else
@@ -145,34 +145,34 @@ void TextDisplay::displayHand()
                 if (!c.description.empty())
                 {
                     row.push_back(display_minion_triggered_ability(
-                        c.name, c.cost, minion.getAttack(), minion.getDefense(),
+                        c.name, c.getCost(), minion.getAttack(), minion.getDefense(),
                         c.description));
                 }
                 else
                 {
                     // Minion without any abilities
                     row.push_back(display_minion_no_ability(
-                        c.name, c.cost, minion.getAttack(), minion.getDefense()));
+                        c.name, c.getCost(), minion.getAttack(), minion.getDefense()));
                 }
             }
         }
         else if (c.type == "SPELL")
         {
             row.push_back(display_spell(
-                c.name, c.cost, c.description));
+                c.name, c.getCost(), c.description));
         }
         else if (c.type == "ENCHANTMENT")
         {
             const auto &enchantment = static_cast<const Enchantment &>(c);
             row.push_back(display_enchantment_attack_defence(
-                c.name, c.cost, c.description,
+                c.name, c.getCost(), c.description,
                 enchantment.getLeftBox(), enchantment.getLeftBox()));
         }
         else if (c.type == "RITUAL")
         {
             const auto &ritual = static_cast<const Ritual &>(c);
             row.push_back(display_ritual(
-                c.name, c.cost,
+                c.name, c.getCost(),
                 ritual.getActivationCost(), c.description, // getting ritual activation cost and charges via getters
                 ritual.getCharges()));
         }
@@ -198,7 +198,7 @@ void TextDisplay::displayBoard()
     {
         const auto &ritual = boardA.getRitual();
         row1.push_back(display_ritual(
-            ritual.name, ritual.cost,
+            ritual.name, ritual.getCost(),
             ritual.getActivationCost(), ritual.description,
             ritual.getCharges()));
     }
@@ -232,19 +232,19 @@ void TextDisplay::displayBoard()
             if (m.getActivatedAbilityCost() > 0)
             {
                 row2.push_back(display_minion_activated_ability(
-                    m.getMinionName(), m.cost, m.getAttack(), m.getDefense(),
-                    m.getActivatedAbilityCost(), m.description));
+                    m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
+                    m.getActivatedAbilityCost(), m.getMinionDescription()));
             }
-            else if (!m.description.empty())
+            else if (!m.getMinionDescription().empty())
             {
                 row2.push_back(display_minion_triggered_ability(
-                    m.getMinionName(), m.cost, m.getAttack(), m.getDefense(),
-                    m.description));
+                    m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
+                    m.getMinionDescription()));
             }
             else
             {
                 row2.push_back(display_minion_no_ability(
-                    m.getMinionName(), m.cost, m.getAttack(), m.getDefense()));
+                    m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense()));
             }
         }
         else
@@ -263,19 +263,19 @@ void TextDisplay::displayBoard()
             if (m.getActivatedAbilityCost() > 0)
             {
                 row3.push_back(display_minion_activated_ability(
-                    m.getMinionName(), m.cost, m.getAttack(), m.getDefense(),
-                    m.getActivatedAbilityCost(), m.description));
+                    m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
+                    m.getActivatedAbilityCost(), m.getMinionDescription()));
             }
-            else if (!m.description.empty())
+            else if (!m.getMinionDescription().empty())
             {
                 row3.push_back(display_minion_triggered_ability(
-                    m.getMinionName(), m.cost, m.getAttack(), m.getDefense(),
-                    m.description));
+                    m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
+                    m.getMinionDescription()));
             }
             else
             {
                 row3.push_back(display_minion_no_ability(
-                    m.getMinionName(), m.cost, m.getAttack(), m.getDefense()));
+                    m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense()));
             }
         }
         else
@@ -291,7 +291,7 @@ void TextDisplay::displayBoard()
     {
         const auto &ritual = boardB.getRitual();
         row4.push_back(display_ritual(
-            ritual.name, ritual.cost,
+            ritual.name, ritual.getCost(),
             ritual.getActivationCost(), ritual.description,
             ritual.getCharges()));
     }
@@ -339,8 +339,8 @@ void TextDisplay::displayCard(int handIndex)
             // Minion with activated ability - need to get ablity cost and description
             // TODO: replace minion.getActivatedAbilityDescription() with the actual function
             tpl = display_minion_activated_ability(
-                c.name, c.cost, minion.getAttack(), minion.getDefense(),
-                minion.getActivatedAbilityCost(), minion.description);
+                c.name, c.getCost(), minion.getAttack(), minion.getDefense(),
+                minion.getActivatedAbilityCost(), minion.getMinionDescription());
         }
         else
         {
@@ -349,33 +349,33 @@ void TextDisplay::displayCard(int handIndex)
             if (!c.description.empty())
             {
                 tpl = display_minion_triggered_ability(
-                    c.name, c.cost, minion.getAttack(), minion.getDefense(),
+                    c.name, c.getCost(), minion.getAttack(), minion.getDefense(),
                     c.description);
             }
             else
             {
                 // Minion without any abilities
                 tpl = display_minion_no_ability(
-                    c.name, c.cost, minion.getAttack(), minion.getDefense());
+                    c.name, c.getCost(), minion.getAttack(), minion.getDefense());
             }
         }
     }
     else if (c.type == "SPELL")
     {
-        tpl = display_spell(c.name, c.cost, c.description);
+        tpl = display_spell(c.name, c.getCost(), c.description);
     }
     else if (c.type == "ENCHANTMENT")
     {
         const auto &enchantment = static_cast<const Enchantment &>(c);
         tpl = display_enchantment_attack_defence(
-            c.name, c.cost, c.description,
+            c.name, c.getCost(), c.description,
             enchantment.getLeftBox(), enchantment.getRightBox());
     }
     else if (c.type == "RITUAL")
     {
         const auto &ritual = static_cast<const Ritual &>(c);
         tpl = display_ritual(
-            c.name, c.cost,
+            c.name, c.getCost(),
             ritual.getActivationCost(), c.description, // getting ritual activation cost and charges via getters
             ritual.getCharges());
     }
@@ -398,19 +398,19 @@ void TextDisplay::inspectMinion(int idx, int pnum)
     if (m.getActivatedAbilityCost() > 0)
     {
         mainTpl = display_minion_activated_ability(
-            m.getMinionName(), m.cost, m.getAttack(), m.getDefense(),
-            m.getActivatedAbilityCost(), m.description);
+            m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
+            m.getActivatedAbilityCost(), m.getMinionDescription());
     }
-    else if (!m.description.empty())
+    else if (!m.getMinionDescription().empty())
     {
         mainTpl = display_minion_triggered_ability(
-            m.getMinionName(), m.cost, m.getAttack(), m.getDefense(),
-            m.description);
+            m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
+            m.getMinionDescription());
     }
     else
     {
         mainTpl = display_minion_no_ability(
-            m.getMinionName(), m.cost, m.getAttack(), m.getDefense());
+            m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense());
     }
 
     printCard(mainTpl);
@@ -420,7 +420,7 @@ void TextDisplay::inspectMinion(int idx, int pnum)
 
    std::function<void(const Minion &)> collectEnchanters = [&](const Minion &minion)
 {
-    std::cout << "DEBUG: Checking minion: " << minion.name << ", type: " << minion.type << std::endl;
+    std::cout << "DEBUG: Checking minion: " << minion.name << ", type: " << minion.type << ", description: " << minion.description << std::endl;
     
     if (auto enchanter = dynamic_cast<const Enchanter *>(&minion)) // non owning pointer!!! so its okay 
     {
@@ -459,12 +459,12 @@ void TextDisplay::inspectMinion(int idx, int pnum)
                  if (ench.getLeftBox() != "" || ench.getRightBox() != "" ) {
                 // Has attack/defense modifications - use the boxes
               enchantmentRow.push_back(display_enchantment_attack_defence(
-                  ench.name, ench.cost, ench.description,
+                  ench.name, ench.getCost(), ench.description,
                    ench.getLeftBox(), ench.getRightBox()));
             } else {
                 // No attack/defense modifications - use regular enchantment display
                 enchantmentRow.push_back(display_enchantment(
-                    ench.name, ench.cost, ench.description));
+                    ench.name, ench.getCost(), ench.description));
             }
             }
 

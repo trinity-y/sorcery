@@ -1,12 +1,13 @@
 #include "damageeffect.h"
 #include "../cards/minion.h"
 #include "../player.h"
-
+#include <iostream>
 DamageEffect::DamageEffect(int damage)
     : damage{damage} {}
 
 void DamageEffect::useEffect(Player &p, int targetIndex)
 {
+    cout << "damaging minion";
     p.changeMinionDefence(targetIndex, -damage);
     // whenever an oppent's minions enters play, deal 1 damage ot it
     // TODO: This needs to be moved into player
