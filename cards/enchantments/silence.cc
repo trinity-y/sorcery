@@ -8,3 +8,4 @@ void Silence::notify(TriggerState trigger, Player &activePlayer, Player &inactiv
 void Silence::notify(TriggerState trigger, Player &p, string t) {};
 void Silence::notify(TriggerState trigger, Player &p, int t) {};
 // void Silence::notify(TriggerState trigger) {};
+

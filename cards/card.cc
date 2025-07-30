@@ -20,3 +20,4 @@ int Card::getCost() const
 {
     return cost;
 }
+

@@ -24,3 +24,4 @@ void DamageMinionEffect::useEffect(Player &activePlayer, Player &inactivePlayer)
 
     }
 }
+

@@ -11,3 +11,4 @@ void MinionChangeStatsEffect::useEffect(Player &p, int t)
     p.changeMinionAttack(t, attackChange);
     p.changeMinionDefence(t, defenseChange);
 }
+

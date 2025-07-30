@@ -142,3 +142,4 @@ string BaseMinion::getMinionDescription() const
 {
     return description;
 }
+

@@ -74,7 +74,7 @@ void Player::notifyCards(TriggerState triggeredAbilityEnum, Player &activePlayer
 
 void Player::restoreMinions()
 {
-    //debug
+    // debug
     cerr << "got to restoreMinions" << endl;
     for (int i = 0; i < board->getNumMinions(); ++i)
     {
@@ -169,8 +169,8 @@ void Player::playCard(int i, Player &activePlayer, Player &inactivePlayer) // te
         {
             // ! board->notify (when minion enters play)
             // we need to notify both players boards. so ideally this logic is moved outside
-            notify(MINION_ENTERS, activePlayer, i);
-            inactivePlayer.notify(MINION_ENTERS, activePlayer, i);
+            // notify(MINION_ENTERS, activePlayer, i);
+            // inactivePlayer.notify(MINION_ENTERS, activePlayer, i);
         }
     }
     else if (card.type == "SPELL")
@@ -245,9 +245,12 @@ void Player::moveToGraveyard(int minionIndex)
     graveyard->add(std::move(minion));
 }
 
-void Player::decrementMinionActions(int i){
+void Player::decrementMinionActions(int i)
+{
     board->decrementMinionActions(i);
 }
-const int Player::getMinionActions(int i) const{
+const int Player::getMinionActions(int i) const
+{
     return board->getMinionActions(i);
 }
+

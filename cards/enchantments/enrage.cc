@@ -22,3 +22,4 @@ string Enrage::getRightBox() const
 {
     return "*" + to_string(defenseMultiplier);
 }
+

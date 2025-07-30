@@ -16,3 +16,4 @@ void AllMinionsStatsEffect::useEffect(Player &activePlayer, Player& inactivePlay
         activePlayer.changeMinionDefence(i, defenseChange);
     }
 }
+

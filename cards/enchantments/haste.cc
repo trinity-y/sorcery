@@ -7,3 +7,4 @@ int Haste::getDefaultActions() const
 {
     return nextMinion->getDefaultActions() + actionBoost;
 }
+

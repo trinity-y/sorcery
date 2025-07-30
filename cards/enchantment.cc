@@ -14,3 +14,4 @@ string Enchantment::getRightBox() const
 {
     return enchanter->getRightBox();
 }
+

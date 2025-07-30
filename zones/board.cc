@@ -163,3 +163,4 @@ const int Board::getMinionActions(int i) const
 {
   return boardMinions[i]->getActions();
 }
+

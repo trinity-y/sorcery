@@ -17,3 +17,4 @@ OwnerMinionBuffEffect::OwnerMinionBuffEffect(int attack, int defense)
 
         
     }
+    

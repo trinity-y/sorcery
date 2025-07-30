@@ -18,3 +18,4 @@ void DamageEffect::useEffect(Player &p, int targetIndex)
     //     minion.changeDefense(-damage);
     // }
 }
+

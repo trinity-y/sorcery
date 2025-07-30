@@ -29,3 +29,4 @@ void MultiSummonEffect::useEffect(Player& activePlayer, Player& inactivePlayer)
         }
     }
 }
+

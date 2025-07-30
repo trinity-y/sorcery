@@ -10,3 +10,4 @@ void DestroyMinionEffect::useEffect(Player& p, int t)
         p.destroyMinion(t); // same as banish
     }
 }
+

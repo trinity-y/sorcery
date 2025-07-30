@@ -296,3 +296,4 @@ void GameState::startPlayerTurn()
 const Player &GameState::currentPlayer() const { return *arrOfPlayers[activePlayer]; }
 const Player &GameState::player(int index) const { return *arrOfPlayers[index]; }
 int GameState::activePlayerIndex() const { return activePlayer; }
+

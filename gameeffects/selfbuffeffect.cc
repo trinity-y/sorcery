@@ -11,3 +11,4 @@ void SelfBuffEffect::useEffect(Player &p, int minionIndex)
     p.changeMinionAttack(minionIndex, attackChange);
     p.changeMinionDefence(minionIndex, defenseChange);
 }
+

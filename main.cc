@@ -24,3 +24,4 @@ int main(int argc, char *argv[])
     Controller controller{testingMode, deck1FileName, deck2FileName, initFileName};
     controller.play();
 }
+

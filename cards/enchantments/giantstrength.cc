@@ -22,3 +22,4 @@ string GiantStrength::getRightBox() const
 {
     return "+" + to_string(defenseBuff);
 }
+

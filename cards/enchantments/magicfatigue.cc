@@ -7,3 +7,4 @@ int MagicFatigue::getCost() const
 {
     return nextMinion->getCost() + abilityCostIncrease;
 }
+

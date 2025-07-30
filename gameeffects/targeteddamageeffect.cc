@@ -19,3 +19,4 @@ void TargetedDamageEffect::useEffect(Player &p, int targetIndex)
         }
     } 
 }
+

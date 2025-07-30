@@ -37,3 +37,4 @@ const Card &Hand::getCard(int i) const
   // For now, return the first card if index is out of bounds
   return *hand[0];
 }
+

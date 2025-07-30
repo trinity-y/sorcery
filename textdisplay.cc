@@ -476,3 +476,4 @@ void TextDisplay::inspectMinion(int idx, int pnum)
 }
 
 
+

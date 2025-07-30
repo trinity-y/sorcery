@@ -109,3 +109,4 @@ string Enchanter::getMinionDescription() const
 {
     return nextMinion->getMinionDescription();
 }
+

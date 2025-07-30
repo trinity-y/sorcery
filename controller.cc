@@ -158,3 +158,4 @@ void Controller::mainLoop(string line)
     view->notify(cmd);
   }
 }
+
