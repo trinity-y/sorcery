@@ -314,7 +314,7 @@ void TextDisplay::displayCard(int handIndex)
             c.name, c.cost, c.description,
             "?", "?"); // to do: need to figure out enchantment stats
     }
-    else if (c.type == "RITURAL")
+    else if (c.type == "RITUAL")
     {
         const auto &ritual = static_cast<const Ritual &>(c);
         tpl = display_ritual(

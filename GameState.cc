@@ -22,9 +22,6 @@ GameState::GameState(string player1Name, string player2Name, vector<string> deck
 {
   arrOfPlayers[0] = make_unique<Player>(player1Name, deck1CardNames);
   arrOfPlayers[1] = make_unique<Player>(player2Name, deck2CardNames);
-  // It then shuffles both player’s decks.
-  arrOfPlayers[0]->shuffleDeck();
-  arrOfPlayers[1]->shuffleDeck();
   // the game begins with player 1.
   activePlayer = 0;
   inactivePlayer = 1;
@@ -113,8 +110,8 @@ void GameState::play(int i, int p, string t)
     {
       // try
       // {
-        int targetInt = stoi(t);
-        spell.notify(targetPlayer, targetInt);
+      int targetInt = stoi(t);
+      spell.notify(targetPlayer, targetInt);
       // } // todo: error message
     }
   }
@@ -123,8 +120,8 @@ void GameState::play(int i, int p, string t)
     Enchantment &enchantment = static_cast<Enchantment &>(card);
     // try
     // {
-      int targetInt = stoi(t);
-      targetPlayer.addEnchantment(enchantment, targetInt);
+    int targetInt = stoi(t);
+    targetPlayer.addEnchantment(enchantment, targetInt);
     // } // todo: error message
   }
   else
@@ -142,22 +139,21 @@ void GameState::use(int i)
 {
   // TODO: when minion enters/exists play
 
-  
   // for gameEffects with activePlayer + inactivePlayer
-  arrOfPlayers[activePlayer]->activateMinionAbility(i-1, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
+  arrOfPlayers[activePlayer]->activateMinionAbility(i - 1, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
 }
 
 // Uses activated ability of minion i with target p, t (a minion on a board)
 void GameState::use(int i, int p, int t)
 {
-  arrOfPlayers[activePlayer]->activateMinionAbility(i-1, *(arrOfPlayers[p - 1]), t-1);
+  arrOfPlayers[activePlayer]->activateMinionAbility(i - 1, *(arrOfPlayers[p - 1]), t - 1);
 }
 
 // Uses activated ability of minion i with target p, t (a ritual)
 void GameState::use(int i, int p, string t)
 {
   // for gameEffects with no parameters
-  arrOfPlayers[activePlayer]->activateMinionAbility(i-1, *(arrOfPlayers[p - 1]), t);
+  arrOfPlayers[activePlayer]->activateMinionAbility(i - 1, *(arrOfPlayers[p - 1]), t);
 }
 
 // Checks if the game has been won
