@@ -1,46 +1,40 @@
 #include "textdisplay.h"
 #include "GameState.h"
-#include "Player.h"
+#include "player.h"
 #include "./cards/minion.h"
 #include "./cards/ritual.h"
+#include "ascii_graphics.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
 
-using namespace std;
-
-TextDisplay::TextDisplay(GameStatePtr m)
-    : View(std::move(m))
+TextDisplay::TextDisplay(const GameState& m)
+    : View(m)
 {
 }
 
-void TextDisplay::notify(const string &cmd)
+void TextDisplay::notify(const string &cmd, int i)
 {
-    istringstream iss(cmd);
-    string keyword;
-    iss >> keyword;
-
-    if (keyword == "help")
+    if (cmd == "help")
         displayHelp();
-    else if (keyword == "board")
+    else if (cmd == "board")
         displayBoard();
-    else if (keyword == "hand")
+    else if (cmd == "hand")
         displayHand();
-    else if (keyword == "inspect")
+    else if (cmd == "inspect")
     {
-        int idx;
-        iss >> idx;
-        inspectMinion(idx - 1, model->activePlayerIndex());
+        inspectMinion(i - 1, gameState.activePlayerIndex());
     }
-    // else: other commands mutate the model → model will re‑notify
     else
-        cout << "[TextDisplay] unknown cmd: " << cmd << "\n";
+    {
+        std::cout << "[TextDisplay] unknown cmd: " << cmd << "\n";
+    }
 }
 
 void TextDisplay::printCard(const card_template_t &tpl)
 {
     for (auto &line : tpl)
-        cout << line << "\n";
+        std::cout << line << "\n";
 }
 
 void TextDisplay::printRow(const vector<card_template_t> &row)
@@ -51,28 +45,28 @@ void TextDisplay::printRow(const vector<card_template_t> &row)
     for (int r = 0; r < H; ++r)
     {
         for (auto &tpl : row)
-            cout << tpl[r] << " ";
-        cout << "\n";
+            std::cout << tpl[r] << " ";
+        std::cout << "\n";
     }
 }
 void TextDisplay::displayHelp()
 {
-    cout << "Available commands:" << endl;
-    cout << "  help           - Show this help message" << endl;
-    cout << "  board          - Display the current board state" << endl;
-    cout << "  hand           - Display your hand" << endl;
-    cout << "  inspect <i>    - View minion i's card and all enchantments on that minion" << endl;
-    cout << "  play <i> [p t] - Play card i, optionally targeting target-card t owned by target-player p" << endl;
-    cout << "  attack <i>.    - Orders minion i to attack the opponent" << endl;
-    cout << "  attack <i> [j] - Orders minion i to attack other-minion j" << endl;
-    cout << "  use <i> [p t]  - Use minion i's special ability, optionally targeting target-card t owned by target-player p" << endl;
-    cout << "  end            - End the current player’s turn." << endl;
-    cout << "  quit           - Quit the game" << endl;
+    std::cout << "Available commands:" << endl;
+    std::cout << "  help           - Show this help message" << endl;
+    std::cout << "  board          - Display the current board state" << endl;
+    std::cout << "  hand           - Display your hand" << endl;
+    std::cout << "  inspect <i>    - View minion i's card and all enchantments on that minion" << endl;
+    std::cout << "  play <i> [p t] - Play card i, optionally targeting target-card t owned by target-player p" << endl;
+    std::cout << "  attack <i>.    - Orders minion i to attack the opponent" << endl;
+    std::cout << "  attack <i> [j] - Orders minion i to attack other-minion j" << endl;
+    std::cout << "  use <i> [p t]  - Use minion i's special ability, optionally targeting target-card t owned by target-player p" << endl;
+    std::cout << "  end            - End the current player’s turn." << endl;
+    std::cout << "  quit           - Quit the game" << endl;
 }
 
 void TextDisplay::displayHand()
 {
-    auto &hand = model->currentPlayer().getHand();
+    auto &hand = gameState.currentPlayer().getHand();
     vector<card_template_t> row;
     for (int i = 0; i < hand.getHandLen(); ++i)
     {
@@ -97,34 +91,59 @@ void TextDisplay::displayHand()
         }
         else if (c.type == "Ritual")
         {
+            const auto &ritual = static_cast<const Ritual &>(c);
             row.push_back(display_ritual(
                 c.name, c.cost,
-                0, c.description, // to do: activation cost 0, no charges for now
-                0));
+                ritual.getActivationCost(), c.description, // getting ritual activation cost and charges via getters
+                ritual.getCharges()));
         }
     }
     printRow(row);
-    cout << "\n";
+    std::cout << "\n";
 }
 
 void TextDisplay::displayBoard()
 {
-    auto &A = model->player(0);
-    auto &B = model->player(1);
+    auto &A = gameState.player(0);
+    auto &B = gameState.player(1);
+    auto &boardA = A.getBoard();
+    auto &boardB = B.getBoard();
 
     // Row 1: [Ritual][Empty][Player 1][Empty][Grayeyard]
     vector<card_template_t> row1;
-    row1.push_back(CARD_TEMPLATE_EMPTY); // Player 1's ritual slot (empty for now)
+    // Player 1's ritual slot
+    if (boardA.hasRitualCard())
+    {
+        const auto &ritual = boardA.getRitual();
+        row1.push_back(display_ritual(
+            ritual.name, ritual.cost,
+            ritual.getActivationCost(), ritual.description,
+            ritual.getCharges()));
+    }
+    else
+    {
+        row1.push_back(CARD_TEMPLATE_EMPTY); // if no ritual, fill with empty
+    }
     row1.push_back(CARD_TEMPLATE_EMPTY); // Empty
     row1.push_back(display_player_card(
-        1, A.getName(), A.getLife(), A.getMagic())); // Player 1 in center-top  
-    row1.push_back(CARD_TEMPLATE_EMPTY); // Empty
-    row1.push_back(CARD_TEMPLATE_EMPTY); // Player 1's graveyard (empty for now)
+        1, A.getName(), A.getLife(), A.getMagic())); // Player 1 in center-top
+    row1.push_back(CARD_TEMPLATE_EMPTY);             // Empty
+    // Player 1's graveyard
+    auto &graveyardA = A.getGraveyard();
+    if (graveyardA.getNumMinions() > 0)
+    {
+        row1.push_back(display_minion_no_ability(
+            "Graveyard", 0, 0, graveyardA.getNumMinions()));
+    }
+    else
+    {
+        row1.push_back(CARD_TEMPLATE_EMPTY); // Empty graveyard
+    }
 
     // Row 2: Player 1's minions (5 slots)
     vector<card_template_t> row2;
-    auto &boardA = A.getBoard();
-    for (int i = 0; i < 5, ++i){
+    for (int i = 0; i < 5, ++i;)
+    {
         if (i < boardA.getNumMinions())
         {
             auto &m = boardA.getMinion(i);
@@ -135,12 +154,10 @@ void TextDisplay::displayBoard()
         {
             row2.push_back(CARD_TEMPLATE_EMPTY); // Fill empty slots
         }
-
     }
 
     // Row 3: Player 2's minions (5 slots)
     vector<card_template_t> row3;
-    auto &boardB = B.getBoard();
     for (int i = 0; i < 5; ++i)
     {
         if (i < boardB.getNumMinions())
@@ -157,24 +174,45 @@ void TextDisplay::displayBoard()
 
     // Row 4: [Ritual][Empty][Player 2][Empty][Graveyard]
     vector<card_template_t> row4;
-    row4.push_back(CARD_TEMPLATE_EMPTY); // Player 2's ritual slot (empty for now)
-    row4.push_back(CARD_TEMPLATE_EMPTY); // Empty   
+    // Player 2's ritual slot
+    if (boardB.hasRitualCard())
+    {
+        const auto &ritual = boardB.getRitual();
+        row4.push_back(display_ritual(
+            ritual.name, ritual.cost,
+            ritual.getActivationCost(), ritual.description,
+            ritual.getCharges()));
+    }
+    else
+    {
+        row4.push_back(CARD_TEMPLATE_EMPTY); // if no ritual, fill with empty
+    }
+    row4.push_back(CARD_TEMPLATE_EMPTY); // Empty
     row4.push_back(display_player_card(
         2, B.getName(), B.getLife(), B.getMagic())); // Player 2 in center-bottom
-    row4.push_back(CARD_TEMPLATE_EMPTY); // Empty
-    row4.push_back(CARD_TEMPLATE_EMPTY); // Player 2's graveyard (empty for now)
+    row4.push_back(CARD_TEMPLATE_EMPTY);             // Empty
+    auto &graveyardB = B.getGraveyard();
+    if (graveyardB.getNumMinions() > 0)
+    {
+        row4.push_back(display_minion_no_ability(
+            "Graveyard", 0, 0, graveyardB.getNumMinions()));
+    }
+    else
+    {
+        row4.push_back(CARD_TEMPLATE_EMPTY); // Empty graveyard
+    }
 
     // Print the rows
     printRow(row1);
     printRow(row2);
-    printRow({CENTRE_GRAPHIC});     // centre graphic
+    printRow({CENTRE_GRAPHIC}); // centre graphic
     printRow(row3);
     printRow(row4);
 }
 
 void TextDisplay::displayCard(int handIndex)
 {
-    auto &c = model->currentPlayer().getHand().getCard(handIndex);
+    auto &c = gameState.currentPlayer().getHand().getCard(handIndex);
     card_template_t tpl;
     if (c.type == "Minion")
     {
@@ -184,17 +222,18 @@ void TextDisplay::displayCard(int handIndex)
         if (minion.getActivatedAbilityCost() > 0)
         {
             // Minion with activated ability - need to get ablity cost and description
-            tpl = display_minion_with_ability(
+            // TODO: replace minion.getActivatedAbilityDescription() with the actual function
+            tpl = display_minion_activated_ability(
                 c.name, c.cost, minion.getAttack(), minion.getDefense(),
-                minion.getActivatedAbilityCost(), minion.getActivatedAbilityDescription());
+                minion.getActivatedAbilityCost(), "minion.getActivatedAbilityDescription()");
         }
         else
         {
             // Check if minion has triggered ability
-            // asummer if no activated ability, but description, then its a triggered ability
+            // asumme if no activated ability, but description, then its a triggered ability
             if (!c.description.empty())
             {
-                tpl = display_minion_with_triggered_ability(
+                tpl = display_minion_triggered_ability(
                     c.name, c.cost, minion.getAttack(), minion.getDefense(),
                     c.description);
             }
@@ -205,13 +244,12 @@ void TextDisplay::displayCard(int handIndex)
                     c.name, c.cost, minion.getAttack(), minion.getDefense());
             }
         }
-        
     }
     else if (c.type == "Spell")
     {
         tpl = display_spell(c.name, c.cost, c.description);
     }
-    else if(c.type == "Enchantment")
+    else if (c.type == "Enchantment")
     {
         tpl = display_enchantment_attack_defence(
             c.name, c.cost, c.description,
@@ -219,22 +257,23 @@ void TextDisplay::displayCard(int handIndex)
     }
     else if (c.type == "Ritual")
     {
+        const auto &ritual = static_cast<const Ritual &>(c);
         tpl = display_ritual(
             c.name, c.cost,
-            0, c.description, // to do: activation cost 0, no charges for now
-            0);
+            ritual.getActivationCost(), c.description, // getting ritual activation cost and charges via getters
+            ritual.getCharges());
     }
     else
     {
         // todo: error handling for unknown card type
     }
     printCard(tpl);
-    cout << "\n";
+    std::cout << "\n";
 }
 
 void TextDisplay::inspectMinion(int idx, int pnum)
 {
-    auto &P = model->player(pnum);
+    auto &P = gameState.player(pnum);
     auto &board = P.getBoard();
     auto &m = board.getMinion(idx);
 
@@ -245,5 +284,5 @@ void TextDisplay::inspectMinion(int idx, int pnum)
 
     // For now, we don't have enchantments implemented
     // This is a placeholder for future enchantment display
-    cout << "\n";
+    std::cout << "\n";
 }

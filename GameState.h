@@ -23,8 +23,8 @@ private:
   int inactivePlayer;
   unique_ptr<Player> arrOfPlayers[2];
   void swapPlayers();
-  GameStateNotification *notification;
-  bool activeGame = false;
+  // GameStateNotification *notification;
+  // bool activeGame = false;
 
 public:
   GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames); // should take in both players names, vectors with deck card names, maybe shuffle decks??? -trin
@@ -41,7 +41,9 @@ public:
   void end();
   // The draw command draws a card, similar to the effect if the player just
   // started their turn.
-  Card &draw();
+  // Card &draw();
+  void draw();
+
   // discards the ith card in the player’s hand, simply removing it from their
   // hand (the card does not go to the graveyard, trigger leave play effects or
   // anything else)
@@ -61,20 +63,23 @@ public:
   // player’s hand with no target
   void use(int i);
   // commands the ith minion to use it's activated ability in the active
-  // player’s hand with a target
+  // player’s hand with a target (another minion i)
   void use(int i, int p, int t);
+  // commands the ith minion to use it's activated ability in the active
+  // player’s hand with a target (a ritual/some other string identified card)
+  void use(int i, int p, string t);
   // is the game won yet
   bool isWon();
   // startup game stuff
   void startPlayerTurn();
 
   // get active player for model
-  Player& getActivePlayer();
-  Player& getInactivePlayer();
+  Player &getActivePlayer();
+  Player &getInactivePlayer();
 
   // View interface methods
-  const Player &currentPlayer () const ;
-  const Player &player (int index) const;
+  const Player &currentPlayer() const;
+  const Player &player(int index) const;
   int activePlayerIndex() const;
 };
 #endif

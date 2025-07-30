@@ -6,16 +6,16 @@
 class GameState; // forward declaration
 
 using namespace std;
-using GameStatePtr = shared_ptr<GameState>;
+// using GameStatePtr = const GameState* ;
 
 class View
 {
 protected:
-    GameStatePtr model;
+    const GameState& gameState;
 
 public:
-    explicit View(GameStatePtr m)
-        : model(std::move(m))
+    explicit View(const GameState& gameState)
+        : gameState(gameState)
     {
     }
 
@@ -23,6 +23,7 @@ public:
 
     // Must be implemented by derived classes
     virtual void notify(const string &cmd) = 0;
+    virtual void notify(const string &cmd, int i) = 0;
     virtual void displayBoard() = 0;
     virtual void displayHand() = 0;
     virtual void displayCard(int handIndex) = 0;

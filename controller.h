@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include "GameState.h"
-#include "View.h"
+#include "view.h"
 using namespace std;
 
 class Controller {

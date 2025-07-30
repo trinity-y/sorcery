@@ -6,6 +6,7 @@ using namespace std;
 #include "./zones/deck.h"
 #include "./zones/hand.h"
 #include "./zones/graveyard.h"
+#include "./cards/enchantment.h"
 
 class Player
 {
@@ -20,12 +21,12 @@ class Player
 public:
     // Accessing + modifying player
     Player(string name, vector<string> deckNames);
-    ~Player() {}; // temp
+    ~Player() {};                       // temp
     void addMagic(int additionalMagic); // Need to increment magic by 1 in GameState
     void subtractMagic(int subtractMagic);
     int getLife() const;
     void drawCard();
-    void playCard(int i); // play card i in hand (0-indexed)
+    void playCard(int i, Player &activePlayer, Player &inactivePlayer); // play card i in hand (0-indexed)
 
     // Accessing + modifying individual minions on the board
     const int getMinionAttack(int i) const;
@@ -33,19 +34,19 @@ public:
     void changeMinionAttack(int i, int amount);
     void changeMinionDefence(int i, int amount);
     void reduceLife(int reduceBy);
-    void activateMinionAbility(int i, bool passPlayer);
-    void activateMinionAbility(int i, Player& p, int t);
-    void activateMinionAbility(int i, Player& p, string t);
+    void activateMinionAbility(int i, Player &activePlayer, Player &inactivePlayer);
+    void activateMinionAbility(int i, Player &p, int t);
+    void activateMinionAbility(int i, Player &p, string t);
 
     // Accessing + modifying player's zones
     int getNumMinions() const; // number of minions in player's board
     void addCardToBoard(unique_ptr<Card> card);
     void shuffleDeck();
     int getHandLen();
-    void discardCard(int i); // Discards ith card from hand
-    bool deckIsEmpty(); // Checking if the players deck is empty
-    void restoreMinions(); // restore minions to their default number of actions
-    void notifyCards(TriggerState triggeredAbilityEnum); // notify all cards in board
+    void discardCard(int i);                             // Discards ith card from hand
+    bool deckIsEmpty();                                  // Checking if the players deck is empty
+    void restoreMinions();                               // restore minions to their default number of actions
+    void notifyCards(TriggerState triggeredAbilityEnum, Player &activePlayer, Player &inactivePlayer); // notify all cards in board
 
     // View interface methods
     const Hand &getHand() const { return *hand; }
@@ -56,8 +57,22 @@ public:
 
     // Additional in progress methods from GameState
     Card &getCardFromHand(int i);
-    void addEnchantment(Card &c, int r);
-    void addEnchantmentFromHand(int handIndex, int minionIndex); // can only be played on minions
+    void addEnchantment(Enchantment &enchantment, int minionIndex); // Get the enchantment card (seemingly from another player in Gamestate), then apply this enchantment to minionIndex on the players own board
+    // Get the enchantment card at handindex, then apply that enchantment to minionIndex on board
+    // void addEnchantmentFromHand(int handIndex, int minionIndex); // can only be played on minions
+
+    // for banish effect
+    void destroyMinion(int i);
+    void destroyRitual();
+
+    // for unsummon effect
+    void returnToHand(int minionIndex);
+
+    // for recharge effect
+    void changeRitualCharges(int amount);
+
+    // for disenchant effect
+    void disenchantMinion(int i); // remove top level enchantment of a minion at index i
 };
 
 #endif

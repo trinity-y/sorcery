@@ -37,14 +37,18 @@ GameState::~GameState()
 // Ends current player's turn
 void GameState::end()
 {
-  arrOfPlayers[activePlayer]->notifyCards(END_OF_TURN);
+  arrOfPlayers[activePlayer]->notifyCards(END_OF_TURN, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
   swapPlayers();
   // Start next players turn
   startPlayerTurn();
 }
 
 // Draws a card for the active player
-Card &GameState::draw()
+// Card &GameState::draw()
+// {
+//   arrOfPlayers[activePlayer]->drawCard();
+// }
+void GameState::draw()
 {
   arrOfPlayers[activePlayer]->drawCard();
 }
@@ -77,97 +81,77 @@ void GameState::attack(int i, int j)
   arrOfPlayers[inactivePlayer]->changeMinionDefence(i, -initialMinionAAttack);
 }
 
+// ! awkward because in one play method we do it in gamestate and another we do it inside player. also now i need  to pass in players into player and its just weird
 // Plays the ith card with no target
 void GameState::play(int i)
 {
   // Range checking for sanity
-  if (i >= 1 && i <= 5)
+  if (i >= 1 && i <= 5) // technically not needed because inside getCard we check bounds. but we can just keep anyways
   {
-    arrOfPlayers[activePlayer]->playCard(i - 1);
+    arrOfPlayers[activePlayer]->playCard(i - 1, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
   }
 }
 
 // Plays the ith card on card t owned by player p
 void GameState::play(int i, int p, string t)
 {
-  if (t == "r")
-  {
-    // getting the card at i
-    Card& c = arrOfPlayers[activePlayer]->getCardFromHand(i-1); // 0th indexed i
-    if ((p - 1) == activePlayer)
-    {
-      // active player
-      // Assuming they can only play a spell on a ritual
-      if (c.type == "SPELL"){
-        // We are sure that c is a Spell
-        Spell& s = static_cast<Spell&>(c);
-        s.gameEffect->useEffect(*arrOfPlayers[activePlayer], t);
-      }
-    }
-    else
-    {
-      // inactive player
-        // Assuming they can only play a spell on a ritual
-        if (c.type == "SPELL"){
-          Spell& s = static_cast<Spell&>(c);
-          s.gameEffect->useEffect(*arrOfPlayers[inactivePlayer], t);
-        } 
-      }
-    }
-    // t is a number between 1 and 5
-    else
-    {
-      int targetInt = stoi(t);
-      if (targetInt >= 1 && targetInt <= 5){ // checking for sanity
-        targetInt -= 1; // for 0-indexing
-        if ((p - 1) == activePlayer)
-        {
-          // playing your card on your own minions
-          Card& c = arrOfPlayers[activePlayer]->getCardFromHand(i-1); 
-          // This can be used to play enchantments and spells with targets.
-          if (c.type == "SPELL"){
-            Spell& s = static_cast<Spell&>(c);
-            s.gameEffect->useEffect(*arrOfPlayers[activePlayer], targetInt); // playing a spell on t minion
-          } else if (c.type == "ENCHANTMENT"){
-            arrOfPlayers[activePlayer]->addEnchantmentFromHand(i, targetInt);
-          }
-        }
-        else
-        {
-          // inactive player
-          // Assuming they can only play a spell on a ritual
-          if (c.type == "SPELL"){
-            // We are sure that c is a Spell
-            Spell& s = static_cast<Spell&>(c);
-            s.gameEffect->useEffect(*arrOfPlayers[activePlayer], t);
-          } else if (c.type == "ENCHANTMENT"){
-            // addEnchantment(Card &c, int r)
-            arrOfPlayers[inactivePlayer]->addEnchantment(c, i);
-          }
-        }
-      }
-    }
+  // Card &card = arrOfPlayers[activePlayer]->getCardFromHand(i - 1);
+  // Player &targetPlayer = *(arrOfPlayers[p - 1]);
+  // if (card.type == "SPELL")
+  // {
+  //   const Spell &spell = static_cast<Spell &>(card);
+  //   // call correct overloaded function
+  //   if (t == "r")
+  //   {
+  //     spell.notify(targetPlayer, t);
+  //   }
+  //   else
+  //   {
+  //     try
+  //     {
+  //       int t = stoi(t);
+  //       spell.notify(targetPlayer, t);
+  //     } // todo: error message
+  //   }
+  // }
+  // else if (card.type == "ENCHANTMENT")
+  // {
+  //   const Enchantment &enchantment = static_cast<Enchantment &>(card);
+  //   try
+  //   {
+  //     int t = stoi(t);
+  //     targetPlayer.addEnchantment(enchantment, t);
+  //   } // todo: error message
+  // }
+  // else
+  // {
+  //   // todo: error message
+  // }
+  // arrOfPlayers[activePlayer]->discardCard(i);
+  // you are not able to play minions or rituals directly from the hand.
 }
+
+// todo: notify for start of turn, end of turn, etc
 
 // Uses activated ability of minion i with no target
 void GameState::use(int i)
 {
-  // for gameEffects with no parameters
-  arrOfPlayers[activePlayer]->activateMinionAbility(i, false);
+  // TODO: when minion enters/exists play
+  // for gameEffects with activePlayer + inactivePlayer
+  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
 }
 
-// Uses activated ability of minion i with target p, t
+// Uses activated ability of minion i with target p, t (a minion on a board)
 void GameState::use(int i, int p, int t)
 {
-  // for gameEffects with no parameters
-  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[p-1]), t);
+  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[p - 1]), t);
 }
 
-// Uses activated ability of minion i with target p, t
+// Uses activated ability of minion i with target p, t (a ritual)
 void GameState::use(int i, int p, string t)
 {
   // for gameEffects with no parameters
-  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[p-1]), t);
+  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[p - 1]), t);
 }
 
 // Checks if the game has been won
@@ -185,7 +169,7 @@ void GameState::notify(string cmd, int i, int p, string t)
 {
   if (cmd == "play")
   {
-    play(i,p,t);
+    play(i, p, t);
   }
   else if (cmd == "use")
   {
@@ -233,12 +217,14 @@ void GameState::notify(string cmd)
   }
 }
 
-  // get active player for model
-Player& GameState::getActivePlayer() {
+// get active player for model
+Player &GameState::getActivePlayer()
+{
   return *arrOfPlayers[activePlayer];
 }
 
-Player& GameState::getInactivePlayer() {
+Player &GameState::getInactivePlayer()
+{
   return *arrOfPlayers[inactivePlayer];
 }
 
@@ -264,7 +250,7 @@ void GameState::startPlayerTurn()
   arrOfPlayers[activePlayer]->restoreMinions();
   // all triggered abilities titled “at the start of your turn” (or similar) on cards on that player’s board activate.
   // enum Trigger::TriggerState::START_OF_TURN = 0
-  arrOfPlayers[activePlayer]->notifyCards(START_OF_TURN);
+  arrOfPlayers[activePlayer]->notifyCards(START_OF_TURN, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
 }
 
 // View interface methods

@@ -1,6 +1,6 @@
 #include "controller.h"
 #include "GameState.h"
-#include "TextDisplay.h"
+#include "textdisplay.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -44,7 +44,7 @@ void Controller::play() {
   // deck1->printDeck();
   // deck1->shuffle();
   // deck1->printDeck();
-  view = make_unique<TextDisplay>();
+  view = make_unique<TextDisplay>(*gameState);
   string line;
 
   while (true) {

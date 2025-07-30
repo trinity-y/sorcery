@@ -13,11 +13,11 @@ private:
     void printRow(const std::vector<card_template_t> &row);
 
 public:
-    explicit TextDisplay(GameStatePtr m);
+    explicit TextDisplay(const GameState& m);
     ~TextDisplay() override = default;
 
-    void notify(const std::string &cmd) override;
-
+    void notify(const std::string &cmd, int i) override;
+    void notify(const string &cmd) override;
     void displayBoard() override;
     void displayHand() override;
     void displayCard(int handIndex) override;
