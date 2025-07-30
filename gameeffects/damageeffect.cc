@@ -5,8 +5,9 @@
 DamageEffect::DamageEffect(int damage)
     : damage{damage} {}
 
-void DamageEffect::useEffect(Player &p, int t)
+void DamageEffect::useEffect(Player &p, int targetIndex)
 {
+    p.changeMinionDefence(targetIndex, -damage);
     // whenever an oppent's minions enters play, deal 1 damage ot it
     // TODO: This needs to be moved into player
     // const Board &board = p.getBoard();

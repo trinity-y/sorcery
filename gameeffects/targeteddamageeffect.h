@@ -9,7 +9,7 @@ class TargetedDamageEffect : public GameEffect
 
 public:
     TargetedDamageEffect(int damage);
-    void useEffect(Player& p, int t) override;
+    void useEffect(Player& p, int targetIndex) override;
 };
 
 #endif

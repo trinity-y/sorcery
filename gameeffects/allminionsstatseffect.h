@@ -1,8 +1,6 @@
 #ifndef ALLMINIONSSTATSEFFECT_H
 #define ALLMINIONSSTATSEFFECT_H
 #include "gameeffect.h"
-#include <vector>
-#include <memory>
 
 class Minion; // forward declaration
 class Player; // forward declaration

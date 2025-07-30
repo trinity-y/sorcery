@@ -26,7 +26,8 @@ public:
     void subtractMagic(int subtractMagic);
     int getLife() const;
     void drawCard();
-    void playCard(int i, Player &activePlayer, Player &inactivePlayer); // play card i in hand (0-indexed)
+    void playCard(int i, Player &activePlayer, Player &inactivePlayer);              // play card i in hand (0-indexed)
+    void notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer); // for calling to board from another player
 
     // Accessing + modifying individual minions on the board
     const int getMinionAttack(int i) const;
@@ -43,9 +44,9 @@ public:
     void addCardToBoard(unique_ptr<Card> card);
     void shuffleDeck();
     int getHandLen();
-    void discardCard(int i);                             // Discards ith card from hand
-    bool deckIsEmpty();                                  // Checking if the players deck is empty
-    void restoreMinions();                               // restore minions to their default number of actions
+    void discardCard(int i);                                                                           // Discards ith card from hand
+    bool deckIsEmpty();                                                                                // Checking if the players deck is empty
+    void restoreMinions();                                                                             // restore minions to their default number of actions
     void notifyCards(TriggerState triggeredAbilityEnum, Player &activePlayer, Player &inactivePlayer); // notify all cards in board
 
     // View interface methods
@@ -73,6 +74,10 @@ public:
 
     // for disenchant effect
     void disenchantMinion(int i); // remove top level enchantment of a minion at index i
+
+    // for raisedead effect
+    unique_ptr<Card> removeFromGraveyard(); // Remove and return last minion from graveyard
+    int getNumMinionsInGraveyard() const;   // Get number of minions in graveyard
 };
 
 #endif

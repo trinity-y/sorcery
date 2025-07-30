@@ -91,7 +91,7 @@ void GameState::play(int i)
   // Range checking for sanity
   if (i >= 1 && i <= 5)
   {
-    // assuming there are no cards that do not need access to both players
+    // assuming there are no cards that do not need access to one or both players
     arrOfPlayers[activePlayer]->playCard(i - 1, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
   }
 }

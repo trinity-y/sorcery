@@ -4,3 +4,6 @@ Air Elemental
 Earth Elemental
 Earth Elemental
 Earth Elemental
+Bone Golem
+Fire Elemental
+Novice Pyromancer

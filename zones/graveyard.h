@@ -14,6 +14,7 @@ class Graveyard {
     unique_ptr<Minion> pop();
     const int getNumMinions() const;
     void notify(TriggerState trigger);
+    unique_ptr<Card> removeLastMinion(); // Remove and return last minion from graveyard
 };
 
 #endif

@@ -9,7 +9,7 @@ class DamageMinionEffect : public GameEffect
     int damage;
 public:
     DamageMinionEffect(int damage);
-    void useEffect(Player &p, int t) override;
+    void useEffect(Player &p, int targetIndex) override;
 };
 
 #endif

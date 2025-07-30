@@ -4,11 +4,13 @@
 
 TargetedDamageEffect::TargetedDamageEffect(int damage)
     : damage{damage} {}
-void TargetedDamageEffect::useEffect(Player &p, int t)
+void TargetedDamageEffect::useEffect(Player &p, int targetIndex)
 {
-    if (t < p.getNumMinions() && t >= 0)
+    if (targetIndex < p.getNumMinions() && targetIndex >= 0)
     {
-        int targetDefence = p.getMinionDefence(t);
-        p.changeMinionDefence(t, -damage);
-    }
+        const int targetDefence = p.getMinionDefence(targetIndex);
+        p.changeMinionDefence(targetIndex, -damage);
+
+        
+    } // TODO: Handle minion death if defense <= 0
 }

@@ -144,21 +144,24 @@ void Player::reduceLife(int reduceBy)
 {
     life -= reduceBy;
 }
-
+void Player::notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer)
+{
+    board->notify(trigger, activePlayer, inactivePlayer);
+}
 void Player::playCard(int i, Player &activePlayer, Player &inactivePlayer) // temporary fix
 {
     Card &card = hand->getCard(i);
+    magic -= card.cost;
     if (card.type == "MINION" || card.type == "RITUAL")
     {
         // ! debug
         board->add(hand->remove(i));
-        cout << "placed card " << card.name << " into the board. board = " << endl;
-        board->printBoard();
-        magic -= card.cost;
         if (card.type == "MINION")
         {
             // ! board->notify (when minion enters play)
             // we need to notify both players boards. so ideally this logic is moved outside
+            notify(MINION_ENTERS, activePlayer, inactivePlayer);
+            inactivePlayer.notify(MINION_ENTERS, activePlayer, inactivePlayer);
         }
     }
     else if (card.type == "SPELL")
@@ -212,4 +215,14 @@ void Player::disenchantMinion(int i)
 {
     // remove top level enchantment of a minion at index i
     board->disenchantMinion(i);
+}
+
+unique_ptr<Card> Player::removeFromGraveyard()
+{
+    return graveyard->removeLastMinion(); // Need to implement in Graveyard class
+}
+
+int Player::getNumMinionsInGraveyard() const
+{
+    return graveyard->getNumMinions();
 }

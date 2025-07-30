@@ -7,8 +7,6 @@ void DestroyMinionEffect::useEffect(Player& p, int t)
 {
     if (t < p.getNumMinions() && t >= 0)
     {
-        // Set defense to 0 or negative to "destroy" the minion
-        // In a full implementation, this would trigger removal from board
-        p.changeMinionDefence(t, p.getMinionDefence(t));
+        p.destroyMinion(t); // same as banish
     }
 }
