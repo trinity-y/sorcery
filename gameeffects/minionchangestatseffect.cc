@@ -7,11 +7,7 @@ MinionChangeStatsEffect::MinionChangeStatsEffect(int attackChange, int defenseCh
 
 void MinionChangeStatsEffect::useEffect(Player &p, int t)
 {
-    Board &board = p.getBoard();
-    if (t >= 0 && t < board.getNumMinions())
-    {
-        Minion &minion = board.getMinion(t);
-        minion.changeAttack(attackChange);
-        minion.changeDefense(defenseChange);
-    }
+    // idk why theres still an error referencing board when its nowhere to be seen, idk if it's just the IDE
+    p.changeMinionAttack(t, attackChange);
+    p.changeMinionDefence(t, defenseChange);
 }

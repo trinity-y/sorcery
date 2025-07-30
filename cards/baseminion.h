@@ -18,22 +18,24 @@ class BaseMinion : public Minion
 public:
     BaseMinion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility);
     int decrementActions() override;
-    int getAttack() override;
-    int getDefense() override;
+    int getAttack() const override;
+    int getDefense() const override;
     void changeAttack(int amount) override;
     void changeDefense(int amount) override;
     // TriggeredAbility& getTriggeredAbility();
     // ActivatedAbility& getActivatedAbility();
-    string getLeftBox() override;
-    string getRightBox() override;
+    string getLeftBox() const override;
+    string getRightBox() const override;
     void setActions(int newActions) override;
-    void notify(TriggerState trigger) override;
-    // void notify(TriggerState trigger, Player& p) override;
-    void notify(TriggerState trigger, Player& p, int t) override;
-    void notify(TriggerState trigger, Player& p, string t) override;
+    // void notify(TriggerState trigger) override;
+    void notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer) override;
+    void notify(TriggerState trigger, Player &p, int t) override;
+    void notify(TriggerState trigger, Player &p, string t) override;
 
-    int getActivatedAbilityCost() override;
-    int getDefaultActions() override;
+    int getActivatedAbilityCost() const override;
+    int getDefaultActions() const override;
 };
 
 #endif
+
+

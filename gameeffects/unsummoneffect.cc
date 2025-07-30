@@ -1,20 +1,16 @@
 #include "unsummoneffect.h"
 #include "../cards/minion.h"
+#include "../player.h"
 
-UnsummonEffect::UnsummonEffect(Minion *target)
-    : target{target} {}
+UnsummonEffect::UnsummonEffect() {}
 
-void UnsummonEffect::useEffect(Player& p1, Player& p2)
+// In a full implementation, this would:
+// 1. Remove minion from board
+// 2. Add minion back to owner's hand
+// 3. Reset any temporary buffs/debuffs
+void UnsummonEffect::useEffect(Player &p, int t)
 {
-    if (target)
-    {
-        // Return the minion to its owner's hand
-        // In a full implementation, this would:
-        // 1. Remove minion from board
-        // 2. Add minion back to owner's hand
-        // 3. Reset any temporary buffs/debuffs
-
-        // THIS IS SUPPPOSED TO:
-        // return target minion to owner's hand
-    }
+    // THIS IS SUPPPOSED TO:
+    // return target minion to owner's hand
+    p.returnToHand(t);
 }

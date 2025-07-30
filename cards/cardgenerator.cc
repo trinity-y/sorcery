@@ -9,6 +9,9 @@
 #include "../gameeffects/multisummoneffect.h"
 #include "../gameeffects/selfbuffeffect.h"
 #include "../trigger.h"
+
+using namespace std;
+
 CardGenerator::CardGenerator() {}
 unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
 {
@@ -49,7 +52,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
             move(damageEffect));
 
         // Create the minion first
-        auto fireElemental = make_unique<Minion>(2, 2, "Fire Elemental", "Whenever an opponent's minion enters play, deal 1 damage to it.", 2, nullptr, move(triggeredAbility));
+        auto fireElemental = make_unique<BaseMinion>(2, 2, "Fire Elemental", "Whenever an opponent's minion enters play, deal 1 damage to it.", 2, nullptr, move(triggeredAbility));
 
         return move(fireElemental);
     }
@@ -65,13 +68,13 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
             move(allMinionsEffect));
 
         // Create the minion first
-        auto potionSeller = make_unique<Minion>(1, 3, "Potion Seller", "At the end of your turn, all your minions gain +0/+1.", 2, nullptr, move(triggeredAbility));
+        auto potionSeller = make_unique<BaseMinion>(1, 3, "Potion Seller", "At the end of your turn, all your minions gain +0/+1.", 2, nullptr, move(triggeredAbility));
 
         return move(potionSeller);
     }
     else if (cardName == "Novice Pyromancer")
     {
-            // Create the targeted damage effect
+        // Create the targeted damage effect
         // For activated abilities, the target is chosen when the ability is used
         auto targetedDamageEffect = make_unique<TargetedDamageEffect>(1); // 1 damage
 
@@ -81,7 +84,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
             move(targetedDamageEffect)); // Magic cost of 1
 
         // Create the minion first (0 attack, 1 defense, card cost 1)
-        auto novicePyromancer = make_unique<Minion>(0, 1, "Novice Pyromancer", "Deal 1 damage to target minion.", 1, move(activatedAbility), nullptr);
+        auto novicePyromancer = make_unique<BaseMinion>(0, 1, "Novice Pyromancer", "Deal 1 damage to target minion.", 1, move(activatedAbility), nullptr);
 
         return move(novicePyromancer);
     }
@@ -96,7 +99,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
             move(summonEffect)); // Magic cost of 1
 
         // Create the minion first (1 attack, 1 defense, card cost 1)
-        auto apprenticeSummoner = make_unique<Minion>(1, 1, "Apprentice Summoner", "Summon a 1/1 Air Elemental.", 1, move(activatedAbility), nullptr);
+        auto apprenticeSummoner = make_unique<BaseMinion>(1, 1, "Apprentice Summoner", "Summon a 1/1 Air Elemental.", 1, move(activatedAbility), nullptr);
 
         return move(apprenticeSummoner);
     }
@@ -111,7 +114,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
             move(summonEffect)); // Magic cost of 2
 
         // Create the minion first (2 attack, 3 defense, card cost 3)
-        auto masterSummoner = make_unique<Minion>(2, 3, "Master Summoner", "Summon up to three 1/1 air elementals.", 3, move(activatedAbility), nullptr);
+        auto masterSummoner = make_unique<BaseMinion>(2, 3, "Master Summoner", "Summon up to three 1/1 air elementals.", 3, move(activatedAbility), nullptr);
 
         return move(masterSummoner);
     }

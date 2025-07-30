@@ -7,10 +7,12 @@ DamageEffect::DamageEffect(int damage)
 
 void DamageEffect::useEffect(Player &p, int t)
 {
-    Board &board = p.getBoard();
-    if (t >= 0 && t < board.getNumMinions())
-    {
-        Minion &minion = board.getMinion(t);
-        minion.changeDefense(-damage);
-    }
+    // whenever an oppent's minions enters play, deal 1 damage ot it
+    // TODO: This needs to be moved into player
+    // const Board &board = p.getBoard();
+    // if (t >= 0 && t < board.getNumMinions())
+    // {
+    //     const Minion &minion = board.getMinion(t);
+    //     minion.changeDefense(-damage);
+    // }
 }

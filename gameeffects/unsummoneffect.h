@@ -7,10 +7,9 @@ class Minion; // forward declaration
 class UnsummonEffect : public GameEffect
 {
     Minion *target;
-
 public:
-    UnsummonEffect(Minion *target);
-    void useEffect(Player& p1, Player& p2) override;
+    UnsummonEffect();
+    void useEffect(Player& p, int t) override;
 };
 
 #endif

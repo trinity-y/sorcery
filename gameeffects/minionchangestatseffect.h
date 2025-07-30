@@ -4,6 +4,7 @@
 #include <memory>
 
 class Minion; // forward declaration
+class Player;
 
 using namespace std;
 
