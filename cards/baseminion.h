@@ -35,8 +35,13 @@ public:
 
     int getActivatedAbilityCost() const override;
     int getDefaultActions() const override;
+
+    virtual string getMinionName() const override;
 };
 
 #endif
+
+
+
 
 

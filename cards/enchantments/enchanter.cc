@@ -26,7 +26,8 @@ int Enchanter::getDefense() const
 {
     return nextMinion->getDefense();
 }
-const int Enchanter::getActions() const{
+const int Enchanter::getActions() const
+{
     return nextMinion->getActions();
 }
 void Enchanter::changeAttack(int amount)
@@ -93,3 +94,10 @@ void Enchanter::setActions(int newActions)
 {
     nextMinion->setActions(newActions);
 }
+
+string Enchanter::getMinionName() const
+{
+    return nextMinion->getMinionName();
+}
+
+

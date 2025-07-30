@@ -29,6 +29,10 @@ public:
 
     // for disenchant effect
     virtual unique_ptr<Minion> disenchantMinion();
+    virtual string getMinionName() const override;
 };
 
 #endif
+
+
+

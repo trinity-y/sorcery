@@ -31,6 +31,8 @@ public:
     virtual void notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer) = 0;
     virtual void notify(TriggerState trigger, Player &p, int i) = 0;
     virtual void notify(TriggerState trigger, Player &p, string t) = 0;
+
+    virtual string getMinionName() const = 0;
 };
 
 #endif

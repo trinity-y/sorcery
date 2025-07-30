@@ -125,3 +125,8 @@ const int BaseMinion::getActions() const{
     return actions;
 }
 
+string BaseMinion::getMinionName() const {
+    return name;
+}
+
+

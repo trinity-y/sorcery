@@ -71,7 +71,7 @@ void GameState::attack(int i)
     // invalid attack if they don't have enough actions
     return;
   }
-  if (i >= 1 && i <= 5)
+  if (i >= 1 && i <= arrOfPlayers[activePlayer]->getNumMinions())
   {
     int minionAttack = arrOfPlayers[activePlayer]->getMinionAttack(i - 1);
     arrOfPlayers[inactivePlayer]->reduceLife(minionAttack);
@@ -128,7 +128,7 @@ void GameState::play(int i, int p, string t)
     {
       // try
       // {
-      int targetInt = stoi(t);
+      int targetInt = stoi(t) - 1;
       spell.notify(targetPlayer, targetInt);
       // } // todo: error message
     }
@@ -139,7 +139,7 @@ void GameState::play(int i, int p, string t)
     Enchantment &enchantment = static_cast<Enchantment &>(card);
     // try
     // {
-    int targetInt = stoi(t);
+    int targetInt = stoi(t) - 1;
     cout << "adding enchantment to " << targetInt << endl;
 
     targetPlayer.addEnchantment(enchantment, targetInt);
@@ -168,6 +168,8 @@ void GameState::use(int i)
 // Uses activated ability of minion i with target p, t (a minion on a board)
 void GameState::use(int i, int p, int t)
 {
+  // notify does the checking + decrementing for actions
+  cout << "gamestate use" << endl;
   arrOfPlayers[activePlayer]->activateMinionAbility(i - 1, *(arrOfPlayers[p - 1]), t - 1);
 }
 
@@ -175,6 +177,8 @@ void GameState::use(int i, int p, int t)
 void GameState::use(int i, int p, string t)
 {
   // for gameEffects with no parameters
+  // notify does the checking + decrementing for actions
+
   arrOfPlayers[activePlayer]->activateMinionAbility(i - 1, *(arrOfPlayers[p - 1]), t);
 }
 

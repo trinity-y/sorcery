@@ -116,8 +116,12 @@ void Board::addEnchantment(Enchantment &enchantment, int index)
 {
   if (index >= 0 && index < numMinions)
   {
+    cout << "DEBUG: Adding enchantment " << enchantment.enchanter->name 
+              << " to minion " << boardMinions[index]->name << endl;
     enchantment.enchanter->setNextMinion(move(boardMinions[index]));
     boardMinions[index] = move(enchantment.enchanter);
+    cout << "DEBUG: Board slot now contains: " << boardMinions[index]->name 
+              << " (type: " << boardMinions[index]->type << ")" << endl;
     // enchantment should be discarded from hand by game state
   }
 }
