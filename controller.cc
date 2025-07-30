@@ -13,7 +13,8 @@ using namespace std;
 Controller::Controller(bool testingMode, string deck1FileName, string deck2FileName, string initFileName) : testingMode{testingMode},
                                                                                                             deck1{new ifstream(deck1FileName.c_str())},
                                                                                                             deck2{new ifstream(deck2FileName.c_str())},
-                                                                                                            initFile{initFileName == "" ? nullptr : new ifstream(initFileName.c_str())}
+                                                                                                            initFile{initFileName == "" ? nullptr : new ifstream(initFileName.c_str())},
+                                                                                                            inGame{true}
 {
   cout << "controller is constructed" << endl;
 };
@@ -52,15 +53,15 @@ void Controller::play()
   view = make_unique<TextDisplay>(*gameState);
   string line;
 
-  while (true)
+  while (inGame)
   {
     cout << "starting to take input from initFile" << endl;
-    while (initFile && getline(*initFile, line))
+    while (inGame && initFile && getline(*initFile, line))
     {
       mainLoop(line);
     }
     cout << "starting to take input from command line" << endl;
-    while (getline(cin, line))
+    while (inGame && getline(cin, line))
     {
       mainLoop(line);
     }
@@ -83,6 +84,8 @@ void Controller::mainLoop(string line)
   }
   else if (cmd == "quit")
   {
+    inGame = false;
+    return;
     // idk how to terminate
   }
   else if (cmd == "draw")

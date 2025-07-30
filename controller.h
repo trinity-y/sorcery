@@ -15,6 +15,7 @@ class Controller {
   unique_ptr<GameState> gameState;
   unique_ptr<View> view;
   istringstream iss;
+  bool inGame;
   void executeCommand();
   void turn();
   void mainLoop(string cmd);
