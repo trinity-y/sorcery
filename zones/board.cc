@@ -38,6 +38,14 @@ Minion &Board::getMinion(int i)
   }
 }
 
+const Minion &Board::getMinion(int i) const
+{
+  if (i >= 0 && i < numMinions)
+  {
+    return *(boardMinions[i]);
+  }
+}
+
 const Ritual &Board::getRitual() const
 {
   if (hasRitual)

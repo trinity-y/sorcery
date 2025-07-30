@@ -3,7 +3,7 @@
 #include "card.h"
 #include "../gameeffects/gameeffect.h"
 #include <memory>
-
+#include <string>
 class Spell : public Card
 {
 public:
@@ -14,6 +14,8 @@ public:
     void notify(Player &activePlayer, Player &inactivePlayer);
     void notify(Player &p, int t);
     void notify(Player &p, string t);
+    string getLeftBox() const override;
+    string getRightBox() const override;
 };
 
 #endif

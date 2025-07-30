@@ -49,6 +49,11 @@ void TextDisplay::printRow(const vector<card_template_t> &row)
         std::cout << "\n";
     }
 }
+
+void TextDisplay::notify(const string &cmd){
+    //TODO: implementation
+}
+
 void TextDisplay::displayHelp()
 {
     std::cout << "Available commands:" << endl;

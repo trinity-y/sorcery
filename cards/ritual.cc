@@ -33,3 +33,8 @@ string Ritual::getRightBox() const
     // todo: top inner left box
     return to_string(charges);
 }
+string Ritual::getLeftBox() const
+{
+    // empty
+    return "";
+}

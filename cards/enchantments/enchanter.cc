@@ -86,3 +86,8 @@ void Enchanter::setNextMinion(unique_ptr<Minion> newNextMinion)
 {
     nextMinion = move(newNextMinion);
 }
+
+void Enchanter::setActions(int newActions)
+{
+    nextMinion->setActions(newActions);
+}
