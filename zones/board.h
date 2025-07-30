@@ -27,6 +27,8 @@ public:
   void destroyRitual();                       // completely deleting the object
   const Minion &getMinion(int i) const;
   Minion &getMinion(int i);
+  const int getMinionActions(int i) const;
+  void decrementMinionActions(int i);
   const Ritual &getRitual() const;
   const int getNumMinions() const;
   void notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer);

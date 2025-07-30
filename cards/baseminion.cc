@@ -1,13 +1,14 @@
 #include "baseminion.h"
 #include <string>
+#include <iostream>
 using namespace std;
 BaseMinion::BaseMinion(int attack, int defense, string name, string description, int cost, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility) : Minion{name, description, cost},
-                                                                                                                                                                                                           attack{attack},
-                                                                                                                                                                                                           defense{defense},
-                                                                                                                                                                                                           actions{0},
-                                                                                                                                                                                                           activatedAbilityCost{1},
-                                                                                                                                                                                                           activatedAbility{move(activatedAbility)},
-                                                                                                                                                                                                           triggeredAbility{move(triggeredAbility)} {};
+                                                                                                                                                                                           attack{attack},
+                                                                                                                                                                                           defense{defense},
+                                                                                                                                                                                           actions{0},
+                                                                                                                                                                                           activatedAbilityCost{1},
+                                                                                                                                                                                           activatedAbility{move(activatedAbility)},
+                                                                                                                                                                                           triggeredAbility{move(triggeredAbility)} {};
 
 int BaseMinion::decrementActions()
 {
@@ -103,6 +104,7 @@ void BaseMinion::notify(TriggerState trigger, Player &p, string t)
 
 void BaseMinion::notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer)
 {
+    cout << "got here" << endl;
     if (activatedAbility && actions > 0)
     {
         activatedAbility->notify(trigger, activePlayer, inactivePlayer);
@@ -118,3 +120,8 @@ int BaseMinion::getActivatedAbilityCost() const
 {
     return activatedAbilityCost;
 }
+
+const int BaseMinion::getActions() const{
+    return actions;
+}
+

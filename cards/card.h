@@ -16,6 +16,9 @@ public:
 
   virtual string getLeftBox() const = 0;
   virtual string getRightBox() const = 0;
+  virtual string getName() const;
+  virtual string getType() const;
+  virtual string getDescription() const;
 };
 
 #endif

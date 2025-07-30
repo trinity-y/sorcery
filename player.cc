@@ -190,6 +190,8 @@ Card &Player::getCardFromHand(int i)
 
 void Player::addEnchantment(Enchantment &enchantment, int minionIndex)
 {
+    // ! debug
+    cout << "trying to add enchantment inside player class" << endl;
     board->addEnchantment(enchantment, minionIndex);
 }
 
@@ -233,4 +235,11 @@ void Player::moveToGraveyard(int minionIndex)
     // Remove minion from board and add to graveyard
     auto minion = board->removeMinion(minionIndex);
     graveyard->add(std::move(minion));
+}
+
+void Player::decrementMinionActions(int i){
+    board->decrementMinionActions(i);
+}
+const int Player::getMinionActions(int i) const{
+    return board->getMinionActions(i);
 }

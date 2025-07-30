@@ -19,6 +19,7 @@ public:
     virtual int getDefense() const = 0;
     virtual void changeAttack(int amount) = 0;
     virtual void changeDefense(int amount) = 0;
+    virtual const int getActions() const = 0;
     // TriggeredAbility& getTriggeredAbility();
     // ActivatedAbility& getActivatedAbility();
     virtual string getLeftBox() const = 0;

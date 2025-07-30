@@ -11,6 +11,11 @@ void TargetedDamageEffect::useEffect(Player &p, int targetIndex)
         const int targetDefence = p.getMinionDefence(targetIndex);
         p.changeMinionDefence(targetIndex, -damage);
 
-        
-    } // TODO: Handle minion death if defense <= 0
+        // Check if the minion's defense is now 0 or less
+        if (p.getMinionDefence(targetIndex) <= 0)
+        {
+            // Remove the minion (to graveyard)
+            p.moveToGraveyard(targetIndex);
+        }
+    } 
 }

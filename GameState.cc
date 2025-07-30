@@ -62,6 +62,15 @@ void GameState::discard(int i)
 // Orders minion i to attack opposing player
 void GameState::attack(int i)
 {
+  if (arrOfPlayers[activePlayer]->getMinionActions(i) >= 1)
+  {
+    arrOfPlayers[activePlayer]->decrementMinionActions(i);
+  }
+  else
+  {
+    // invalid attack if they don't have enough actions
+    return;
+  }
   if (i >= 1 && i <= 5)
   {
     int minionAttack = arrOfPlayers[activePlayer]->getMinionAttack(i - 1);
@@ -72,9 +81,18 @@ void GameState::attack(int i)
 // Orders minion i to attack opposing minion j
 void GameState::attack(int i, int j)
 {
+  if (arrOfPlayers[activePlayer]->getMinionActions(i) >= 1)
+  {
+    arrOfPlayers[activePlayer]->decrementMinionActions(i);
+  }
+  else
+  {
+    // invalid attack if they don't have enough actions
+    return;
+  }
   // i is minion A (active player), j is minion B (inactive player)
   int initialMinionAAttack = arrOfPlayers[activePlayer]->getMinionAttack(i);
-  int initialMinionBAttack = arrOfPlayers[activePlayer]->getMinionAttack(i);
+  int initialMinionBAttack = arrOfPlayers[inactivePlayer]->getMinionAttack(i);
   // reduces minion B’s defence by minion A’s attack
   // reduces minion A’s defence by minion B’s attack
   arrOfPlayers[activePlayer]->changeMinionDefence(i, -initialMinionBAttack);
@@ -114,6 +132,7 @@ void GameState::play(int i, int p, string t)
       spell.notify(targetPlayer, targetInt);
       // } // todo: error message
     }
+    arrOfPlayers[activePlayer]->discardCard(i - 1);
   }
   else if (card.type == "ENCHANTMENT")
   {
@@ -121,6 +140,8 @@ void GameState::play(int i, int p, string t)
     // try
     // {
     int targetInt = stoi(t);
+    cout << "adding enchantment to " << targetInt << endl;
+
     targetPlayer.addEnchantment(enchantment, targetInt);
     // } // todo: error message
   }
@@ -130,6 +151,7 @@ void GameState::play(int i, int p, string t)
   }
   // arrOfPlayers[activePlayer]->discardCard(i);
   // you are not able to play minions or rituals directly from the hand.
+  arrOfPlayers[activePlayer]->discardCard(i - 1);
 }
 
 // todo: notify for start of turn, end of turn, etc

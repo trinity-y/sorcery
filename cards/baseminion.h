@@ -22,6 +22,7 @@ public:
     int getDefense() const override;
     void changeAttack(int amount) override;
     void changeDefense(int amount) override;
+    const int getActions() const override;
     // TriggeredAbility& getTriggeredAbility();
     // ActivatedAbility& getActivatedAbility();
     string getLeftBox() const override;

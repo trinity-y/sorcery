@@ -3,10 +3,12 @@
 #include "player.h"
 #include "./cards/minion.h"
 #include "./cards/ritual.h"
+#include "./cards/enchantments/enchanter.h"
 #include "ascii_graphics.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <functional>
 
 TextDisplay::TextDisplay(const GameState &m)
     : View(m)
@@ -126,10 +128,33 @@ void TextDisplay::displayHand()
         auto &c = hand.getCard(i);
         if (c.type == "MINION")
         {
-            // Cast to minion to get attack/defense
             auto &minion = static_cast<const Minion &>(c);
-            row.push_back(display_minion_no_ability(
-                c.name, c.cost, minion.getAttack(), minion.getDefense()));
+
+            // Check if minion has activated ability to display properly
+            if (minion.getActivatedAbilityCost() > 0)
+            {
+                // Minion with activated ability - need to get ability cost and description
+                row.push_back(display_minion_activated_ability(
+                    c.name, c.cost, minion.getAttack(), minion.getDefense(),
+                    minion.getActivatedAbilityCost(), c.description));
+            }
+            else
+            {
+                // Check if minion has triggered ability
+                // assume if no activated ability, but has a description, then its a triggered ability
+                if (!c.description.empty())
+                {
+                    row.push_back(display_minion_triggered_ability(
+                        c.name, c.cost, minion.getAttack(), minion.getDefense(),
+                        c.description));
+                }
+                else
+                {
+                    // Minion without any abilities
+                    row.push_back(display_minion_no_ability(
+                        c.name, c.cost, minion.getAttack(), minion.getDefense()));
+                }
+            }
         }
         else if (c.type == "SPELL")
         {
@@ -138,9 +163,10 @@ void TextDisplay::displayHand()
         }
         else if (c.type == "ENCHANTMENT")
         {
+            const auto &enchantment = static_cast<const Enchantment &>(c);
             row.push_back(display_enchantment_attack_defence(
                 c.name, c.cost, c.description,
-                "?", "?")); // to do:  need to figure out enchantment stats
+                enchantment.getLeftBox(), enchantment.getLeftBox()));
         }
         else if (c.type == "RITUAL")
         {
@@ -203,8 +229,23 @@ void TextDisplay::displayBoard()
         if (i < boardA.getNumMinions())
         {
             auto &m = boardA.getMinion(i);
-            row2.push_back(display_minion_no_ability(
-                m.name, m.cost, m.getAttack(), m.getDefense()));
+            if (m.getActivatedAbilityCost() > 0)
+            {
+                row2.push_back(display_minion_activated_ability(
+                    m.name, m.cost, m.getAttack(), m.getDefense(),
+                    m.getActivatedAbilityCost(), m.description));
+            }
+            else if (!m.description.empty())
+            {
+                row2.push_back(display_minion_triggered_ability(
+                    m.name, m.cost, m.getAttack(), m.getDefense(),
+                    m.description));
+            }
+            else
+            {
+                row2.push_back(display_minion_no_ability(
+                    m.name, m.cost, m.getAttack(), m.getDefense()));
+            }
         }
         else
         {
@@ -219,8 +260,23 @@ void TextDisplay::displayBoard()
         if (i < boardB.getNumMinions())
         {
             auto &m = boardB.getMinion(i);
-            row3.push_back(display_minion_no_ability(
-                m.name, m.cost, m.getAttack(), m.getDefense()));
+            if (m.getActivatedAbilityCost() > 0)
+            {
+                row2.push_back(display_minion_activated_ability(
+                    m.name, m.cost, m.getAttack(), m.getDefense(),
+                    m.getActivatedAbilityCost(), m.description));
+            }
+            else if (!m.description.empty())
+            {
+                row2.push_back(display_minion_triggered_ability(
+                    m.name, m.cost, m.getAttack(), m.getDefense(),
+                    m.description));
+            }
+            else
+            {
+                row2.push_back(display_minion_no_ability(
+                    m.name, m.cost, m.getAttack(), m.getDefense()));
+            }
         }
         else
         {
@@ -284,7 +340,7 @@ void TextDisplay::displayCard(int handIndex)
             // TODO: replace minion.getActivatedAbilityDescription() with the actual function
             tpl = display_minion_activated_ability(
                 c.name, c.cost, minion.getAttack(), minion.getDefense(),
-                minion.getActivatedAbilityCost(), "minion.getActivatedAbilityDescription()");
+                minion.getActivatedAbilityCost(), minion.description);
         }
         else
         {
@@ -310,9 +366,10 @@ void TextDisplay::displayCard(int handIndex)
     }
     else if (c.type == "ENCHANTMENT")
     {
+        const auto &enchantment = static_cast<const Enchantment &>(c);
         tpl = display_enchantment_attack_defence(
             c.name, c.cost, c.description,
-            "?", "?"); // to do: need to figure out enchantment stats
+            enchantment.getLeftBox(), enchantment.getRightBox());
     }
     else if (c.type == "RITUAL")
     {
@@ -336,12 +393,69 @@ void TextDisplay::inspectMinion(int idx, int pnum)
     auto &board = P.getBoard();
     auto &m = board.getMinion(idx);
 
-    // Display the main minion card
-    card_template_t mainTpl = display_minion_no_ability(
-        m.name, m.cost, m.getAttack(), m.getDefense());
+    card_template_t mainTpl;
+
+    if (m.getActivatedAbilityCost() > 0)
+    {
+        mainTpl = display_minion_activated_ability(
+            m.name, m.cost, m.getAttack(), m.getDefense(),
+            m.getActivatedAbilityCost(), m.description);
+    }
+    else if (!m.description.empty())
+    {
+        mainTpl = display_minion_triggered_ability(
+            m.name, m.cost, m.getAttack(), m.getDefense(),
+            m.description);
+    }
+    else
+    {
+        mainTpl = display_minion_no_ability(
+            m.name, m.cost, m.getAttack(), m.getDefense());
+    }
+
     printCard(mainTpl);
 
-    // For now, we don't have enchantments implemented
-    // This is a placeholder for future enchantment display
+    // Collect all enchanters by traversing the decorator chain using recursion
+    vector<reference_wrapper<const Enchanter>> enchanters;
+
+    std::function<void(const Minion &)> collectEnchanters = [&](const Minion &minion)
+    {
+        if (auto enchanter = dynamic_cast<const Enchanter *>(&minion)) // observer pointer (non-owning) !!! i think
+        {
+            enchanters.push_back(std::cref(*enchanter));
+            if (enchanter->nextMinion)
+            {
+                collectEnchanters(*enchanter->nextMinion);
+            }
+        }
+    };
+
+    collectEnchanters(m);
+
+    // Display enchantments if any - oldest to newest, five per line
+    if (!enchanters.empty())
+    {
+        // Reverse the vector to show oldest to newest (since we collected newest to oldest)
+        reverse(enchanters.begin(), enchanters.end());
+
+        // Display enchantments five per line
+        for (size_t i = 0; i < enchanters.size(); i += 5)
+        {
+            vector<card_template_t> enchantmentRow;
+
+            // Add up to 5 enchantments to this row
+            for (size_t j = i; j < min(i + 5, enchanters.size()); ++j)
+            {
+                const Enchanter &ench = enchanters[j].get();
+                enchantmentRow.push_back(display_enchantment_attack_defence(
+                    ench.name, ench.cost, ench.description,
+                    ench.getLeftBox(),
+                    ench.getRightBox()));
+            }
+
+            printRow(enchantmentRow);
+        }
+    }
+
     std::cout << "\n";
 }

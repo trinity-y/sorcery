@@ -149,3 +149,11 @@ void Board::printBoard()
     cout << boardMinions[i]->name << " ";
   }
 }
+
+void Board::decrementMinionActions(int i){
+  boardMinions[i]->decrementActions();
+}
+
+const int Board::getMinionActions(int i) const{
+  return boardMinions[i]->getActions();
+}

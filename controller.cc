@@ -45,11 +45,8 @@ void Controller::play()
   }
 
   gameState = make_unique<GameState>(player1Name, player2Name, deck1CardNames, deck2CardNames);
-  // BELOW IS TEMPORARY FOR TESTING
   unique_ptr<Deck> deck1 = make_unique<Deck>(deck1CardNames);
-  // deck1->printDeck();
-  // deck1->shuffle();
-  // deck1->printDeck();
+
   view = make_unique<TextDisplay>(*gameState);
   string line;
 

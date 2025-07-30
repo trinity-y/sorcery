@@ -32,8 +32,10 @@ public:
     // Accessing + modifying individual minions on the board
     const int getMinionAttack(int i) const;
     const int getMinionDefence(int i) const;
+    const int getMinionActions(int i) const;
     void changeMinionAttack(int i, int amount);
     void changeMinionDefence(int i, int amount);
+    void decrementMinionActions(int i);
     void reduceLife(int reduceBy);
     void activateMinionAbility(int i, Player &activePlayer, Player &inactivePlayer);
     void activateMinionAbility(int i, Player &p, int t);
@@ -80,7 +82,7 @@ public:
     int getNumMinionsInGraveyard() const;   // Get number of minions in graveyard
 
     // for blizzard effect
-    void moveToGraveyard(int minionIndex); 
+    void moveToGraveyard(int minionIndex);
 };
 
 #endif

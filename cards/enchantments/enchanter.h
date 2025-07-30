@@ -6,13 +6,14 @@ using namespace std;
 class Enchanter : public Minion
 {
 protected:
-    unique_ptr<Minion> nextMinion; // next minion in the decorator chain
 public:
+    unique_ptr<Minion> nextMinion; // next minion in the decorator chain
     Enchanter(string name, string description, int cost);
     virtual ~Enchanter() = 0;
     virtual int decrementActions() override;
     virtual int getAttack() const override;
     virtual int getDefense() const override;
+    virtual const int getActions() const override;
     virtual void changeAttack(int amount) override;
     virtual void changeDefense(int amount) override;
     virtual string getLeftBox() const override;
