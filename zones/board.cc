@@ -6,6 +6,7 @@
 #include "../cards/baseminion.h"
 #include <memory>
 #include <stdexcept>
+#include <iostream> // todo: delete
 using namespace std;
 
 Board::Board() : boardMinions{vector<unique_ptr<Minion>>{}}, boardRitual{nullptr} {};
@@ -136,4 +137,15 @@ void Board::disenchantMinion(int i)
 bool Board::hasRitualCard() const
 {
   return hasRitual;
+}
+
+// ! debug
+
+void Board::printBoard()
+{
+  cout << "contents of board:" << endl;
+  for (int i = 0; i < numMinions; ++i)
+  {
+    cout << boardMinions[i]->name << " ";
+  }
 }

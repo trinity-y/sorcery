@@ -8,12 +8,12 @@
 #include <sstream>
 #include <algorithm>
 
-TextDisplay::TextDisplay(const GameState& m)
+TextDisplay::TextDisplay(const GameState &m)
     : View(m)
 {
 }
 
-void TextDisplay::notify(const string &cmd, int i)
+void TextDisplay::notify(const string &cmd)
 {
     if (cmd == "help")
         displayHelp();
@@ -21,7 +21,15 @@ void TextDisplay::notify(const string &cmd, int i)
         displayBoard();
     else if (cmd == "hand")
         displayHand();
-    else if (cmd == "inspect")
+    else
+    {
+        std::cout << "[TextDisplay] unknown cmd: " << cmd << "\n";
+    }
+}
+
+void TextDisplay::notify(const string &cmd, int i)
+{
+    if (cmd == "inspect")
     {
         inspectMinion(i - 1, gameState.activePlayerIndex());
     }
@@ -50,10 +58,6 @@ void TextDisplay::printRow(const vector<card_template_t> &row)
     }
 }
 
-void TextDisplay::notify(const string &cmd){
-    //TODO: implementation
-}
-
 void TextDisplay::displayHelp()
 {
     std::cout << "Available commands:" << endl;
@@ -72,29 +76,32 @@ void TextDisplay::displayHelp()
 void TextDisplay::displayHand()
 {
     auto &hand = gameState.currentPlayer().getHand();
+
+    std::cout << "DEBUG: Hand has " << hand.getHandLen() << " cards" << std::endl;
+
     vector<card_template_t> row;
     for (int i = 0; i < hand.getHandLen(); ++i)
     {
         auto &c = hand.getCard(i);
-        if (c.type == "Minion")
+        if (c.type == "MINION")
         {
             // Cast to minion to get attack/defense
             auto &minion = static_cast<const Minion &>(c);
             row.push_back(display_minion_no_ability(
                 c.name, c.cost, minion.getAttack(), minion.getDefense()));
         }
-        else if (c.type == "Spell")
+        else if (c.type == "SPELL")
         {
             row.push_back(display_spell(
                 c.name, c.cost, c.description));
         }
-        else if (c.type == "Enchantment")
+        else if (c.type == "ENCHANTMENT")
         {
             row.push_back(display_enchantment_attack_defence(
                 c.name, c.cost, c.description,
                 "?", "?")); // to do:  need to figure out enchantment stats
         }
-        else if (c.type == "Ritual")
+        else if (c.type == "RITUAL")
         {
             const auto &ritual = static_cast<const Ritual &>(c);
             row.push_back(display_ritual(
@@ -127,7 +134,7 @@ void TextDisplay::displayBoard()
     }
     else
     {
-        row1.push_back(CARD_TEMPLATE_EMPTY); // if no ritual, fill with empty
+        row1.push_back(CARD_TEMPLATE_BORDER); // if no ritual, fill with empty
     }
     row1.push_back(CARD_TEMPLATE_EMPTY); // Empty
     row1.push_back(display_player_card(
@@ -142,12 +149,12 @@ void TextDisplay::displayBoard()
     }
     else
     {
-        row1.push_back(CARD_TEMPLATE_EMPTY); // Empty graveyard
+        row1.push_back(CARD_TEMPLATE_BORDER); // Empty graveyard
     }
 
     // Row 2: Player 1's minions (5 slots)
     vector<card_template_t> row2;
-    for (int i = 0; i < 5, ++i;)
+    for (int i = 0; i < 5; ++i)
     {
         if (i < boardA.getNumMinions())
         {
@@ -157,7 +164,7 @@ void TextDisplay::displayBoard()
         }
         else
         {
-            row2.push_back(CARD_TEMPLATE_EMPTY); // Fill empty slots
+            row2.push_back(CARD_TEMPLATE_BORDER); // Fill empty slots
         }
     }
 
@@ -173,7 +180,7 @@ void TextDisplay::displayBoard()
         }
         else
         {
-            row3.push_back(CARD_TEMPLATE_EMPTY); // Fill empty slots
+            row3.push_back(CARD_TEMPLATE_BORDER); // Fill empty slots
         }
     }
 
@@ -190,7 +197,7 @@ void TextDisplay::displayBoard()
     }
     else
     {
-        row4.push_back(CARD_TEMPLATE_EMPTY); // if no ritual, fill with empty
+        row4.push_back(CARD_TEMPLATE_BORDER); // if no ritual, fill with empty
     }
     row4.push_back(CARD_TEMPLATE_EMPTY); // Empty
     row4.push_back(display_player_card(
@@ -204,7 +211,7 @@ void TextDisplay::displayBoard()
     }
     else
     {
-        row4.push_back(CARD_TEMPLATE_EMPTY); // Empty graveyard
+        row4.push_back(CARD_TEMPLATE_BORDER); // Empty graveyard
     }
 
     // Print the rows
@@ -219,7 +226,7 @@ void TextDisplay::displayCard(int handIndex)
 {
     auto &c = gameState.currentPlayer().getHand().getCard(handIndex);
     card_template_t tpl;
-    if (c.type == "Minion")
+    if (c.type == "MINION")
     {
         auto &minion = static_cast<const Minion &>(c);
 
@@ -235,7 +242,7 @@ void TextDisplay::displayCard(int handIndex)
         else
         {
             // Check if minion has triggered ability
-            // asumme if no activated ability, but description, then its a triggered ability
+            // asumme if no activated ability, but has a description, then its a triggered ability
             if (!c.description.empty())
             {
                 tpl = display_minion_triggered_ability(
@@ -250,17 +257,17 @@ void TextDisplay::displayCard(int handIndex)
             }
         }
     }
-    else if (c.type == "Spell")
+    else if (c.type == "SPELL")
     {
         tpl = display_spell(c.name, c.cost, c.description);
     }
-    else if (c.type == "Enchantment")
+    else if (c.type == "ENCHANTMENT")
     {
         tpl = display_enchantment_attack_defence(
             c.name, c.cost, c.description,
             "?", "?"); // to do: need to figure out enchantment stats
     }
-    else if (c.type == "Ritual")
+    else if (c.type == "RITURAL")
     {
         const auto &ritual = static_cast<const Ritual &>(c);
         tpl = display_ritual(

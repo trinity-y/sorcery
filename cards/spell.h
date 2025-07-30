@@ -12,8 +12,8 @@ public:
     // void notify();
     // void notify(Player &p);
     void notify(Player &activePlayer, Player &inactivePlayer);
-    void notify(Player &p, int t);
-    void notify(Player &p, string t);
+    void notify(Player &p, int t) const;
+    void notify(Player &p, string t) const;
     string getLeftBox() const override;
     string getRightBox() const override;
 };

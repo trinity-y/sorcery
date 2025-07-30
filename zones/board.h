@@ -29,7 +29,7 @@ public:
   Minion &getMinion(int i);
   const Ritual &getRitual() const;
   const int getNumMinions() const;
-  void notify(TriggerState trigger, Player& activePlayer, Player& inactivePlayer);
+  void notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer);
   void addEnchantment(Enchantment &enchantment, int index); // apply enchantment to minion i on board
   bool hasRitualCard() const;
 
@@ -38,6 +38,10 @@ public:
 
   // for disenchant minion
   void disenchantMinion(int i);
+
+  // ! debug
+  // delete
+  void printBoard();
 };
 
 #endif

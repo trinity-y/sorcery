@@ -2,6 +2,7 @@
 #include "./cards/minion.h"
 #include "./cards/spell.h"
 #include "trigger.h"
+#include <iostream> // todo: remove
 using namespace std;
 
 Player::Player(string name, vector<string> deckNames) : name{name}
@@ -46,7 +47,17 @@ int Player::getLife() const
 
 void Player::drawCard()
 {
-    hand->add(deck->pop());
+    if (hand->getHandLen() < 5)
+    {
+        hand->add(deck->pop());
+    }
+    // ! debug
+    cout << "drew card. now hand =" << endl;
+    for (int i = 0; i < hand->getHandLen(); i++)
+    {
+        cout << hand->getCard(i).name << " ";
+    }
+    cout << endl;
 }
 
 void Player::discardCard(int i)
@@ -55,7 +66,7 @@ void Player::discardCard(int i)
 }
 
 // notifies all cards on board
-void Player::notifyCards(TriggerState triggeredAbilityEnum, Player& activePlayer, Player& inactivePlayer)
+void Player::notifyCards(TriggerState triggeredAbilityEnum, Player &activePlayer, Player &inactivePlayer)
 {
     board->notify(triggeredAbilityEnum, activePlayer, inactivePlayer);
 }
@@ -139,11 +150,15 @@ void Player::playCard(int i, Player &activePlayer, Player &inactivePlayer) // te
     Card &card = hand->getCard(i);
     if (card.type == "MINION" || card.type == "RITUAL")
     {
+        // ! debug
         board->add(hand->remove(i));
+        cout << "placed card " << card.name << " into the board. board = " << endl;
+        board->printBoard();
         magic -= card.cost;
-        if (card.type == "MINION") {
+        if (card.type == "MINION")
+        {
             // ! board->notify (when minion enters play)
-            // NOT GOOD CAUSE WE NEED TO ACCESS BOTH BOARDDS TO SEND NOTIFICATION
+            // we need to notify both players boards. so ideally this logic is moved outside
         }
     }
     else if (card.type == "SPELL")

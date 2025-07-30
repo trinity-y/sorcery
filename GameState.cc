@@ -8,6 +8,9 @@
 #include "./zones/hand.h"
 #include "./zones/graveyard.h"
 
+// remove
+#include <iostream>
+
 // Private helper function
 void GameState::swapPlayers()
 {
@@ -86,8 +89,9 @@ void GameState::attack(int i, int j)
 void GameState::play(int i)
 {
   // Range checking for sanity
-  if (i >= 1 && i <= 5) // technically not needed because inside getCard we check bounds. but we can just keep anyways
+  if (i >= 1 && i <= 5)
   {
+    // assuming there are no cards that do not need access to both players
     arrOfPlayers[activePlayer]->playCard(i - 1, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
   }
 }
@@ -95,38 +99,38 @@ void GameState::play(int i)
 // Plays the ith card on card t owned by player p
 void GameState::play(int i, int p, string t)
 {
-  // Card &card = arrOfPlayers[activePlayer]->getCardFromHand(i - 1);
-  // Player &targetPlayer = *(arrOfPlayers[p - 1]);
-  // if (card.type == "SPELL")
-  // {
-  //   const Spell &spell = static_cast<Spell &>(card);
-  //   // call correct overloaded function
-  //   if (t == "r")
-  //   {
-  //     spell.notify(targetPlayer, t);
-  //   }
-  //   else
-  //   {
-  //     try
-  //     {
-  //       int t = stoi(t);
-  //       spell.notify(targetPlayer, t);
-  //     } // todo: error message
-  //   }
-  // }
-  // else if (card.type == "ENCHANTMENT")
-  // {
-  //   const Enchantment &enchantment = static_cast<Enchantment &>(card);
-  //   try
-  //   {
-  //     int t = stoi(t);
-  //     targetPlayer.addEnchantment(enchantment, t);
-  //   } // todo: error message
-  // }
-  // else
-  // {
-  //   // todo: error message
-  // }
+  Card &card = arrOfPlayers[activePlayer]->getCardFromHand(i - 1);
+  Player &targetPlayer = *(arrOfPlayers[p - 1]);
+  if (card.type == "SPELL")
+  {
+    const Spell &spell = static_cast<Spell &>(card);
+    // call correct overloaded function
+    if (t == "r")
+    {
+      spell.notify(targetPlayer, t);
+    }
+    else
+    {
+      // try
+      // {
+        int targetInt = stoi(t);
+        spell.notify(targetPlayer, targetInt);
+      // } // todo: error message
+    }
+  }
+  else if (card.type == "ENCHANTMENT")
+  {
+    Enchantment &enchantment = static_cast<Enchantment &>(card);
+    // try
+    // {
+      int targetInt = stoi(t);
+      targetPlayer.addEnchantment(enchantment, targetInt);
+    // } // todo: error message
+  }
+  else
+  {
+    // todo: error message
+  }
   // arrOfPlayers[activePlayer]->discardCard(i);
   // you are not able to play minions or rituals directly from the hand.
 }
@@ -137,6 +141,8 @@ void GameState::play(int i, int p, string t)
 void GameState::use(int i)
 {
   // TODO: when minion enters/exists play
+
+  
   // for gameEffects with activePlayer + inactivePlayer
   arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
 }
