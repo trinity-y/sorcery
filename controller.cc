@@ -130,6 +130,7 @@ void Controller::mainLoop(string line)
   }
   else if (cmd == "use")
   {
+    cout << "use" << endl;
     int i, p;
     string t;
     commandStream >> i;

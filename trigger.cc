@@ -20,6 +20,7 @@ void Trigger::notify(TriggerState newState, Player &activePlayer, Player &inacti
 {
     if (newState == trigger)
     {
+        
         executeTrigger(activePlayer, inactivePlayer);
     }
 }

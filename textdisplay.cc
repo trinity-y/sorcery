@@ -393,33 +393,24 @@ void TextDisplay::inspectMinion(int idx, int pnum)
     auto &board = P.getBoard();
     auto &m = board.getMinion(idx);
 
-        // DEBUG: Check what we're actually getting
-    std::cout << "=== INSPECT DEBUG ===" << std::endl;
-    std::cout << "Minion name: " << m.name << std::endl;
-    std::cout << "Minion type: " << m.type << std::endl;
-    std::cout << "Is Enchanter? " << (dynamic_cast<const Enchanter*>(&m) != nullptr) << std::endl;
-    std::cout << "Attack: " << m.getAttack() << std::endl;
-    std::cout << "Defense: " << m.getDefense() << std::endl;
-    std::cout << "===================" << std::endl;
-
     card_template_t mainTpl;
 
     if (m.getActivatedAbilityCost() > 0)
     {
         mainTpl = display_minion_activated_ability(
-            m.name, m.cost, m.getAttack(), m.getDefense(),
+            m.getMinionName(), m.cost, m.getAttack(), m.getDefense(),
             m.getActivatedAbilityCost(), m.description);
     }
     else if (!m.description.empty())
     {
         mainTpl = display_minion_triggered_ability(
-            m.name, m.cost, m.getAttack(), m.getDefense(),
+            m.getMinionName(), m.cost, m.getAttack(), m.getDefense(),
             m.description);
     }
     else
     {
         mainTpl = display_minion_no_ability(
-            m.name, m.cost, m.getAttack(), m.getDefense());
+            m.getMinionName(), m.cost, m.getAttack(), m.getDefense());
     }
 
     printCard(mainTpl);
@@ -431,19 +422,14 @@ void TextDisplay::inspectMinion(int idx, int pnum)
 {
     std::cout << "DEBUG: Checking minion: " << minion.name << ", type: " << minion.type << std::endl;
     
-    if (auto enchanter = dynamic_cast<const Enchanter *>(&minion)) // non owning pointer!!!
+    if (auto enchanter = dynamic_cast<const Enchanter *>(&minion)) // non owning pointer!!! so its okay 
     {
-        std::cout << "DEBUG: Found enchanter: " << enchanter->name << std::endl;
         enchanters.push_back(std::cref(*enchanter));
         
         if (enchanter->nextMinion)
         {
             std::cout << "DEBUG: Recursing to next minion: " << enchanter->nextMinion->name << std::endl;
             collectEnchanters(*enchanter->nextMinion);
-        }
-        else
-        {
-            std::cout << "DEBUG: No next minion found" << std::endl;
         }
     }
     else
@@ -469,10 +455,17 @@ void TextDisplay::inspectMinion(int idx, int pnum)
             for (size_t j = i; j < min(i + 5, enchanters.size()); ++j)
             {
                 const Enchanter &ench = enchanters[j].get();
-                enchantmentRow.push_back(display_enchantment_attack_defence(
-                    ench.name, ench.cost, ench.description,
-                    ench.getLeftBox(),
-                    ench.getRightBox()));
+                // Check if this enchantment affects attack/defense
+                 if (ench.getLeftBox() != "" || ench.getRightBox() != "" ) {
+                // Has attack/defense modifications - use the boxes
+              enchantmentRow.push_back(display_enchantment_attack_defence(
+                  ench.name, ench.cost, ench.description,
+                   ench.getLeftBox(), ench.getRightBox()));
+            } else {
+                // No attack/defense modifications - use regular enchantment display
+                enchantmentRow.push_back(display_enchantment(
+                    ench.name, ench.cost, ench.description));
+            }
             }
 
             printRow(enchantmentRow);

@@ -56,6 +56,7 @@ int BaseMinion::getDefaultActions() const
 
 void BaseMinion::setActions(int newActions)
 {
+    cout << "set actions " << newActions << endl;
     actions = newActions;
 }
 
@@ -104,8 +105,7 @@ void BaseMinion::notify(TriggerState trigger, Player &p, string t)
 
 void BaseMinion::notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer)
 {
-    cout << "got here" << endl;
-    if (activatedAbility && actions > 0)
+    if (trigger == TriggerState::ACTIVATED_ABILITY && activatedAbility && actions > 0)
     {
         activatedAbility->notify(trigger, activePlayer, inactivePlayer);
         --actions;

@@ -74,10 +74,14 @@ void Player::notifyCards(TriggerState triggeredAbilityEnum, Player &activePlayer
 
 void Player::restoreMinions()
 {
+    //debug
+    cerr << "got to restoreMinions" << endl;
     for (int i = 0; i < board->getNumMinions(); ++i)
     {
         Minion &minion = board->getMinion(i);
+        cout << minion.getDefaultActions() << endl;
         minion.setActions(minion.getDefaultActions());
+        cout << "getactions: " << minion.getActions() << endl;
     }
 }
 
@@ -191,7 +195,7 @@ Card &Player::getCardFromHand(int i)
 void Player::addEnchantment(Enchantment &enchantment, int minionIndex)
 {
     // ! debug
-    cout << "trying to add enchantment inside player class" << endl;
+    cout << "DEBUG: trying to add enchantment inside player class" << endl;
     board->addEnchantment(enchantment, minionIndex);
 }
 
