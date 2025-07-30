@@ -2,7 +2,7 @@
 #define BLIZZARDEFFECT_H
 #include "gameeffect.h"
 
-Class Player; // Forward declaration
+class Player; // Forward declaration
 
 class BlizzardEffect : public GameEffect
 {

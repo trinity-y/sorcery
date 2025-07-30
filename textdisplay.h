@@ -11,9 +11,13 @@ class TextDisplay : public View
 private:
     void printCard(const card_template_t &tpl);
     void printRow(const std::vector<card_template_t> &row);
+    // border printing methods
+    void printBoardTopBorder();
+    void printBoardBottomBorder();
+    void printBoardRowWithBorder(const std::vector<card_template_t> &row);
 
 public:
-    explicit TextDisplay(const GameState& m);
+    explicit TextDisplay(const GameState &m);
     ~TextDisplay() override = default;
 
     void notify(const std::string &cmd, int i) override;

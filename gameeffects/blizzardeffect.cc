@@ -21,5 +21,19 @@ void BlizzardEffect::useEffect(Player &activePlayer, Player &inactivePlayer)
         inactivePlayer.changeMinionDefence(i, -damage);
     }
 
-    // remove dead minions (defense )
+    // remove dead minions (defense <= 0) after applying damage
+    removeDeadMinions(activePlayer);
+    removeDeadMinions(inactivePlayer);
+}
+
+void BlizzardEffect::removeDeadMinions(Player &player)
+{
+    // Check minions from back to front 
+    for (int i = player.getNumMinions() - 1; i >= 0; --i)
+    {
+        if (player.getMinionDefence(i) <= 0)
+        {
+            player.moveToGraveyard(i); // this should move minion to graveyard
+        }
+    }
 }

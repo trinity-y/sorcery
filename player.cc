@@ -226,3 +226,10 @@ int Player::getNumMinionsInGraveyard() const
 {
     return graveyard->getNumMinions();
 }
+
+void Player::moveToGraveyard(int minionIndex)
+{
+    // Remove minion from board and add to graveyard
+    auto minion = board->removeMinion(minionIndex);
+    graveyard->add(std::move(minion));
+}

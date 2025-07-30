@@ -7,8 +7,18 @@
 #include "../gameeffects/allminionsstatseffect.h"
 #include "../gameeffects/targeteddamageeffect.h"
 #include "../gameeffects/multisummoneffect.h"
+#include "../gameeffects/banisheffect.h"
+#include "../gameeffects/unsummoneffect.h"
+#include "../gameeffects/rechargeeffect.h"
+#include "../gameeffects/disenchanteffect.h"
+#include "../gameeffects/raisedeadeffect.h"
+#include "../gameeffects/blizzardeffect.h"
 #include "../gameeffects/selfbuffeffect.h"
+#include "../gameeffects/gainmagiceffect.h"
+#include "../gameeffects/destroyminioneffect.h"
 #include "../trigger.h"
+#include "spell.h"
+#include "enchantment.h"
 
 using namespace std;
 
@@ -118,5 +128,68 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
 
         return move(masterSummoner);
     }
+    // Spells
+    else if (cardName == "Banish")
+    {
+        return make_unique<Spell>("Banish", "Destroy target minion or ritual.", 2, make_unique<BanishEffect>());
+    }
+    else if (cardName == "Unsummon")
+    {
+        return make_unique<Spell>("Unsummon", "Return target minion to its owner's hand.", 1, make_unique<UnsummonEffect>());
+    }
+    else if (cardName == "Recharge")
+    {
+        return make_unique<Spell>("Recharge", "Your ritual gains 3 charges.", 1, make_unique<RechargeEffect>());
+    }
+    else if (cardName == "Disenchant")
+    {
+        return make_unique<Spell>("Disenchant", "Destroy the top enchantment on target minion.", 1, make_unique<DisenchantEffect>());
+    }
+    else if (cardName == "Raise Dead")
+    {
+        return make_unique<Spell>("Raise Dead", "Resurrect the top minion in your graveyard with 1 defense.", 2, make_unique<RaiseDeadEffect>());
+    }
+    else if (cardName == "Blizzard")
+    {
+        return make_unique<Spell>("Blizzard", "Deal 2 damage to all minions.", 3, make_unique<BlizzardEffect>());
+    }
+
+    // Enchantments
+    else if (cardName == "Giant Strength")
+    {
+        // StrengthEnchanter should add +2 ATK, +2 DEF
+        return make_unique<Enchantment>(make_unique<StrengthEnchanter>(2, 2));
+    }
+    else if (cardName == "Magic Fatigue")
+    {
+        // FatigueEnchanter increases activated ability cost by 2
+        return make_unique<Enchantment>(make_unique<FatigueEnchanter>(2));
+    }
+    else if (cardName == "Silence")
+    {
+        // SilenceEnchanter disables all abilities
+        return make_unique<Enchantment>(make_unique<SilenceEnchanter>());
+    }
+
+    // Rituals
+    else if (cardName == "Dark Ritual")
+    {
+        auto gainMana = make_unique<GainMagicEffect>(1);
+        auto trigger = make_unique<TriggeredAbility>("Gain 1 mana at the start of your turn.", TriggerState::START_OF_TURN, move(gainMana));
+        return make_unique<Ritual>("Dark Ritual", "Gain 1 mana at the start of your turn.", 0, move(trigger), 5);
+    }
+    else if (cardName == "Aura of Power")
+    {
+        auto statBuff = make_unique<SelfBuffEffect>(1, 1);
+        auto trigger = make_unique<TriggeredAbility>("Whenever a minion enters play under your control, it gains +1/+1.", TriggerState::MINION_ENTERS, move(statBuff));
+        return make_unique<Ritual>("Aura of Power", "Your minions get +1/+1 when they enter play.", 1, move(trigger), 4);
+    }
+    else if (cardName == "Standstill")
+    {
+        auto destroyEffect = make_unique<DestroyMinionEffect>();
+        auto trigger = make_unique<TriggeredAbility>("Whenever a minion enters play, destroy it.", TriggerState::MINION_ENTERS, move(destroyEffect));
+        return make_unique<Ritual>("Standstill", "Destroy any minion that enters play.", 3, move(trigger), 4);
+    }
+
     return nullptr;
 }

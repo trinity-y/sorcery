@@ -144,20 +144,20 @@ void GameState::use(int i)
 
   
   // for gameEffects with activePlayer + inactivePlayer
-  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
+  arrOfPlayers[activePlayer]->activateMinionAbility(i-1, *(arrOfPlayers[activePlayer]), *(arrOfPlayers[inactivePlayer]));
 }
 
 // Uses activated ability of minion i with target p, t (a minion on a board)
 void GameState::use(int i, int p, int t)
 {
-  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[p - 1]), t);
+  arrOfPlayers[activePlayer]->activateMinionAbility(i-1, *(arrOfPlayers[p - 1]), t-1);
 }
 
 // Uses activated ability of minion i with target p, t (a ritual)
 void GameState::use(int i, int p, string t)
 {
   // for gameEffects with no parameters
-  arrOfPlayers[activePlayer]->activateMinionAbility(i, *(arrOfPlayers[p - 1]), t);
+  arrOfPlayers[activePlayer]->activateMinionAbility(i-1, *(arrOfPlayers[p - 1]), t);
 }
 
 // Checks if the game has been won

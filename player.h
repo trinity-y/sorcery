@@ -78,6 +78,9 @@ public:
     // for raisedead effect
     unique_ptr<Card> removeFromGraveyard(); // Remove and return last minion from graveyard
     int getNumMinionsInGraveyard() const;   // Get number of minions in graveyard
+
+    // for blizzard effect
+    void moveToGraveyard(int minionIndex); 
 };
 
 #endif
