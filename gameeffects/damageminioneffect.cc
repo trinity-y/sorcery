@@ -7,7 +7,7 @@ DamageMinionEffect::DamageMinionEffect(int damage)
 
 void DamageMinionEffect::useEffect(Player &p, int t)
 {
-    cout << "got to damageminioneffect called Player t" << endl;
+    // cout << "got to damageminioneffect called Player t" << endl;
     // need to check that it's the opponent
     if (t < p.getNumMinions() && t >= 0)
     {
@@ -20,4 +20,3 @@ void DamageMinionEffect::useEffect(Player &activePlayer, Player &inactivePlayer)
     int i = activePlayer.getNumMinions() - 1;
     activePlayer.changeMinionDefence(i, -damage);
 }
-

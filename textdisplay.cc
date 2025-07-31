@@ -120,19 +120,19 @@ void TextDisplay::displayHand()
 {
     auto &hand = gameState.currentPlayer().getHand();
 
-    std::cout << "DEBUG: Hand has " << hand.getHandLen() << " cards" << std::endl;
+    // std::cout << "DEBUG: Hand has " << hand.getHandLen() << " cards" << std::endl;
 
     vector<card_template_t> row;
     for (int i = 0; i < hand.getHandLen(); ++i)
     {
-        cerr << "REACHED HERE DISPLAYHAND" << endl;
+        // cerr << "REACHED HERE DISPLAYHAND" << endl;
         auto &c = hand.getCard(i);
-        cerr << "REACHED HERE DISPLAYHAND1" << endl;
+        // cerr << "REACHED HERE DISPLAYHAND1" << endl;
         if (c.type == "MINION")
         {
-            cerr << "REACHED HERE MINION" << endl;
+            // cerr << "REACHED HERE MINION" << endl;
             auto &minion = static_cast<const Minion &>(c);
-            cerr << "REACHED HERE MINION2" << endl;
+            // cerr << "REACHED HERE MINION2" << endl;
             // Check if minion has activated ability to display properly
             if (minion.getActivatedAbilityCost() > 0)
             {
@@ -161,13 +161,13 @@ void TextDisplay::displayHand()
         }
         else if (c.type == "SPELL")
         {
-            cerr << "REACHED HERE SPELL" << endl;
+            // cerr << "REACHED HERE SPELL" << endl;
             row.push_back(display_spell(
                 c.name, c.getCost(), c.description));
         }
         else if (c.type == "ENCHANTMENT")
         {
-            cerr << "REACHED HERE ENCHANTMENT" << endl;
+            // cerr << "REACHED HERE ENCHANTMENT" << endl;
             const auto &enchantment = static_cast<const Enchantment &>(c);
             row.push_back(display_enchantment_attack_defence(
                 c.name, c.getCost(), c.description,
@@ -175,9 +175,9 @@ void TextDisplay::displayHand()
         }
         else if (c.type == "RITUAL")
         {
-            cerr << "REACHED HERE RITUAL" << endl;
+            // cerr << "REACHED HERE RITUAL" << endl;
             const auto &ritual = static_cast<const Ritual &>(c);
-            cerr << "REACHED HERE RITUAL 2" << endl;
+            // cerr << "REACHED HERE RITUAL 2" << endl;
             row.push_back(display_ritual(
                 c.name, c.getCost(),
                 ritual.getActivationCost(), c.description, // getting ritual activation cost and charges via getters
@@ -427,7 +427,7 @@ void TextDisplay::inspectMinion(int idx, int pnum)
 
     std::function<void(const Minion &)> collectEnchanters = [&](const Minion &minion)
     {
-        std::cout << "DEBUG: Checking minion: " << minion.name << ", type: " << minion.type << ", description: " << minion.description << std::endl;
+        // std::cout << "DEBUG: Checking minion: " << minion.name << ", type: " << minion.type << ", description: " << minion.description << std::endl;
 
         if (auto enchanter = dynamic_cast<const Enchanter *>(&minion)) // non owning pointer!!! so its okay
         {
@@ -435,13 +435,13 @@ void TextDisplay::inspectMinion(int idx, int pnum)
 
             if (enchanter->nextMinion)
             {
-                std::cout << "DEBUG: Recursing to next minion: " << enchanter->nextMinion->name << std::endl;
+                // std::cout << "DEBUG: Recursing to next minion: " << enchanter->nextMinion->name << std::endl;
                 collectEnchanters(*enchanter->nextMinion);
             }
         }
         else
         {
-            std::cout << "DEBUG: Not an enchanter (reached base minion)" << std::endl;
+            // std::cout << "DEBUG: Not an enchanter (reached base minion)" << std::endl;
         }
     };
 

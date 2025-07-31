@@ -2,11 +2,12 @@
 #include "../player.h"
 #include "../cards/cardgenerator.h"
 #include "../zones/board.h"
+
 using namespace std;
 MultiSummonEffect::MultiSummonEffect(const string elementalType, int maxSummons, int minionsPerSummon)
     : elementalType{elementalType}, maxSummons{maxSummons}, minionsPerSummon{minionsPerSummon} {}
 
-void MultiSummonEffect::useEffect(Player& activePlayer, Player& inactivePlayer)
+void MultiSummonEffect::useEffect(Player &activePlayer, Player &inactivePlayer)
 {
     int availableSpace = 5 - activePlayer.getNumMinions();
 
@@ -29,4 +30,3 @@ void MultiSummonEffect::useEffect(Player& activePlayer, Player& inactivePlayer)
         }
     }
 }
-

@@ -56,7 +56,7 @@ int BaseMinion::getDefaultActions() const
 
 void BaseMinion::setActions(int newActions)
 {
-    cout << "set actions " << newActions << endl;
+    // cout << "set actions " << newActions << endl;
     actions = newActions;
 }
 
@@ -78,7 +78,7 @@ void BaseMinion::setActions(int newActions)
 void BaseMinion::notify(TriggerState trigger, Player &p, int t)
 {
     // ! debug
-    cout << "notifying " << name << "of event " << trigger << " for minion index " << t << endl;
+    // cout << "notifying " << name << "of event " << trigger << " for minion index " << t << endl;
 
     if (activatedAbility && actions > 0)
     {
@@ -98,7 +98,7 @@ void BaseMinion::notify(TriggerState trigger, Player &p, int t)
 void BaseMinion::notify(TriggerState trigger, Player &p, string t)
 {
     // ! debug
-    cout << "notifying " << name << "of event " << trigger << " for minion index " << t << endl;
+    // cout << "notifying " << name << "of event " << trigger << " for minion index " << t << endl;
     if (activatedAbility && actions > 0)
     {
         activatedAbility->notify(trigger, p, t);
@@ -145,9 +145,9 @@ int BaseMinion::getCost() const
 
 string BaseMinion::getMinionDescription() const
 {
-    if (triggeredAbility != nullptr)
-    {
-        return description;
-    }
+    // if (triggeredAbility != nullptr)
+    // {
+    return description;
+    // }
     return ""; // return empty string if no description
 }

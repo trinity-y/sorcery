@@ -7,7 +7,7 @@ DamageEffect::DamageEffect(int damage)
 
 void DamageEffect::useEffect(Player &p, int targetIndex)
 {
-    cout << "damaging minion";
+    // cout << "damaging minion";
     p.changeMinionDefence(targetIndex, -damage);
     // whenever an oppent's minions enters play, deal 1 damage ot it
     // TODO: This needs to be moved into player
@@ -18,4 +18,3 @@ void DamageEffect::useEffect(Player &p, int targetIndex)
     //     minion.changeDefense(-damage);
     // }
 }
-

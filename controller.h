@@ -7,7 +7,8 @@
 #include "view.h"
 using namespace std;
 
-class Controller {
+class Controller
+{
   bool testingMode;
   unique_ptr<istream> deck1;
   unique_ptr<istream> deck2;
@@ -19,9 +20,10 @@ class Controller {
   void executeCommand();
   void turn();
   void mainLoop(string cmd);
-  public:
-    Controller(bool testingMode, string deck1FileName="default.deck", string deck2FileName="default.deck", string initFileName="");
-    void play();
+
+public:
+  Controller(bool testingMode, string deck1FileName = "default.deck", string deck2FileName = "default.deck", string initFileName = "");
+  void play();
 };
 
 #endif

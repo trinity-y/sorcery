@@ -37,7 +37,8 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
     // Minion(int attack, int defense, string name, string description, int cost, activatedAbility, triggeredAbility)
     if (cardName == "Air Elemental")
     {
-        return make_unique<BaseMinion>(1, 1, "Air Elemental", "", 0, nullptr, nullptr);
+        unique_ptr<BaseMinion> baseMinion = make_unique<BaseMinion>(1, 1, "Air Elemental", "", 0, nullptr, nullptr);
+        return move(baseMinion);
     }
     else if (cardName == "Earth Elemental")
     {
@@ -208,6 +209,6 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto trigger = make_unique<TriggeredAbility>("Whenever a minion enters play, destroy it.", TriggerState::MINION_ENTERS, move(destroyEffect));
         return make_unique<Ritual>("Standstill", "Destroy any minion that enters play.", 3, move(trigger), 4);
     }
-    cerr << "Couldn't create the card " << cardName << " correctly." << endl;
+    // cerr << "Couldn't create the card " << cardName << " correctly." << endl;
     return nullptr;
 }

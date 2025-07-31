@@ -83,4 +83,3 @@ public:
   int activePlayerIndex() const;
 };
 #endif
-

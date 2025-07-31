@@ -1,5 +1,6 @@
 #include "hand.h"
-
+#include <iostream>
+using namespace std;
 Hand::Hand() {};
 
 void Hand::add(unique_ptr<Card> card)
@@ -25,6 +26,7 @@ Card &Hand::getCard(int i)
     return *hand[i];
   }
   // For now, return the first card if index is out of bounds -> later can throw an exception?
+  cerr << "Tried to get a card that's not in your hand." << endl;
   return *hand[0];
 }
 
@@ -34,7 +36,7 @@ const Card &Hand::getCard(int i) const
   {
     return *hand[i];
   }
+  cerr << "Tried to get a card that's not in your hand." << endl;
   // For now, return the first card if index is out of bounds
   return *hand[0];
 }
-

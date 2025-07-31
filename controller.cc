@@ -14,10 +14,7 @@ Controller::Controller(bool testingMode, string deck1FileName, string deck2FileN
                                                                                                             deck1{new ifstream(deck1FileName.c_str())},
                                                                                                             deck2{new ifstream(deck2FileName.c_str())},
                                                                                                             initFile{initFileName == "" ? nullptr : new ifstream(initFileName.c_str())},
-                                                                                                            inGame{true}
-{
-  cout << "controller is constructed" << endl;
-};
+                                                                                                            inGame{true} {};
 
 void Controller::play()
 {
@@ -25,20 +22,19 @@ void Controller::play()
   string player2Name;
   cout << "Welcome to Sorcery! Enter the name of your first player: ";
   getline(cin, player1Name);
-  cout << "Great, nice to meet you " << player1Name << endl;
+  cout << "Great, nice to meet you " << player1Name << "." << endl;
   cout << "Enter the name of your second player: ";
   getline(cin, player2Name);
+  cout << "Great, nice to meet you " << player2Name << "." << endl;
 
   // load decks
   vector<string> deck1CardNames;
   vector<string> deck2CardNames;
   string input;
-  cout << "starting to get input from the deck file 1" << endl;
   while (getline(*deck1, input))
   {
     deck1CardNames.push_back(input);
   }
-  cout << "starting to get input from the deck file 2" << endl;
   while (getline(*deck2, input))
   {
     deck2CardNames.push_back(input);
@@ -52,12 +48,10 @@ void Controller::play()
 
   while (inGame)
   {
-    cout << "starting to take input from initFile" << endl;
     while (inGame && initFile && getline(*initFile, line))
     {
       mainLoop(line);
     }
-    cout << "starting to take input from command line" << endl;
     while (inGame && getline(cin, line))
     {
       mainLoop(line);
@@ -130,7 +124,7 @@ void Controller::mainLoop(string line)
   }
   else if (cmd == "use")
   {
-    cout << "use" << endl;
+    // cout << "use" << endl;
     int i, p;
     string t;
     commandStream >> i;
@@ -158,4 +152,3 @@ void Controller::mainLoop(string line)
     view->notify(cmd);
   }
 }
-

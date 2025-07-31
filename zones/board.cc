@@ -9,7 +9,7 @@
 #include <iostream> // todo: delete
 using namespace std;
 
-Board::Board() : boardMinions{vector<unique_ptr<Minion>>{}}, boardRitual{nullptr} {};
+Board::Board() : boardMinions{vector<unique_ptr<Minion>>{}}, boardRitual{nullptr}, numMinions{0} {};
 // invariant: ritual card stays at the end of the vector
 void Board::add(unique_ptr<Card> card)
 {
@@ -21,7 +21,6 @@ void Board::add(unique_ptr<Card> card)
 
 void Board::addMinion(unique_ptr<Minion> minion)
 {
-  cout << "adding minion" << endl;
   boardMinions.push_back(move(minion));
   ++numMinions;
 }
@@ -78,16 +77,14 @@ void Board::notify(TriggerState trigger, Player &activePlayer, Player &inactiveP
 }
 void Board::notify(TriggerState trigger, Player &activePlayer, int t)
 {
-  cout << "numMinions: " << numMinions << endl;
   if (t >= 0 && t < numMinions)
   {
     boardMinions[t]->notify(trigger, activePlayer, t);
   }
-  else
-  {
-    cout << "Tried to activate a non-existent minion with index " << t << endl;
-    cout << "numMinions = " << numMinions << endl;
-  }
+  // else
+  // {
+  //   cout << "Tried to activate a non-existent minion with index " << t << endl;
+  // }
 }
 
 unique_ptr<Minion> Board::removeMinion(int index)

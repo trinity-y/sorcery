@@ -63,7 +63,7 @@ void GameState::discard(int i)
 void GameState::attack(int i)
 {
   int index = i - 1;
-  cerr << "attack 1" << endl;
+  // cerr << "attack 1" << endl;
   if (arrOfPlayers[activePlayer]->getMinionActions(index) >= 1)
   {
     if (i >= 1 && i <= arrOfPlayers[activePlayer]->getNumMinions())
@@ -137,28 +137,36 @@ void GameState::play(int i, int p, string t)
     }
     else
     {
-      // try
-      // {
-      int targetInt = stoi(t) - 1;
-      spell.notify(targetPlayer, targetInt);
-      // } // todo: error message
+      try
+      {
+        int targetInt = stoi(t) - 1;
+        spell.notify(targetPlayer, targetInt);
+      }
+      catch (...)
+      {
+        cout << "That's not a valid target!" << endl;
+      }
     }
     arrOfPlayers[activePlayer]->discardCard(i - 1);
   }
   else if (card.type == "ENCHANTMENT")
   {
     Enchantment &enchantment = static_cast<Enchantment &>(card);
-    // try
-    // {
-    int targetInt = stoi(t) - 1;
-    cout << "adding enchantment to " << targetInt << endl;
+    try
+    {
+      int targetInt = stoi(t) - 1;
+      // cout << "adding enchantment to " << targetInt << endl;
 
-    targetPlayer.addEnchantment(enchantment, targetInt);
-    // } // todo: error message
+      targetPlayer.addEnchantment(enchantment, targetInt);
+    }
+    catch (...)
+    {
+      cout << "You tried to enchant a non-minion card!" << endl;
+    }
   }
   else
   {
-    // todo: error message
+    cout << "That's not how you play that card." << endl;
   }
   // arrOfPlayers[activePlayer]->discardCard(i);
   // you are not able to play minions or rituals directly from the hand.
@@ -180,7 +188,7 @@ void GameState::use(int i)
 void GameState::use(int i, int p, int t)
 {
   // notify does the checking + decrementing for actions
-  cout << "gamestate use" << endl;
+  // cout << "gamestate use" << endl;
   arrOfPlayers[activePlayer]->activateMinionAbility(i - 1, *(arrOfPlayers[p - 1]), t - 1);
 }
 
@@ -197,7 +205,7 @@ void GameState::use(int i, int p, string t)
 bool GameState::isWon()
 {
   // The game’s objective is to reduce the opposing player’s life to 0, at which point the game ends.
-  if (arrOfPlayers[0]->getLife() == 0 || arrOfPlayers[1]->getLife() == 0)
+  if (arrOfPlayers[0]->getLife() <= 0 || arrOfPlayers[1]->getLife() <= 0)
   {
     return true;
   }

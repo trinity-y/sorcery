@@ -18,7 +18,7 @@ void Trigger::notify(TriggerState newState, Player &p, string i)
 
 void Trigger::notify(TriggerState newState, Player &activePlayer, Player &inactivePlayer)
 {
-    cerr << "got here trigger" << newState << endl;
+    // cerr << "got here trigger" << newState << endl;
     if (newState == trigger)
     {
 
