@@ -56,7 +56,7 @@ void GameState::draw()
 // Discards the ith card from active player's hand
 void GameState::discard(int i)
 {
-  arrOfPlayers[activePlayer]->discardCard(i);
+  arrOfPlayers[activePlayer]->discardCard(i - 1);
 }
 
 // Orders minion i to attack opposing player
@@ -296,4 +296,3 @@ void GameState::startPlayerTurn()
 const Player &GameState::currentPlayer() const { return *arrOfPlayers[activePlayer]; }
 const Player &GameState::player(int index) const { return *arrOfPlayers[index]; }
 int GameState::activePlayerIndex() const { return activePlayer; }
-

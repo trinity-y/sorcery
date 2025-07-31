@@ -21,6 +21,7 @@ void Board::add(unique_ptr<Card> card)
 
 void Board::addMinion(unique_ptr<Minion> minion)
 {
+  cout << "adding minion" << endl;
   boardMinions.push_back(move(minion));
   ++numMinions;
 }
@@ -77,7 +78,16 @@ void Board::notify(TriggerState trigger, Player &activePlayer, Player &inactiveP
 }
 void Board::notify(TriggerState trigger, Player &activePlayer, int t)
 {
-  boardMinions[t]->notify(trigger, activePlayer, t);
+  cout << "numMinions: " << numMinions << endl;
+  if (t >= 0 && t < numMinions)
+  {
+    boardMinions[t]->notify(trigger, activePlayer, t);
+  }
+  else
+  {
+    cout << "Tried to activate a non-existent minion with index " << t << endl;
+    cout << "numMinions = " << numMinions << endl;
+  }
 }
 
 unique_ptr<Minion> Board::removeMinion(int index)
@@ -163,4 +173,3 @@ const int Board::getMinionActions(int i) const
 {
   return boardMinions[i]->getActions();
 }
-

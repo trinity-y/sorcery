@@ -8,15 +8,17 @@ using namespace std;
 
 class Card;
 
-class Deck {
+class Deck
+{
   vector<unique_ptr<Card>> deck;
   default_random_engine rng;
-  public:
-    Deck(vector<string> deckCardNames);
-    unique_ptr<Card> pop();
-    void shuffle();
-    void printDeck(); // for debugging
-    int getLen(); 
+
+public:
+  Deck(vector<string> deckCardNames);
+  unique_ptr<Card> pop();
+  void shuffle();
+  void printDeck(); // for debugging
+  int getLen();
 };
 
 #endif

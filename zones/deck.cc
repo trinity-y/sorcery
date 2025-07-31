@@ -10,31 +10,39 @@ using namespace std;
 
 class Card;
 
-Deck::Deck(vector<string> cardNames): rng{default_random_engine{(unsigned int)chrono::system_clock::now().time_since_epoch().count()}} {
+Deck::Deck(vector<string> cardNames) : rng{default_random_engine{(unsigned int)chrono::system_clock::now().time_since_epoch().count()}}
+{
   CardGenerator cardGenerator = CardGenerator();
-  for (size_t i=0; i<cardNames.size(); ++i){
-     deck.push_back(cardGenerator.getCardFromString(cardNames[i]));
+  for (size_t i = 0; i < cardNames.size(); ++i)
+  {
+    deck.push_back(cardGenerator.getCardFromString(cardNames[i]));
   }
 };
 
-unique_ptr<Card> Deck::pop() {
-  if (deck.empty()) return nullptr;
+unique_ptr<Card> Deck::pop()
+{
+  if (deck.empty())
+    return nullptr;
   unique_ptr<Card> backCard = move(deck.back()); // using move so that way we don't copy the unique_ptr, which is forbidden
   deck.pop_back();
   return backCard;
 }
 
-void Deck::shuffle() {
+void Deck::shuffle()
+{
   std::shuffle(deck.begin(), deck.end(), rng);
 }
 
-void Deck::printDeck() {
-  for (size_t i=0; i<deck.size(); ++i) {
+void Deck::printDeck()
+{
+  for (size_t i = 0; i < deck.size(); ++i)
+  {
     cout << "Card Name:" << deck[i]->name << endl;
     cout << "Card Type:" << deck[i]->type << endl;
   }
 }
 
-int Deck::getLen(){
+int Deck::getLen()
+{
   return deck.size();
 }

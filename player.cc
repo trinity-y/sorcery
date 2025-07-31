@@ -53,12 +53,12 @@ void Player::drawCard()
         hand->add(deck->pop());
     }
     // ! debug
-    cout << "drew card. now hand =" << endl;
-    for (int i = 0; i < hand->getHandLen(); i++)
-    {
-        cout << hand->getCard(i).name << " ";
-    }
-    cout << endl;
+    // cout << "drew card. now hand =" << endl;
+    // for (int i = 0; i < hand->getHandLen(); i++)
+    // {
+    //     cout << hand->getCard(i).name << " ";
+    // }
+    // cout << endl;
 }
 
 void Player::discardCard(int i)
@@ -118,7 +118,10 @@ void Player::activateMinionAbility(int i, Player &activePlayer, Player &inactive
         board->getMinion(i).notify(TriggerState::ACTIVATED_ABILITY, activePlayer, inactivePlayer);
         magic -= activationCost;
     }
-    // todo: error msg thats like 'you dont have enough magic'
+    else
+    {
+        cout << "You don't have enough magic for that!" << endl;
+    }
 }
 
 void Player::activateMinionAbility(int i, Player &p, int t)
@@ -130,7 +133,10 @@ void Player::activateMinionAbility(int i, Player &p, int t)
         board->getMinion(i).notify(TriggerState::ACTIVATED_ABILITY, p, t);
         magic -= activationCost;
     }
-    // todo: error msg thats like 'you dont have enough magic'
+    else
+    {
+        cout << "You don't have enough magic for that!" << endl;
+    }
 }
 
 void Player::activateMinionAbility(int i, Player &p, string t)
@@ -142,7 +148,10 @@ void Player::activateMinionAbility(int i, Player &p, string t)
         board->getMinion(i).notify(TriggerState::ACTIVATED_ABILITY, p, t);
         magic -= activationCost;
     }
-    // todo: error msg thats like 'you dont have enough magic'
+    else
+    {
+        cout << "You don't have enough magic for that!" << endl;
+    }
 }
 
 void Player::reduceLife(int reduceBy)
@@ -165,12 +174,17 @@ void Player::playCard(int i, Player &activePlayer, Player &inactivePlayer) // te
     {
         // ! debug
         board->add(hand->remove(i));
+        cout << "Added minion, board size now: " << board->getNumMinions() << endl;
         if (card.type == "MINION")
         {
             // ! board->notify (when minion enters play)
             // we need to notify both players boards. so ideally this logic is moved outside
-            // notify(MINION_ENTERS, activePlayer, i);
-            // inactivePlayer.notify(MINION_ENTERS, activePlayer, i);
+            cout << "board length = " << board->getNumMinions() << endl;
+            int t = board->getNumMinions() - 1;
+            cout << "notifying" << endl;
+            notify(MINION_ENTERS, activePlayer, t);
+            inactivePlayer.notify(MINION_ENTERS, activePlayer, t);
+            cout << "finished notifying" << endl;
         }
     }
     else if (card.type == "SPELL")
@@ -253,4 +267,3 @@ const int Player::getMinionActions(int i) const
 {
     return board->getMinionActions(i);
 }
-

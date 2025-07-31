@@ -3,10 +3,10 @@
 #include <memory>
 #include "minion.h"
 #include "ritual.h"
-class CardGenerator {
-    public:
-        CardGenerator();
-        unique_ptr<Card> getCardFromString(string cardName);
-
+class CardGenerator
+{
+public:
+    CardGenerator();
+    unique_ptr<Card> getCardFromString(string cardName);
 };
 #endif

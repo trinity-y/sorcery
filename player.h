@@ -28,7 +28,7 @@ public:
     void drawCard();
     void playCard(int i, Player &activePlayer, Player &inactivePlayer);              // play card i in hand (0-indexed)
     void notify(TriggerState trigger, Player &activePlayer, Player &inactivePlayer); // for calling to board from another player
-    void notify(TriggerState trigger, Player &activePlayer, int t); // for calling to board from another player
+    void notify(TriggerState trigger, Player &activePlayer, int t);                  // for calling to board from another player
 
     // Accessing + modifying individual minions on the board
     const int getMinionAttack(int i) const;

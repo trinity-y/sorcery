@@ -6,7 +6,7 @@ BaseMinion::BaseMinion(int attack, int defense, string name, string description,
                                                                                                                                                                                            attack{attack},
                                                                                                                                                                                            defense{defense},
                                                                                                                                                                                            actions{0},
-                                                                                                                                                                                           activatedAbilityCost{1},
+                                                                                                                                                                                           activatedAbilityCost{activatedAbility != nullptr ? activatedAbility->getCost() : 0},
                                                                                                                                                                                            activatedAbility{move(activatedAbility)},
                                                                                                                                                                                            triggeredAbility{move(triggeredAbility)} {};
 
@@ -77,6 +77,9 @@ void BaseMinion::setActions(int newActions)
 
 void BaseMinion::notify(TriggerState trigger, Player &p, int t)
 {
+    // ! debug
+    cout << "notifying " << name << "of event " << trigger << " for minion index " << t << endl;
+
     if (activatedAbility && actions > 0)
     {
         activatedAbility->notify(trigger, p, t);
@@ -94,6 +97,8 @@ void BaseMinion::notify(TriggerState trigger, Player &p, int t)
 // we  can keep it anyways tohugh ig
 void BaseMinion::notify(TriggerState trigger, Player &p, string t)
 {
+    // ! debug
+    cout << "notifying " << name << "of event " << trigger << " for minion index " << t << endl;
     if (activatedAbility && actions > 0)
     {
         activatedAbility->notify(trigger, p, t);
@@ -140,6 +145,9 @@ int BaseMinion::getCost() const
 
 string BaseMinion::getMinionDescription() const
 {
-    return description;
+    if (triggeredAbility != nullptr)
+    {
+        return description;
+    }
+    return ""; // return empty string if no description
 }
-

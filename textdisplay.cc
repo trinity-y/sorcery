@@ -125,11 +125,14 @@ void TextDisplay::displayHand()
     vector<card_template_t> row;
     for (int i = 0; i < hand.getHandLen(); ++i)
     {
+        cerr << "REACHED HERE DISPLAYHAND" << endl;
         auto &c = hand.getCard(i);
+        cerr << "REACHED HERE DISPLAYHAND1" << endl;
         if (c.type == "MINION")
         {
+            cerr << "REACHED HERE MINION" << endl;
             auto &minion = static_cast<const Minion &>(c);
-
+            cerr << "REACHED HERE MINION2" << endl;
             // Check if minion has activated ability to display properly
             if (minion.getActivatedAbilityCost() > 0)
             {
@@ -158,11 +161,13 @@ void TextDisplay::displayHand()
         }
         else if (c.type == "SPELL")
         {
+            cerr << "REACHED HERE SPELL" << endl;
             row.push_back(display_spell(
                 c.name, c.getCost(), c.description));
         }
         else if (c.type == "ENCHANTMENT")
         {
+            cerr << "REACHED HERE ENCHANTMENT" << endl;
             const auto &enchantment = static_cast<const Enchantment &>(c);
             row.push_back(display_enchantment_attack_defence(
                 c.name, c.getCost(), c.description,
@@ -170,7 +175,9 @@ void TextDisplay::displayHand()
         }
         else if (c.type == "RITUAL")
         {
+            cerr << "REACHED HERE RITUAL" << endl;
             const auto &ritual = static_cast<const Ritual &>(c);
+            cerr << "REACHED HERE RITUAL 2" << endl;
             row.push_back(display_ritual(
                 c.name, c.getCost(),
                 ritual.getActivationCost(), c.description, // getting ritual activation cost and charges via getters
@@ -233,13 +240,13 @@ void TextDisplay::displayBoard()
             {
                 row2.push_back(display_minion_activated_ability(
                     m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
-                    m.getActivatedAbilityCost(), m.getMinionDescription()));
+                    m.getActivatedAbilityCost(), m.description));
             }
             else if (!m.getMinionDescription().empty())
             {
                 row2.push_back(display_minion_triggered_ability(
                     m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
-                    m.getMinionDescription()));
+                    m.description));
             }
             else
             {
@@ -264,13 +271,13 @@ void TextDisplay::displayBoard()
             {
                 row3.push_back(display_minion_activated_ability(
                     m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
-                    m.getActivatedAbilityCost(), m.getMinionDescription()));
+                    m.getActivatedAbilityCost(), m.description));
             }
             else if (!m.getMinionDescription().empty())
             {
                 row3.push_back(display_minion_triggered_ability(
                     m.getMinionName(), m.getCost(), m.getAttack(), m.getDefense(),
-                    m.getMinionDescription()));
+                    m.description));
             }
             else
             {
@@ -418,25 +425,25 @@ void TextDisplay::inspectMinion(int idx, int pnum)
     // Collect all enchanters by traversing the decorator chain using recursion
     vector<reference_wrapper<const Enchanter>> enchanters;
 
-   std::function<void(const Minion &)> collectEnchanters = [&](const Minion &minion)
-{
-    std::cout << "DEBUG: Checking minion: " << minion.name << ", type: " << minion.type << ", description: " << minion.description << std::endl;
-    
-    if (auto enchanter = dynamic_cast<const Enchanter *>(&minion)) // non owning pointer!!! so its okay 
+    std::function<void(const Minion &)> collectEnchanters = [&](const Minion &minion)
     {
-        enchanters.push_back(std::cref(*enchanter));
-        
-        if (enchanter->nextMinion)
+        std::cout << "DEBUG: Checking minion: " << minion.name << ", type: " << minion.type << ", description: " << minion.description << std::endl;
+
+        if (auto enchanter = dynamic_cast<const Enchanter *>(&minion)) // non owning pointer!!! so its okay
         {
-            std::cout << "DEBUG: Recursing to next minion: " << enchanter->nextMinion->name << std::endl;
-            collectEnchanters(*enchanter->nextMinion);
+            enchanters.push_back(std::cref(*enchanter));
+
+            if (enchanter->nextMinion)
+            {
+                std::cout << "DEBUG: Recursing to next minion: " << enchanter->nextMinion->name << std::endl;
+                collectEnchanters(*enchanter->nextMinion);
+            }
         }
-    }
-    else
-    {
-        std::cout << "DEBUG: Not an enchanter (reached base minion)" << std::endl;
-    }
-};
+        else
+        {
+            std::cout << "DEBUG: Not an enchanter (reached base minion)" << std::endl;
+        }
+    };
 
     collectEnchanters(m);
 
@@ -456,16 +463,19 @@ void TextDisplay::inspectMinion(int idx, int pnum)
             {
                 const Enchanter &ench = enchanters[j].get();
                 // Check if this enchantment affects attack/defense
-                 if (ench.getLeftBox() != "" || ench.getRightBox() != "" ) {
-                // Has attack/defense modifications - use the boxes
-              enchantmentRow.push_back(display_enchantment_attack_defence(
-                  ench.name, ench.getCost(), ench.description,
-                   ench.getLeftBox(), ench.getRightBox()));
-            } else {
-                // No attack/defense modifications - use regular enchantment display
-                enchantmentRow.push_back(display_enchantment(
-                    ench.name, ench.getCost(), ench.description));
-            }
+                if (ench.getLeftBox() != "" || ench.getRightBox() != "")
+                {
+                    // Has attack/defense modifications - use the boxes
+                    enchantmentRow.push_back(display_enchantment_attack_defence(
+                        ench.name, ench.getCost(), ench.description,
+                        ench.getLeftBox(), ench.getRightBox()));
+                }
+                else
+                {
+                    // No attack/defense modifications - use regular enchantment display
+                    enchantmentRow.push_back(display_enchantment(
+                        ench.name, ench.getCost(), ench.description));
+                }
             }
 
             printRow(enchantmentRow);
@@ -474,6 +484,3 @@ void TextDisplay::inspectMinion(int idx, int pnum)
 
     std::cout << "\n";
 }
-
-
-

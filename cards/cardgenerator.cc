@@ -70,7 +70,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
             move(damageEffect));
 
         // Create the minion first
-        auto fireElemental = make_unique<BaseMinion>(2, 2, "Fire Elemental", "Whenever an opponent's minion enters play, deal 1 damage to it.", 2, nullptr, move(triggeredAbility));
+        auto fireElemental = make_unique<BaseMinion>(2, 2, "Fire Elemental", "Whenever an opponent's minion enters play, deal 1 damage to it.", 1, nullptr, move(triggeredAbility));
 
         return move(fireElemental);
     }
@@ -99,7 +99,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         // Create an activated ability (player-initiated)
         auto activatedAbility = make_unique<ActivatedAbility>(
             "Deal 1 damage to target minion.",
-            move(targetedDamageEffect)); // Magic cost of 1
+            move(targetedDamageEffect), 1); // Magic cost of 1
 
         // Create the minion first (0 attack, 1 defense, card cost 1)
         auto novicePyromancer = make_unique<BaseMinion>(0, 1, "Novice Pyromancer", "Deal 1 damage to target minion.", 1, move(activatedAbility), nullptr);
@@ -114,7 +114,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         // Create an activated ability that summons a 1/1 Air Elemental
         auto activatedAbility = make_unique<ActivatedAbility>(
             "Summon a 1/1 Air Elemental.",
-            move(summonEffect)); // Magic cost of 1
+            move(summonEffect), 1); // Magic cost of 1
 
         // Create the minion first (1 attack, 1 defense, card cost 1)
         auto apprenticeSummoner = make_unique<BaseMinion>(1, 1, "Apprentice Summoner", "Summon a 1/1 Air Elemental.", 1, move(activatedAbility), nullptr);
@@ -129,7 +129,7 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         // Create an activated ability that summons up to three 1/1 Air Elementals
         auto activatedAbility = make_unique<ActivatedAbility>(
             "Summon up to three 1/1 air elementals.",
-            move(summonEffect)); // Magic cost of 2
+            move(summonEffect), 2); // Magic cost of 2
 
         // Create the minion first (2 attack, 3 defense, card cost 3)
         auto masterSummoner = make_unique<BaseMinion>(2, 3, "Master Summoner", "Summon up to three 1/1 air elementals.", 3, move(activatedAbility), nullptr);
@@ -208,6 +208,6 @@ unique_ptr<Card> CardGenerator::getCardFromString(string cardName)
         auto trigger = make_unique<TriggeredAbility>("Whenever a minion enters play, destroy it.", TriggerState::MINION_ENTERS, move(destroyEffect));
         return make_unique<Ritual>("Standstill", "Destroy any minion that enters play.", 3, move(trigger), 4);
     }
-
+    cerr << "Couldn't create the card " << cardName << " correctly." << endl;
     return nullptr;
 }
