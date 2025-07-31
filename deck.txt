@@ -7,3 +7,4 @@ Earth Elemental
 Bone Golem
 Fire Elemental
 Novice Pyromancer
+

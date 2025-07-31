@@ -1,0 +1,79 @@
+Things we have tested
+- placing minion from hand (magic depletes)
+- attack i with minion in board (depletes)
+- use i general (not specific ability)
+- help
+
+Things to test:
+1. every activated ability - S ✓
+2. every triggered ability
+3. enchantments - play with target, play i (TRIN)
+4. rituals - play i - S
+5. spells - play i, play i p t
+6. draw command (for testing mode only)
+7. attack i, j (CELINA)
+8. discard i (CELINA)
+9. init mode
+10. inspect i (CELINA)
+11. quit 
+12. -deck1 -deck2 file arguements
+
+THings that are broken
+- no minion descriptions
+- invalid input gives trace trap
+- giant strength has ? ? in boxes??
+- play i p t for enchantment
+- attack changes actions ✓
+- dark ritual
+
+- SILENCE **
+- all enchantments have its own point
+- all rituals have its own point
+- card is implemented correctly
+- minion enters play = play on the board
+- TEST THE CARDS
+- most important command is testing
+
+- triggered ability to delete a placed minion does not work 
+- got seg fault when trying to attack w no actions? ✓
+- negative magic
+- view should not ahve that top left box (for minions w no or triggered abilties)
+
+- aura of power increases the oponents minions stats but not ur own?? but also consumes both magic somehow i think
+- seg fault when using banish on a target
+
+Progress on ActivatedAbility:
+Novice Pyromancer
+
+Minion: lower left box (attack), lower right box (defence), activated ability cost (middle), cost (top right)
+
+Minion: play i, attack i, attack i j, use i, use i p t, inspect i
+Spell: play i (no target), play i p t (targets)
+Enchantment: play i p t, inspect i, test old->new order
+Ritual: play i, test if it does it's intended functionality at it's trigger
+ALL CARDS: discard i, draw (testing mode)
+
+Cards:
+Air Elemental
+Earth Elemental
+Fire Elemental - S (Minion) play i, functionality doesnt work, can see the card
+Potion Seller - S (Minion) ✓
+Novice Pyromancer - S (Minion) - saw
+Apprentice Summoner - S (Minion) - saw 
+Master Summoner - S (Minion) - saw
+Recharge - S (Spell) - saw
+Disenchant - C ✓
+Raise Dead - S
+Blizzard - C ✓
+Giant Strength - T ✓
+Magic Fatigue - T X ( description changes?)
+Silence - T ✓
+Haste - T ✓
+Enrage - T ✓
+Dark Ritual - T
+Aura of Power - C X
+Standstill - C  X
+Banish - C ✓
+Unsummon - C ✓
+
+
