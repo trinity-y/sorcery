@@ -7,7 +7,7 @@
 #include "./zones/deck.h"
 #include "./zones/hand.h"
 #include "./zones/graveyard.h"
-
+#include "controller.h"
 // remove
 #include <iostream>
 
@@ -18,7 +18,7 @@ void GameState::swapPlayers()
 }
 
 // Constructor
-GameState::GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames)
+GameState::GameState(string player1Name, string player2Name, vector<string> deck1CardNames, vector<string> deck2CardNames, GameStateNotification &controller) : controller{controller}
 {
   arrOfPlayers[0] = make_unique<Player>(player1Name, deck1CardNames);
   arrOfPlayers[1] = make_unique<Player>(player2Name, deck2CardNames);
@@ -71,6 +71,7 @@ void GameState::attack(int i)
       int minionAttack = arrOfPlayers[activePlayer]->getMinionAttack(index);
       arrOfPlayers[inactivePlayer]->reduceLife(minionAttack);
       arrOfPlayers[activePlayer]->decrementMinionActions(index);
+      isWon();
     }
     else
     {
@@ -207,6 +208,7 @@ bool GameState::isWon()
   // The game’s objective is to reduce the opposing player’s life to 0, at which point the game ends.
   if (arrOfPlayers[0]->getLife() <= 0 || arrOfPlayers[1]->getLife() <= 0)
   {
+    controller.notify();
     return true;
   }
   return false;
@@ -304,3 +306,4 @@ void GameState::startPlayerTurn()
 const Player &GameState::currentPlayer() const { return *arrOfPlayers[activePlayer]; }
 const Player &GameState::player(int index) const { return *arrOfPlayers[index]; }
 int GameState::activePlayerIndex() const { return activePlayer; }
+

@@ -33,3 +33,4 @@ void Trigger::notify(TriggerState newState, Player &p, int i)
         executeTrigger(p, i);
     }
 }
+

@@ -484,3 +484,4 @@ void TextDisplay::inspectMinion(int idx, int pnum)
 
     std::cout << "\n";
 }
+

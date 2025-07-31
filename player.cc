@@ -277,3 +277,4 @@ const int Player::getMinionActions(int i) const
 {
     return board->getMinionActions(i);
 }
+

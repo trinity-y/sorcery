@@ -6,3 +6,4 @@
 // Constructor and destructor implementations (if needed)
 // Since View is abstract, these might not be called directly,
 // but they provide a base for derived classes
+

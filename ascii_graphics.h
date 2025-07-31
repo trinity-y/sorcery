@@ -42,3 +42,4 @@ extern const std::string EXTERNAL_BORDER_CHAR_TOP_RIGHT;
 extern const std::string EXTERNAL_BORDER_CHAR_BOTTOM_LEFT;
 extern const std::string EXTERNAL_BORDER_CHAR_BOTTOM_RIGHT;
 
+

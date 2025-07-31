@@ -3,11 +3,13 @@
 #include <memory>
 #include <iostream>
 #include <sstream>
-#include "GameState.h"
 #include "view.h"
-using namespace std;
+#include "GameState.h"
 
-class Controller
+using namespace std;
+class GameState;
+
+class Controller : public GameStateNotification
 {
   bool testingMode;
   unique_ptr<istream> deck1;
@@ -24,6 +26,8 @@ class Controller
 public:
   Controller(bool testingMode, string deck1FileName = "default.deck", string deck2FileName = "default.deck", string initFileName = "");
   void play();
+  void notify() override;
 };
 
 #endif
+

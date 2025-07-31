@@ -1,5 +1,4 @@
 #include "controller.h"
-#include "GameState.h"
 #include "textdisplay.h"
 #include <iostream>
 #include <fstream>
@@ -10,7 +9,8 @@
 #include "./zones/deck.h" // TEMP
 using namespace std;
 
-Controller::Controller(bool testingMode, string deck1FileName, string deck2FileName, string initFileName) : testingMode{testingMode},
+Controller::Controller(bool testingMode, string deck1FileName, string deck2FileName, string initFileName) : GameStateNotification{},
+                                                                                                            testingMode{testingMode},
                                                                                                             deck1{new ifstream(deck1FileName.c_str())},
                                                                                                             deck2{new ifstream(deck2FileName.c_str())},
                                                                                                             initFile{initFileName == "" ? nullptr : new ifstream(initFileName.c_str())},
@@ -40,7 +40,7 @@ void Controller::play()
     deck2CardNames.push_back(input);
   }
 
-  gameState = make_unique<GameState>(player1Name, player2Name, deck1CardNames, deck2CardNames);
+  gameState = make_unique<GameState>(player1Name, player2Name, deck1CardNames, deck2CardNames, *this);
   // unique_ptr<Deck> deck1 = make_unique<Deck>(deck1CardNames, 1);
 
   view = make_unique<TextDisplay>(*gameState);
@@ -151,4 +151,9 @@ void Controller::mainLoop(string line)
   {
     view->notify(cmd);
   }
+}
+
+void Controller::notify()
+{
+  inGame = false;
 }
